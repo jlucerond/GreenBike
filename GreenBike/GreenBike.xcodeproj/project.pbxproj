@@ -8,22 +8,26 @@
 
 /* Begin PBXBuildFile section */
 		D8E61DF01F66EF9D00A57157 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8E61DEF1F66EF9D00A57157 /* AppDelegate.swift */; };
-		D8E61DF21F66EF9D00A57157 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8E61DF11F66EF9D00A57157 /* ViewController.swift */; };
+		D8E61DF21F66EF9D00A57157 /* MapViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8E61DF11F66EF9D00A57157 /* MapViewController.swift */; };
 		D8E61DF51F66EF9D00A57157 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = D8E61DF31F66EF9D00A57157 /* Main.storyboard */; };
 		D8E61DF71F66EF9D00A57157 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D8E61DF61F66EF9D00A57157 /* Assets.xcassets */; };
 		D8E61DFA1F66EF9D00A57157 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = D8E61DF81F66EF9D00A57157 /* LaunchScreen.storyboard */; };
 		D8E61E041F66FF3500A57157 /* NetworkController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8E61E031F66FF3500A57157 /* NetworkController.swift */; };
+		D8E61E061F67095000A57157 /* BikeStation.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8E61E051F67095000A57157 /* BikeStation.swift */; };
+		D8E61E081F67095A00A57157 /* BikeStationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8E61E071F67095A00A57157 /* BikeStationController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
 		D8E61DEC1F66EF9D00A57157 /* GreenBike.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = GreenBike.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		D8E61DEF1F66EF9D00A57157 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
-		D8E61DF11F66EF9D00A57157 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
+		D8E61DF11F66EF9D00A57157 /* MapViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapViewController.swift; sourceTree = "<group>"; };
 		D8E61DF41F66EF9D00A57157 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		D8E61DF61F66EF9D00A57157 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		D8E61DF91F66EF9D00A57157 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		D8E61DFB1F66EF9D00A57157 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		D8E61E031F66FF3500A57157 /* NetworkController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NetworkController.swift; sourceTree = "<group>"; };
+		D8E61E051F67095000A57157 /* BikeStation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BikeStation.swift; sourceTree = "<group>"; };
+		D8E61E071F67095A00A57157 /* BikeStationController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BikeStationController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -57,7 +61,9 @@
 			isa = PBXGroup;
 			children = (
 				D8E61DEF1F66EF9D00A57157 /* AppDelegate.swift */,
-				D8E61E031F66FF3500A57157 /* NetworkController.swift */,
+				D8E61E091F67095E00A57157 /* Model */,
+				D8E61E0A1F67096300A57157 /* ModelController */,
+				D8E61E0B1F67096E00A57157 /* NetworkController */,
 				D8E61E021F66FF2A00A57157 /* UI */,
 				D8E61E011F66FF1E00A57157 /* Resources */,
 			);
@@ -77,10 +83,34 @@
 		D8E61E021F66FF2A00A57157 /* UI */ = {
 			isa = PBXGroup;
 			children = (
-				D8E61DF11F66EF9D00A57157 /* ViewController.swift */,
+				D8E61DF11F66EF9D00A57157 /* MapViewController.swift */,
 				D8E61DF31F66EF9D00A57157 /* Main.storyboard */,
 			);
 			name = UI;
+			sourceTree = "<group>";
+		};
+		D8E61E091F67095E00A57157 /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				D8E61E051F67095000A57157 /* BikeStation.swift */,
+			);
+			name = Model;
+			sourceTree = "<group>";
+		};
+		D8E61E0A1F67096300A57157 /* ModelController */ = {
+			isa = PBXGroup;
+			children = (
+				D8E61E071F67095A00A57157 /* BikeStationController.swift */,
+			);
+			name = ModelController;
+			sourceTree = "<group>";
+		};
+		D8E61E0B1F67096E00A57157 /* NetworkController */ = {
+			isa = PBXGroup;
+			children = (
+				D8E61E031F66FF3500A57157 /* NetworkController.swift */,
+			);
+			name = NetworkController;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -156,8 +186,10 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				D8E61DF21F66EF9D00A57157 /* ViewController.swift in Sources */,
+				D8E61DF21F66EF9D00A57157 /* MapViewController.swift in Sources */,
+				D8E61E061F67095000A57157 /* BikeStation.swift in Sources */,
 				D8E61DF01F66EF9D00A57157 /* AppDelegate.swift in Sources */,
+				D8E61E081F67095A00A57157 /* BikeStationController.swift in Sources */,
 				D8E61E041F66FF3500A57157 /* NetworkController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
