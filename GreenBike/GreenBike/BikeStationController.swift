@@ -10,7 +10,11 @@ import Foundation
 
 class BikeStationController {
    static let shared = BikeStationController()
-   var allBikeStations: [BikeStation] = []
+   var allBikeStations: [BikeStation] = [] {
+      didSet {
+         NotificationCenter.default.post(name: NotificationNotices.bikeStationsUpdatedNotification, object: nil)
+      }
+   }
    
    func refreshBikeStationsStatuses() {
       NetworkController.shared.getBikeInfoFromWeb { (success, arrayOfStations) in

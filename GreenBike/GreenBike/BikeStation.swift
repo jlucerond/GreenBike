@@ -49,7 +49,6 @@ class BikeStation: NSObject {
       self.address = address
       self.renting = renting
       self.returning = returning
-      print(self.name)
    }
    
 }
@@ -57,6 +56,10 @@ class BikeStation: NSObject {
 extension BikeStation: MKAnnotation {
    var coordinate: CLLocationCoordinate2D {
       return CLLocationCoordinate2D(latitude: latitude, longitude: longitude)
+   }
+   
+   var location: CLLocation {
+      return CLLocation(latitude: latitude, longitude: longitude)
    }
    
    var title: String? {

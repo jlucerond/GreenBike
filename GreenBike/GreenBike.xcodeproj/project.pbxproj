@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		D8047A891F673D6C00212079 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8047A881F673D6C00212079 /* Constants.swift */; };
 		D8E61DF01F66EF9D00A57157 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8E61DEF1F66EF9D00A57157 /* AppDelegate.swift */; };
 		D8E61DF21F66EF9D00A57157 /* MapViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8E61DF11F66EF9D00A57157 /* MapViewController.swift */; };
 		D8E61DF51F66EF9D00A57157 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = D8E61DF31F66EF9D00A57157 /* Main.storyboard */; };
@@ -18,6 +19,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		D8047A881F673D6C00212079 /* Constants.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
 		D8E61DEC1F66EF9D00A57157 /* GreenBike.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = GreenBike.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		D8E61DEF1F66EF9D00A57157 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		D8E61DF11F66EF9D00A57157 /* MapViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapViewController.swift; sourceTree = "<group>"; };
@@ -93,6 +95,7 @@
 			isa = PBXGroup;
 			children = (
 				D8E61E051F67095000A57157 /* BikeStation.swift */,
+				D8047A881F673D6C00212079 /* Constants.swift */,
 			);
 			name = Model;
 			sourceTree = "<group>";
@@ -191,6 +194,7 @@
 				D8E61DF01F66EF9D00A57157 /* AppDelegate.swift in Sources */,
 				D8E61E081F67095A00A57157 /* BikeStationController.swift in Sources */,
 				D8E61E041F66FF3500A57157 /* NetworkController.swift in Sources */,
+				D8047A891F673D6C00212079 /* Constants.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -356,6 +360,7 @@
 				D8E61E001F66EF9D00A57157 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
