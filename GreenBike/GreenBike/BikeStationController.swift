@@ -23,7 +23,6 @@ class BikeStationController {
             //FIXME: - Error Handling Needed
             return
          }
-         
          self.allBikeStations = arrayOfStations.flatMap{ BikeStation(dictionary: $0) }
       }
    }

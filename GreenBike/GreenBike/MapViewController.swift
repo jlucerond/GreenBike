@@ -21,8 +21,8 @@ class MapViewController: UIViewController {
    
    // IBActions
    @IBAction func refreshButtonPushed(_ sender: UIBarButtonItem) {
+      self.mapView.removeAnnotations(BikeStationController.shared.allBikeStations)
       BikeStationController.shared.refreshBikeStationsStatuses()
-      updateBikeStationsOnMap()
    }
    
    @IBAction func locateUserButtonPressed(_ sender: UIButton) {
@@ -35,7 +35,7 @@ class MapViewController: UIViewController {
       
       // if we have a user location, then center on the user. else, center on all bike shares
       if CLLocationManager.locationServicesEnabled() {
-         showSelfAndNearestBikeStation()
+         showSelfAndNearestThreeBikeStations()
       } else {
          showAllBikeStations()
       }
@@ -50,10 +50,19 @@ class MapViewController: UIViewController {
                                              selector: #selector(updateBikeStationsOnMap),
                                              name: NotificationNotices.bikeStationsUpdatedNotification,
                                              object: nil)
-      showAllBikeStations()
+      
+      loadMapForFirstTime()
    }
    
-   
+   // delete this
+   override func didRotate(from fromInterfaceOrientation: UIInterfaceOrientation) {
+      let slcCenter = CLLocationCoordinate2D(latitude: 40.76593214888245, longitude: -111.89142500000003)
+      let slcLatMeters = 2500.0
+      let slcLongMeters = 4000.0
+      
+      let slcRegion = MKCoordinateRegionMakeWithDistance(slcCenter, slcLatMeters, slcLongMeters)
+      mapView.setRegion(slcRegion, animated: true)
+   }
 
 
 }
@@ -61,81 +70,49 @@ class MapViewController: UIViewController {
 // MARK: - User Interface Methods
 extension MapViewController {
    
+   func loadMapForFirstTime() {
+      // FIXME: - Need to screenshot this and use as the loading screen
+      
+      BikeStationController.shared.refreshBikeStationsStatuses()
+
+      let slcCenter = CLLocationCoordinate2D(latitude: 40.76593214888245, longitude: -111.89142500000003)
+      let slcLatMeters = 2500.0
+      let slcLongMeters = 4000.0
+      
+      let slcRegion = MKCoordinateRegionMakeWithDistance(slcCenter, slcLatMeters, slcLongMeters)
+      mapView.setRegion(slcRegion, animated: true)
+      
+   }
+   
    func updateBikeStationsOnMap() {
+      
       DispatchQueue.main.async {
-         self.mapView.showAnnotations(BikeStationController.shared.allBikeStations, animated: false)
+         self.mapView.addAnnotations(BikeStationController.shared.allBikeStations)
       }
    }
    
    func showAllBikeStations() {
-      var latMin: Double = 10000
-      var latMax: Double = -10000
-      var longMin: Double = 10000
-      var longMax: Double = -10000
-      
-      guard !BikeStationController.shared.allBikeStations.isEmpty else { return }
-      
-      for station in BikeStationController.shared.allBikeStations {
-         if station.latitude <= latMin { latMin = station.latitude }
-         if station.latitude >= latMax { latMax = station.latitude }
-         if station.longitude <= longMin { longMin = station.longitude }
-         if station.longitude >= longMax { longMax = station.longitude }
-      }
-      
-      let latCenter = (latMin + latMax)/2
-      let longCenter = (longMin + longMax)/2
-      let center = CLLocationCoordinate2D(latitude: latCenter, longitude: longCenter)
-      
-      let topCenter = CLLocation(latitude: latMax, longitude: longCenter)
-      let bottomCenter = CLLocation(latitude: latMin, longitude: longCenter)
-      let latMeters = topCenter.distance(from: bottomCenter)
-      
-      let middleLeft = CLLocation(latitude: latCenter, longitude: longMin)
-      let middleRight = CLLocation(latitude: latCenter, longitude: longMax)
-      let longMeters = middleLeft.distance(from: middleRight)
-      
-      showMapWith(center, latMeters, longMeters, animated: true)
+      mapView.showAnnotations(BikeStationController.shared.allBikeStations, animated: true)
    }
    
-   func showSelfAndNearestBikeStation() {
-      //FIXME: - Here's your next job
-      guard CLLocationManager.locationServicesEnabled(),
-         let userLocation = locationManager?.location,
-         var closestBikeStation = BikeStationController.shared.allBikeStations.first
-            else { showAllBikeStations() ; return }
+   func showSelfAndNearestThreeBikeStations() {
+      let userLocation = mapView.userLocation
+      guard let usersUnwrappedLocation = userLocation.location else { return }
       
-      for station in BikeStationController.shared.allBikeStations {
-         if station.location.distance(from: userLocation) < closestBikeStation.location.distance(from: userLocation) {
-            closestBikeStation = station
-         }
+      let allBikeStationsInOrder = BikeStationController.shared.allBikeStations.sorted { (stationA, stationB) -> Bool in
+         return stationA.location.distance(from: usersUnwrappedLocation) < stationB.location.distance(from: usersUnwrappedLocation)
       }
       
-      let radiiForMap = latAndLongDistancesBetween(userLocation.coordinate, and: closestBikeStation.coordinate)
+      guard allBikeStationsInOrder.count >= 2 else { return }
+      var allItemsToShow: [MKAnnotation] = [userLocation]
       
-      showMapWith(userLocation.coordinate, radiiForMap.latMeters, radiiForMap.longMeters, animated: true)
-      
-   }
-   
-   func showMapWith(_ center: CLLocationCoordinate2D,
-                    _ latMeters: CLLocationDistance,
-                    _ longMeters: CLLocationDistance,
-                    animated: Bool) {
-      let regionToShow = MKCoordinateRegionMakeWithDistance(center, (5 * latMeters), (5 * longMeters))
-      
-      DispatchQueue.main.async {
-         self.mapView.setRegion(regionToShow, animated: animated)
+      for station in allBikeStationsInOrder[0...2] {
+         let stationAsAnnotation = station as MKAnnotation
+         allItemsToShow.append(stationAsAnnotation)
       }
-   }
-   
-   func latAndLongDistancesBetween(_ pointA: CLLocationCoordinate2D, and pointB: CLLocationCoordinate2D) -> (latMeters: CLLocationDistance, longMeters: CLLocationDistance) {
-      let pointALocation = CLLocation(latitude: pointA.latitude, longitude: pointA.longitude)
-      let pointDueEastOrWest = CLLocation(latitude: pointA.latitude, longitude: pointB.longitude)
-      let latMeters = pointALocation.distance(from: pointDueEastOrWest)
       
-      let pointDueNorthOrSouth = CLLocation(latitude: pointB.latitude, longitude: pointA.longitude)
-      let longMeters = pointALocation.distance(from: pointDueNorthOrSouth)
-      
-      return (latMeters, longMeters)
+
+      mapView.showAnnotations(allItemsToShow, animated: true)
    }
 }
 
@@ -164,7 +141,7 @@ extension MapViewController: MKMapViewDelegate {
          annotationView?.annotation = annotation
       }
       
-      annotationView?.pinTintColor = UIColor.purple
+      annotationView?.pinTintColor = UIColor.tertiaryAppColor
       annotationView?.canShowCallout = true
       annotationView?.animatesDrop = true
       
