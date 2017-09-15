@@ -11,8 +11,15 @@ import CoreLocation
 
 class BikeStationsTableViewController: UITableViewController {
    
+   // MARK: - Variables
+   var arrayOfFavoriteBikeStations: [BikeStation] = []
    var arrayOfBikeStationsSortedByProximity: [BikeStation] = []
    let myRefreshControl = UIRefreshControl()
+   
+   // MARK: - IBActions
+   @IBAction func refreshBarButtonItemPressed(_ sender: UIBarButtonItem) {
+      BikeStationController.shared.refreshBikeStationsStatuses()
+   }
    
    // MARK: - Life Cycle Methods
    override func viewDidLoad() {
@@ -34,28 +41,15 @@ class BikeStationsTableViewController: UITableViewController {
       
    }
    
-   // MARK: - IBActions
-   @IBAction func refreshBarButtonItemPressed(_ sender: UIBarButtonItem) {
-      BikeStationController.shared.refreshBikeStationsStatuses()
+   // MARK: - Orientation Methods
+   override func viewWillTransition(to size: CGSize,
+                                    with coordinator: UIViewControllerTransitionCoordinator) {
+      tableView.reloadData()
    }
-   
-   // MARK: - Helper Methods
-   func updateNearestBikeStations() {
-      myRefreshControl.endRefreshing()
-      guard let userLocation = BikeStationController.shared.locationManager.location else {
-         arrayOfBikeStationsSortedByProximity = BikeStationController.shared.allBikeStations
-         return }
-      
-      arrayOfBikeStationsSortedByProximity = BikeStationController.shared.allBikeStations.sorted(by: { (stationA, stationB) -> Bool in
-         stationA.location.distance(from: userLocation) < stationB.location.distance(from: userLocation)
-      })
-      
-      DispatchQueue.main.async {
-         self.tableView.reloadData()
-      }
-   }
+
 }
 
+// Table View Data Source & Delegate Methods
 extension BikeStationsTableViewController {
    override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
       return arrayOfBikeStationsSortedByProximity.count
@@ -78,4 +72,24 @@ extension BikeStationsTableViewController {
       BikeStationController.shared.refreshBikeStationsStatuses()
    }
    
+}
+
+// MARK: - Helper Methods
+extension BikeStationsTableViewController {
+   
+   // MARK: - Helper Methods
+   func updateNearestBikeStations() {
+      myRefreshControl.endRefreshing()
+      guard let userLocation = BikeStationController.shared.locationManager.location else {
+         arrayOfBikeStationsSortedByProximity = BikeStationController.shared.allBikeStations
+         return }
+      
+      arrayOfBikeStationsSortedByProximity = BikeStationController.shared.allBikeStations.sorted(by: { (stationA, stationB) -> Bool in
+         stationA.location.distance(from: userLocation) < stationB.location.distance(from: userLocation)
+      })
+      
+      DispatchQueue.main.async {
+         self.tableView.reloadData()
+      }
+   }
 }

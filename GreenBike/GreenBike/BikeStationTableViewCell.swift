@@ -10,7 +10,7 @@ import UIKit
 import CoreLocation
 
 class BikeStationTableViewCell: UITableViewCell {
-
+   
    @IBOutlet weak var nameLabel: UILabel!
    @IBOutlet weak var addressLabel: UILabel!
    @IBOutlet weak var numberOfBikesLabel: UILabel!
@@ -25,14 +25,18 @@ class BikeStationTableViewCell: UITableViewCell {
          updateViewsForCell(bikeStation: bikeStation)
       }
    }
-
+   
    func updateViewsForCell(bikeStation: BikeStation) {
       updateBikeStationLabels(bikeStation: bikeStation)
       updateDistanceAndDirectionLabels(stationsLocation: bikeStation.location)
       updateCustomConstraints(bikeStation: bikeStation)
    }
    
-   private func updateBikeStationLabels(bikeStation: BikeStation) {
+}
+
+extension BikeStationTableViewCell {
+   
+   fileprivate func updateBikeStationLabels(bikeStation: BikeStation) {
       self.nameLabel.text = bikeStation.name
       self.addressLabel.text = bikeStation.address
       self.numberOfBikesLabel.text = "\(bikeStation.freeBikes)"
@@ -44,14 +48,15 @@ class BikeStationTableViewCell: UITableViewCell {
          || CLLocationManager.authorizationStatus() == .authorizedWhenInUse,
          let usersLocation = BikeStationController.shared.locationManager.location {
          
-         let distanceInMeters = usersLocation.distance(from: stationsLocation)
-         let distanceInMiles = distanceInMeters / 1609.34
-         let roundedDistanceInMiles = Double(round(distanceInMiles*10)/10)
+         let distanceInMeters = Measurement(value: usersLocation.distance(from: stationsLocation), unit: UnitLength.meters)
+         
+         let distanceInMiles = distanceInMeters.converted(to: .miles)
+         let roundedDistanceInMiles = Double(round(distanceInMiles.value*10)/10)
          
          let directionString = cardinalDirectionFrom(usersLocation, to: stationsLocation)
          
          DispatchQueue.main.async {
-            if roundedDistanceInMiles < 0.1 {
+            if distanceInMiles.value < 0.1 {
                self.distanceFromUserLabel.text = "↓0.1 mi \n \(directionString)"
             } else {
                self.distanceFromUserLabel.text = "\(roundedDistanceInMiles) mi \n \(directionString)"
@@ -63,15 +68,20 @@ class BikeStationTableViewCell: UITableViewCell {
       }
    }
    
-   private func updateCustomConstraints(bikeStation: BikeStation) {
+   func updateCustomConstraints(bikeStation: BikeStation) {
       let widthOfFrame = self.frame.width
       let percentageOfBikesTakenOut = CGFloat(bikeStation.freeBikes) / CGFloat(bikeStation.freeBikes + bikeStation.emptySlots)
-      widthOfBikeBar.constant = widthOfFrame * percentageOfBikesTakenOut
+      
+      UIView.animate(withDuration: 1.0) {
+         self.widthOfBikeBar.constant = widthOfFrame * percentageOfBikesTakenOut
+         self.layoutIfNeeded()
+      }
+      
       widthOfDistanceBar.isActive = ((CLLocationManager.authorizationStatus() == .authorizedAlways
          || CLLocationManager.authorizationStatus() == .authorizedWhenInUse) && BikeStationController.shared.locationManager.location != nil)
    }
    
-   private func cardinalDirectionFrom(_ usersLocation: CLLocation, to stationsLocation: CLLocation) -> String {
+   fileprivate func cardinalDirectionFrom(_ usersLocation: CLLocation, to stationsLocation: CLLocation) -> String {
       let xValue = stationsLocation.coordinate.longitude - usersLocation.coordinate.longitude
       let yValue = stationsLocation.coordinate.latitude - usersLocation.coordinate.latitude
       let xCoordinate = xValue >= 0
