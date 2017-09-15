@@ -19,17 +19,20 @@ class BikeStationTableViewCell: UITableViewCell {
    @IBOutlet weak var widthOfBikeBar: NSLayoutConstraint!
    @IBOutlet weak var widthOfDistanceBar: NSLayoutConstraint!
    
+   var firstTimeOnScreen: Bool = true
+   
    var bikeStation: BikeStation? {
       didSet {
          guard let bikeStation = bikeStation else { return }
-         updateViewsForCell(bikeStation: bikeStation)
+         updateViewsForCell(bikeStation: bikeStation, animated: !firstTimeOnScreen)
       }
    }
    
-   func updateViewsForCell(bikeStation: BikeStation) {
+   func updateViewsForCell(bikeStation: BikeStation, animated: Bool) {
       updateBikeStationLabels(bikeStation: bikeStation)
       updateDistanceAndDirectionLabels(stationsLocation: bikeStation.location)
-      updateCustomConstraints(bikeStation: bikeStation)
+      updateCustomConstraints(bikeStation: bikeStation, animated: animated)
+      firstTimeOnScreen = false
    }
    
 }
@@ -68,13 +71,16 @@ extension BikeStationTableViewCell {
       }
    }
    
-   func updateCustomConstraints(bikeStation: BikeStation) {
+   fileprivate func updateCustomConstraints(bikeStation: BikeStation, animated: Bool) {
       let widthOfFrame = self.frame.width
       let percentageOfBikesTakenOut = CGFloat(bikeStation.freeBikes) / CGFloat(bikeStation.freeBikes + bikeStation.emptySlots)
       
-      UIView.animate(withDuration: 1.0) {
-         self.widthOfBikeBar.constant = widthOfFrame * percentageOfBikesTakenOut
-         self.layoutIfNeeded()
+      self.widthOfBikeBar.constant = widthOfFrame * percentageOfBikesTakenOut
+
+      if animated {
+         UIView.animate(withDuration: 1.0) {
+            self.layoutIfNeeded()
+         }
       }
       
       widthOfDistanceBar.isActive = ((CLLocationManager.authorizationStatus() == .authorizedAlways
