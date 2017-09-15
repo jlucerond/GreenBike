@@ -7,10 +7,11 @@
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="12089"/>
         <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
+        <capability name="Constraints with non-1.0 multipliers" minToolsVersion="5.1"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
-        <!--GREENbike-->
+        <!--Map-->
         <scene sceneID="tne-QT-ifu">
             <objects>
                 <viewController id="BYZ-38-t0r" customClass="MapViewController" customModule="GreenBike" customModuleProvider="target" sceneMemberID="viewController">
@@ -51,7 +52,7 @@
                             <constraint firstAttribute="trailing" secondItem="S0w-aq-tao" secondAttribute="trailing" id="jHz-yw-obw"/>
                         </constraints>
                     </view>
-                    <navigationItem key="navigationItem" title="GREENbike" id="P9D-TY-R0A">
+                    <navigationItem key="navigationItem" title="Map" id="P9D-TY-R0A">
                         <barButtonItem key="rightBarButtonItem" systemItem="refresh" id="n2c-TT-rl7">
                             <connections>
                                 <action selector="refreshButtonPushed:" destination="BYZ-38-t0r" id="mje-Sq-5iL"/>
@@ -89,35 +90,171 @@
             </objects>
             <point key="canvasLocation" x="74" y="1053"/>
         </scene>
-        <!--Bike Availability-->
+        <!--Stations-->
         <scene sceneID="bUL-mq-LBb">
             <objects>
                 <tableViewController id="IXJ-dh-Sqa" customClass="BikeStationsTableViewController" customModule="GreenBike" customModuleProvider="target" sceneMemberID="viewController">
-                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="134" sectionHeaderHeight="28" sectionFooterHeight="28" id="RNw-4v-4SK">
+                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="none" rowHeight="175" sectionHeaderHeight="28" sectionFooterHeight="28" id="RNw-4v-4SK">
                         <rect key="frame" x="0.0" y="64" width="375" height="554"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <color key="backgroundColor" red="0.92688906189999998" green="0.6475841403" blue="0.25487875939999999" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+                        <color key="backgroundColor" red="0.047151904549999998" green="0.1512607336" blue="0.34912750120000002" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+                        <color key="separatorColor" red="0.92688906189999998" green="0.6475841403" blue="0.25487875939999999" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                         <prototypes>
-                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="BikeStationCell" rowHeight="134" id="wWk-SA-F4d">
-                                <rect key="frame" x="0.0" y="28" width="375" height="134"/>
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" reuseIdentifier="BikeStationCell" rowHeight="175" id="wWk-SA-F4d" customClass="BikeStationTableViewCell" customModule="GreenBike" customModuleProvider="target">
+                                <rect key="frame" x="0.0" y="28" width="375" height="175"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="wWk-SA-F4d" id="ukM-fF-P1j">
-                                    <rect key="frame" x="0.0" y="0.0" width="375" height="133.5"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="375" height="175"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
-                                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="oFc-v2-o7H">
-                                            <rect key="frame" x="1" y="1" width="373" height="131.5"/>
-                                            <color key="backgroundColor" red="0.047151904549999998" green="0.1512607336" blue="0.34912750120000002" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
-                                        </view>
+                                        <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" alignment="top" translatesAutoresizingMaskIntoConstraints="NO" id="leV-Bu-nV7">
+                                            <rect key="frame" x="0.0" y="2" width="375" height="154"/>
+                                            <subviews>
+                                                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="j5y-a8-rMv" userLabel="EmptySpace">
+                                                    <rect key="frame" x="0.0" y="0.0" width="375" height="20"/>
+                                                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                                    <constraints>
+                                                        <constraint firstAttribute="height" constant="20" id="Q7L-td-XhF"/>
+                                                    </constraints>
+                                                </view>
+                                                <stackView opaque="NO" contentMode="scaleToFill" alignment="center" spacing="25" translatesAutoresizingMaskIntoConstraints="NO" id="cJX-hU-G7V" userLabel="InformationStackView">
+                                                    <rect key="frame" x="0.0" y="20" width="375" height="59"/>
+                                                    <subviews>
+                                                        <stackView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="248" verticalHuggingPriority="248" axis="vertical" alignment="center" spacing="5" translatesAutoresizingMaskIntoConstraints="NO" id="UCS-iN-J7G" userLabel="NameAddressStackView">
+                                                            <rect key="frame" x="0.0" y="0.0" width="256.5" height="59"/>
+                                                            <subviews>
+                                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="(Address)" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumFontSize="11" translatesAutoresizingMaskIntoConstraints="NO" id="dY8-59-XMc">
+                                                                    <rect key="frame" x="71.5" y="8" width="114" height="22.5"/>
+                                                                    <fontDescription key="fontDescription" name="Copperplate-Bold" family="Copperplate" pointSize="22"/>
+                                                                    <color key="textColor" red="0.92688906189999998" green="0.6475841403" blue="0.25487875939999999" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+                                                                    <nil key="highlightedColor"/>
+                                                                </label>
+                                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" text="(Name)" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumFontSize="8" translatesAutoresizingMaskIntoConstraints="NO" id="KVT-nb-kr9">
+                                                                    <rect key="frame" x="103" y="35.5" width="51" height="15.5"/>
+                                                                    <fontDescription key="fontDescription" name="Copperplate" family="Copperplate" pointSize="15"/>
+                                                                    <color key="textColor" red="0.92688906189999998" green="0.6475841403" blue="0.25487875939999999" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+                                                                    <nil key="highlightedColor"/>
+                                                                </label>
+                                                            </subviews>
+                                                            <edgeInsets key="layoutMargins" top="8" left="8" bottom="8" right="8"/>
+                                                        </stackView>
+                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="(9.9 mi) NW" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" minimumFontSize="10" translatesAutoresizingMaskIntoConstraints="NO" id="SdE-lZ-OEV">
+                                                            <rect key="frame" x="281.5" y="7" width="93.5" height="45"/>
+                                                            <edgeInsets key="layoutMargins" top="8" left="8" bottom="8" right="8"/>
+                                                            <fontDescription key="fontDescription" name="Copperplate-Bold" family="Copperplate" pointSize="22"/>
+                                                            <color key="textColor" red="0.92688906189999998" green="0.6475841403" blue="0.25487875939999999" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+                                                            <nil key="highlightedColor"/>
+                                                        </label>
+                                                    </subviews>
+                                                    <constraints>
+                                                        <constraint firstAttribute="height" constant="80" id="HF9-or-7X4"/>
+                                                        <constraint firstItem="SdE-lZ-OEV" firstAttribute="width" secondItem="cJX-hU-G7V" secondAttribute="width" multiplier="0.25" id="MUT-tM-FAF"/>
+                                                    </constraints>
+                                                </stackView>
+                                                <stackView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="3Yh-Vg-kTo" userLabel="BikesDocksStackView">
+                                                    <rect key="frame" x="0.0" y="79" width="375" height="55"/>
+                                                    <subviews>
+                                                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="dRB-tS-dqE" userLabel="BikesRemainingView">
+                                                            <rect key="frame" x="0.0" y="0.0" width="200" height="55"/>
+                                                            <subviews>
+                                                                <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" alignment="center" spacing="-12" translatesAutoresizingMaskIntoConstraints="NO" id="6nK-ss-eSx">
+                                                                    <rect key="frame" x="75" y="-5" width="50" height="58.5"/>
+                                                                    <subviews>
+                                                                        <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="BikeIcon" translatesAutoresizingMaskIntoConstraints="NO" id="o48-Ba-wE2">
+                                                                            <rect key="frame" x="0.0" y="0.0" width="50" height="50"/>
+                                                                            <constraints>
+                                                                                <constraint firstAttribute="width" constant="50" id="I5n-eJ-8H6"/>
+                                                                                <constraint firstAttribute="height" constant="50" id="XVy-rn-jIY"/>
+                                                                            </constraints>
+                                                                        </imageView>
+                                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="(99)" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="1mz-sf-efc">
+                                                                            <rect key="frame" x="9" y="38" width="32.5" height="20.5"/>
+                                                                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                                            <nil key="textColor"/>
+                                                                            <nil key="highlightedColor"/>
+                                                                        </label>
+                                                                    </subviews>
+                                                                </stackView>
+                                                            </subviews>
+                                                            <color key="backgroundColor" red="0.92688906189999998" green="0.6475841403" blue="0.25487875939999999" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+                                                            <constraints>
+                                                                <constraint firstItem="6nK-ss-eSx" firstAttribute="centerX" secondItem="dRB-tS-dqE" secondAttribute="centerX" id="419-n9-uBS"/>
+                                                                <constraint firstItem="6nK-ss-eSx" firstAttribute="top" secondItem="dRB-tS-dqE" secondAttribute="top" constant="-5" id="6Jf-zk-CqY"/>
+                                                                <constraint firstAttribute="width" constant="200" id="YYC-zQ-xuJ"/>
+                                                            </constraints>
+                                                        </view>
+                                                        <view contentMode="scaleToFill" horizontalHuggingPriority="249" verticalHuggingPriority="249" translatesAutoresizingMaskIntoConstraints="NO" id="nIg-Gn-5nk" userLabel="DocksRemainingView">
+                                                            <rect key="frame" x="200" y="0.0" width="175" height="55"/>
+                                                            <subviews>
+                                                                <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" alignment="center" spacing="-5" translatesAutoresizingMaskIntoConstraints="NO" id="QBM-ca-4yj">
+                                                                    <rect key="frame" x="67.5" y="-2" width="40" height="55.5"/>
+                                                                    <subviews>
+                                                                        <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="BikeDockIcon" translatesAutoresizingMaskIntoConstraints="NO" id="Uke-Zl-N6K">
+                                                                            <rect key="frame" x="0.0" y="0.0" width="40" height="40"/>
+                                                                            <constraints>
+                                                                                <constraint firstAttribute="height" constant="40" id="M9N-xO-KIe"/>
+                                                                                <constraint firstAttribute="width" constant="40" id="gIf-Os-wJC"/>
+                                                                            </constraints>
+                                                                        </imageView>
+                                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="(99)" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="NEd-6R-Xlz">
+                                                                            <rect key="frame" x="4" y="35" width="32.5" height="20.5"/>
+                                                                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                                            <nil key="textColor"/>
+                                                                            <nil key="highlightedColor"/>
+                                                                        </label>
+                                                                    </subviews>
+                                                                </stackView>
+                                                            </subviews>
+                                                            <color key="backgroundColor" red="0.1100517064" green="0.26840814950000003" blue="0.12558355930000001" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+                                                            <constraints>
+                                                                <constraint firstItem="QBM-ca-4yj" firstAttribute="centerX" secondItem="nIg-Gn-5nk" secondAttribute="centerX" id="CjW-DM-Q9h"/>
+                                                                <constraint firstItem="QBM-ca-4yj" firstAttribute="top" secondItem="nIg-Gn-5nk" secondAttribute="top" constant="-2" id="zEP-DG-Anl"/>
+                                                            </constraints>
+                                                        </view>
+                                                    </subviews>
+                                                    <constraints>
+                                                        <constraint firstAttribute="height" constant="55" id="q9D-wh-PQH"/>
+                                                    </constraints>
+                                                </stackView>
+                                                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="5eC-Mc-QyW" userLabel="EmptySpace">
+                                                    <rect key="frame" x="0.0" y="134" width="375" height="20"/>
+                                                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                                    <constraints>
+                                                        <constraint firstAttribute="height" constant="20" id="VBA-wL-LOF"/>
+                                                    </constraints>
+                                                </view>
+                                            </subviews>
+                                            <constraints>
+                                                <constraint firstAttribute="trailing" secondItem="3Yh-Vg-kTo" secondAttribute="trailing" id="8C8-TI-UQB"/>
+                                                <constraint firstItem="cJX-hU-G7V" firstAttribute="leading" secondItem="leV-Bu-nV7" secondAttribute="leading" id="FST-Ps-MkY"/>
+                                                <constraint firstAttribute="trailing" secondItem="j5y-a8-rMv" secondAttribute="trailing" id="I95-aS-cgs"/>
+                                                <constraint firstItem="j5y-a8-rMv" firstAttribute="top" secondItem="leV-Bu-nV7" secondAttribute="top" id="Mxc-KN-AXP"/>
+                                                <constraint firstItem="5eC-Mc-QyW" firstAttribute="top" secondItem="3Yh-Vg-kTo" secondAttribute="bottom" id="YJY-s4-L5k"/>
+                                                <constraint firstItem="cJX-hU-G7V" firstAttribute="top" secondItem="j5y-a8-rMv" secondAttribute="bottom" id="eLr-1o-LVV"/>
+                                                <constraint firstItem="3Yh-Vg-kTo" firstAttribute="leading" secondItem="leV-Bu-nV7" secondAttribute="leading" id="gmJ-fc-tJL"/>
+                                                <constraint firstItem="3Yh-Vg-kTo" firstAttribute="top" secondItem="cJX-hU-G7V" secondAttribute="bottom" id="ifi-4y-Gde"/>
+                                                <constraint firstAttribute="trailing" secondItem="cJX-hU-G7V" secondAttribute="trailing" id="ndn-sK-XD5"/>
+                                                <constraint firstItem="j5y-a8-rMv" firstAttribute="leading" secondItem="leV-Bu-nV7" secondAttribute="leading" id="rcA-1t-Pp4"/>
+                                            </constraints>
+                                        </stackView>
                                     </subviews>
-                                    <color key="backgroundColor" red="0.92688906189999998" green="0.6475841403" blue="0.25487875939999999" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+                                    <color key="backgroundColor" red="0.047151904549999998" green="0.1512607336" blue="0.34912750120000002" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                                     <constraints>
-                                        <constraint firstItem="oFc-v2-o7H" firstAttribute="top" secondItem="ukM-fF-P1j" secondAttribute="top" constant="1" id="PQH-BN-REy"/>
-                                        <constraint firstAttribute="trailing" secondItem="oFc-v2-o7H" secondAttribute="trailing" constant="1" id="Ypv-4r-pnQ"/>
-                                        <constraint firstAttribute="bottom" secondItem="oFc-v2-o7H" secondAttribute="bottom" constant="1" id="jmz-QB-KtO"/>
-                                        <constraint firstItem="oFc-v2-o7H" firstAttribute="leading" secondItem="ukM-fF-P1j" secondAttribute="leading" constant="1" id="zbn-xw-LLL"/>
+                                        <constraint firstAttribute="bottomMargin" secondItem="leV-Bu-nV7" secondAttribute="bottom" constant="-10.5" id="9UJ-ZL-yCu"/>
+                                        <constraint firstItem="leV-Bu-nV7" firstAttribute="leading" secondItem="ukM-fF-P1j" secondAttribute="leading" id="QhG-bS-Mnq"/>
+                                        <constraint firstAttribute="trailing" secondItem="leV-Bu-nV7" secondAttribute="trailing" id="eFF-a1-yFc"/>
+                                        <constraint firstItem="leV-Bu-nV7" firstAttribute="top" secondItem="ukM-fF-P1j" secondAttribute="topMargin" constant="-6" id="ykK-ii-Fqn"/>
                                     </constraints>
                                 </tableViewCellContentView>
+                                <connections>
+                                    <outlet property="addressLabel" destination="dY8-59-XMc" id="bN1-et-46d"/>
+                                    <outlet property="distanceFromUserLabel" destination="SdE-lZ-OEV" id="zoP-Zc-6nI"/>
+                                    <outlet property="nameLabel" destination="KVT-nb-kr9" id="Eod-ss-3S3"/>
+                                    <outlet property="numberOfBikesLabel" destination="1mz-sf-efc" id="fsI-fO-sHN"/>
+                                    <outlet property="numberOfDocksLabel" destination="NEd-6R-Xlz" id="0Wc-25-cJP"/>
+                                    <outlet property="widthOfBikeBar" destination="YYC-zQ-xuJ" id="CNy-lr-aZ3"/>
+                                    <outlet property="widthOfDistanceBar" destination="MUT-tM-FAF" id="i64-Z2-ROI"/>
+                                </connections>
                             </tableViewCell>
                         </prototypes>
                         <connections>
@@ -125,7 +262,13 @@
                             <outlet property="delegate" destination="IXJ-dh-Sqa" id="ODP-nu-hUl"/>
                         </connections>
                     </tableView>
-                    <navigationItem key="navigationItem" title="Bike Availability" id="U9k-hQ-7lL"/>
+                    <navigationItem key="navigationItem" title="Stations" id="U9k-hQ-7lL">
+                        <barButtonItem key="rightBarButtonItem" systemItem="refresh" id="EwW-D7-kKi">
+                            <connections>
+                                <action selector="refreshBarButtonItemPressed:" destination="IXJ-dh-Sqa" id="n4q-P7-mZE"/>
+                            </connections>
+                        </barButtonItem>
+                    </navigationItem>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="qvK-Mm-raS" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
@@ -165,7 +308,7 @@
             <objects>
                 <navigationController id="7iS-nE-i2A" sceneMemberID="viewController">
                     <tabBarItem key="tabBarItem" title="Alarms" image="AlarmIcon" selectedImage="AlarmIcon" id="u6r-VO-WSG"/>
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" misplaced="YES" translucent="NO" id="dZf-ZU-ZdB">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" translucent="NO" id="dZf-ZU-ZdB">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                         <color key="backgroundColor" red="0.1100517064" green="0.26840814950000003" blue="0.12558355930000001" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
@@ -184,12 +327,12 @@
             </objects>
             <point key="canvasLocation" x="1369" y="1885"/>
         </scene>
-        <!--List-->
+        <!--Stations-->
         <scene sceneID="nlM-wN-8LC">
             <objects>
                 <navigationController id="MhO-AP-JpK" sceneMemberID="viewController">
-                    <tabBarItem key="tabBarItem" title="List" image="TableIcon" selectedImage="TableIcon" id="tgm-1n-YF2"/>
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" misplaced="YES" translucent="NO" id="x2l-sw-jiB">
+                    <tabBarItem key="tabBarItem" title="Stations" image="TableIcon" selectedImage="TableIcon" id="tgm-1n-YF2"/>
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" translucent="NO" id="x2l-sw-jiB">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                         <color key="barTintColor" red="0.047151904549999998" green="0.1512607336" blue="0.34912750120000002" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
@@ -213,7 +356,7 @@
                 <navigationController automaticallyAdjustsScrollViewInsets="NO" id="ZDe-3e-Mtf" sceneMemberID="viewController">
                     <tabBarItem key="tabBarItem" title="Map" image="MapIcon" selectedImage="MapIcon" id="8Xr-EH-EmC"/>
                     <toolbarItems/>
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" misplaced="YES" translucent="NO" id="iiS-t5-crV">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" translucent="NO" id="iiS-t5-crV">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                         <color key="backgroundColor" red="0.92688906189999998" green="0.6475841403" blue="0.25487875939999999" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
@@ -235,6 +378,8 @@
     </scenes>
     <resources>
         <image name="AlarmIcon" width="29" height="29"/>
+        <image name="BikeDockIcon" width="76" height="76"/>
+        <image name="BikeIcon" width="76" height="76"/>
         <image name="LocationIcon" width="29" height="29"/>
         <image name="MapIcon" width="29" height="29"/>
         <image name="TableIcon" width="29" height="29"/>

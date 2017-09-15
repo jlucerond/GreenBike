@@ -7,9 +7,12 @@
 //
 
 import Foundation
+import CoreLocation
 
-class BikeStationController {
+class BikeStationController: NSObject {
    static let shared = BikeStationController()
+   let locationManager = CLLocationManager()
+   
    var allBikeStations: [BikeStation] = [] {
       didSet {
          NotificationCenter.default.post(name: NotificationNotices.bikeStationsUpdatedNotification, object: nil)
@@ -27,7 +30,25 @@ class BikeStationController {
       }
    }
    
-   private init() {
+   private override init() {
+      super.init()
       refreshBikeStationsStatuses()
+      locationManager.delegate = self
+      locationManager.desiredAccuracy = kCLLocationAccuracyBest
+   }
+}
+
+extension BikeStationController: CLLocationManagerDelegate {
+   
+   func locationManager(_ manager: CLLocationManager,
+                        didChangeAuthorization status: CLAuthorizationStatus) {
+      if status == .authorizedAlways || status == .authorizedWhenInUse {
+         BikeStationController.shared.locationManager.startUpdatingLocation()
+      }
+   }
+   
+   func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
+      print("updated location")
+      NotificationCenter.default.post(name: NotificationNotices.locationUpdatedNotification, object: nil)
    }
 }

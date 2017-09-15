@@ -41,7 +41,7 @@ class BikeStation: NSObject {
          let renting = extra[rentingKey] as? Bool,
          let returning = extra[returningKey] as? Bool else { return nil }
       
-      self.name = name
+      self.name = name.replacingOccurrences(of: "@", with: "\n@")
       self.latitude = latitude
       self.longitude = longitude
       self.emptySlots = emptySlots

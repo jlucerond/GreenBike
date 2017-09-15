@@ -16,6 +16,7 @@ class NotificationNotices {
 //   let myError: Error
    
    static let bikeStationsUpdatedNotification = Notification.Name("bikeStationsUpdated")
+   static let locationUpdatedNotification = Notification.Name("userLocationUpdated")
 }
 
 

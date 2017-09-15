@@ -8,63 +8,58 @@
 
 import UIKit
 import MapKit
-import CoreLocation
 
 class MapViewController: UIViewController {
-
+   
    // IBOutlets
    @IBOutlet weak var mapView: MKMapView!
    
    // Variables
-   fileprivate let bikeStationIdentifier = "BikeStation"
-   var locationManager: CLLocationManager?
+   fileprivate let bikeStationIdentifier = "BikeStationPinIdentifier"
+   //   var locationManager: CLLocationManager?
+   var arrayOfBikeStations: [BikeStation] = [] {
+      willSet {
+         DispatchQueue.main.async {
+            let allAnnotations = self.mapView.annotations
+            self.mapView.removeAnnotations(allAnnotations)
+         }
+      } didSet {
+         DispatchQueue.main.async {
+            self.mapView.addAnnotations(self.arrayOfBikeStations)
+         }
+      }
+   }
    
    // IBActions
    @IBAction func refreshButtonPushed(_ sender: UIBarButtonItem) {
-      self.mapView.removeAnnotations(BikeStationController.shared.allBikeStations)
+      self.mapView.removeAnnotations(self.arrayOfBikeStations)
       BikeStationController.shared.refreshBikeStationsStatuses()
    }
    
    @IBAction func locateUserButtonPressed(_ sender: UIButton) {
-      if locationManager == nil {
-         locationManager = CLLocationManager()
-         locationManager?.requestWhenInUseAuthorization()
-         locationManager?.desiredAccuracy = kCLLocationAccuracyBest
-         locationManager?.delegate = self
-      }
+      BikeStationController.shared.locationManager.requestWhenInUseAuthorization()
       
       // if we have a user location, then center on the user. else, center on all bike shares
-      if CLLocationManager.locationServicesEnabled() {
-         showSelfAndNearestThreeBikeStations()
+      if CLLocationManager.locationServicesEnabled() && (CLLocationManager.authorizationStatus() == .authorizedAlways || CLLocationManager.authorizationStatus() == .authorizedWhenInUse) {
+         mapShouldShowUserAndThreeNearestStations()
       } else {
-         showAllBikeStations()
+         mapShouldShowAllStations()
       }
       
    }
-
+   
    // Life Cycle Methods
    override func viewDidLoad() {
       super.viewDidLoad()
       mapView.delegate = self
       NotificationCenter.default.addObserver(self,
-                                             selector: #selector(updateBikeStationsOnMap),
+                                             selector: #selector(bikeStationControllerWasReloaded),
                                              name: NotificationNotices.bikeStationsUpdatedNotification,
                                              object: nil)
       
       loadMapForFirstTime()
    }
    
-   // delete this
-   override func didRotate(from fromInterfaceOrientation: UIInterfaceOrientation) {
-      let slcCenter = CLLocationCoordinate2D(latitude: 40.76593214888245, longitude: -111.89142500000003)
-      let slcLatMeters = 2500.0
-      let slcLongMeters = 4000.0
-      
-      let slcRegion = MKCoordinateRegionMakeWithDistance(slcCenter, slcLatMeters, slcLongMeters)
-      mapView.setRegion(slcRegion, animated: true)
-   }
-
-
 }
 
 // MARK: - User Interface Methods
@@ -74,7 +69,7 @@ extension MapViewController {
       // FIXME: - Need to screenshot this and use as the loading screen
       
       BikeStationController.shared.refreshBikeStationsStatuses()
-
+      
       let slcCenter = CLLocationCoordinate2D(latitude: 40.76593214888245, longitude: -111.89142500000003)
       let slcLatMeters = 2500.0
       let slcLongMeters = 4000.0
@@ -84,46 +79,37 @@ extension MapViewController {
       
    }
    
-   func updateBikeStationsOnMap() {
-      
-      DispatchQueue.main.async {
-         self.mapView.addAnnotations(BikeStationController.shared.allBikeStations)
-      }
+   func bikeStationControllerWasReloaded() {
+      arrayOfBikeStations = BikeStationController.shared.allBikeStations
    }
    
-   func showAllBikeStations() {
-      mapView.showAnnotations(BikeStationController.shared.allBikeStations, animated: true)
+   func mapShouldShowAllStations() {
+      mapView.showAnnotations(arrayOfBikeStations, animated: true)
    }
    
-   func showSelfAndNearestThreeBikeStations() {
-      let userLocation = mapView.userLocation
-      guard let usersUnwrappedLocation = userLocation.location else { return }
+   func mapShouldShowUserAndThreeNearestStations() {
+      guard let usersUnwrappedLocation = BikeStationController.shared.locationManager.location else { return }
       
-      let allBikeStationsInOrder = BikeStationController.shared.allBikeStations.sorted { (stationA, stationB) -> Bool in
+      let allBikeStationsInOrder = arrayOfBikeStations.sorted { (stationA, stationB) -> Bool in
          return stationA.location.distance(from: usersUnwrappedLocation) < stationB.location.distance(from: usersUnwrappedLocation)
       }
       
       guard allBikeStationsInOrder.count >= 2 else { return }
-      var allItemsToShow: [MKAnnotation] = [userLocation]
+      var allItemsToShow: [MKAnnotation] = [mapView.userLocation]
       
       for station in allBikeStationsInOrder[0...2] {
          let stationAsAnnotation = station as MKAnnotation
          allItemsToShow.append(stationAsAnnotation)
       }
       
-
+      
       mapView.showAnnotations(allItemsToShow, animated: true)
    }
 }
 
 // MARK: - Core Location Methods
 extension MapViewController: CLLocationManagerDelegate {
-   func locationManager(_ manager: CLLocationManager,
-                        didChangeAuthorization status: CLAuthorizationStatus) {
-      if status == .authorizedAlways || status == .authorizedWhenInUse {
-         locationManager?.startUpdatingLocation()
-      }
-   }
+   
 }
 
 // MARK: - Mapview Delegate Methods
@@ -135,6 +121,7 @@ extension MapViewController: MKMapViewDelegate {
       }
       
       var annotationView = mapView.dequeueReusableAnnotationView(withIdentifier: bikeStationIdentifier) as? MKPinAnnotationView
+      
       if annotationView == nil {
          annotationView = MKPinAnnotationView(annotation: annotation, reuseIdentifier: bikeStationIdentifier)
       } else {
