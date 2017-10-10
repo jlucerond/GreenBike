@@ -17,7 +17,7 @@ class BikeStationTableViewCell: UITableViewCell {
    @IBOutlet weak var numberOfDocksLabel: UILabel!
    @IBOutlet weak var distanceFromUserLabel: UILabel!
    @IBOutlet weak var widthOfBikeBar: NSLayoutConstraint!
-   @IBOutlet weak var widthOfDistanceBar: NSLayoutConstraint!
+   @IBOutlet weak var widthOfDistanceBar: NSLayoutConstraint?
    
    var firstTimeOnScreen: Bool = true
    
@@ -47,41 +47,44 @@ extension BikeStationTableViewCell {
    }
    
    fileprivate func updateDistanceAndDirectionLabels(stationsLocation: CLLocation) {
-      if CLLocationManager.authorizationStatus() == .authorizedAlways
-         || CLLocationManager.authorizationStatus() == .authorizedWhenInUse,
-         let usersLocation = BikeStationController.shared.locationManager.location {
-         
-         let distanceInMeters = Measurement(value: usersLocation.distance(from: stationsLocation), unit: UnitLength.meters)
-         
-         let distanceInMiles = distanceInMeters.converted(to: .miles)
-         let roundedDistanceInMiles = Double(round(distanceInMiles.value*10)/10)
-         
-         let directionString = cardinalDirectionFrom(usersLocation, to: stationsLocation)
-         
-         DispatchQueue.main.async {
-            if distanceInMiles.value < 0.1 {
-               self.distanceFromUserLabel.text = "↓0.1 mi \n \(directionString)"
-            } else {
-               self.distanceFromUserLabel.text = "\(roundedDistanceInMiles) mi \n \(directionString)"
-            }
-         }
-         
-      } else {
-         distanceFromUserLabel.text = ""
+      
+      guard let usersLocation = BikeStationController.shared.locationManager.location,
+         (CLLocationManager.authorizationStatus() == .authorizedAlways
+            || CLLocationManager.authorizationStatus() == .authorizedWhenInUse) else {
+               distanceFromUserLabel.text = ""
+               return
       }
+      
+      let distanceInMeters = Measurement(value: usersLocation.distance(from: stationsLocation), unit: UnitLength.meters)
+      
+      let distanceInMiles = distanceInMeters.converted(to: .miles)
+      let roundedDistanceInMiles = Double(round(distanceInMiles.value*10)/10)
+      
+      let directionString = cardinalDirectionFrom(usersLocation, to: stationsLocation)
+      
+      DispatchQueue.main.async {
+         if distanceInMiles.value < 0.1 {
+            self.distanceFromUserLabel.text = "↓0.1 mi \n \(directionString)"
+         } else {
+            self.distanceFromUserLabel.text = "\(roundedDistanceInMiles) mi \n \(directionString)"
+         }
+      }
+      
    }
    
    fileprivate func updateCustomConstraints(bikeStation: BikeStation, animated: Bool) {
       let widthOfFrame = self.frame.width
       let percentageOfBikesTakenOut = CGFloat(bikeStation.freeBikes) / CGFloat(bikeStation.freeBikes + bikeStation.emptySlots)
       
-      self.widthOfBikeBar.constant = widthOfFrame * percentageOfBikesTakenOut
-
+      widthOfBikeBar.constant = widthOfFrame * percentageOfBikesTakenOut
+      
       if animated {
          UIView.animate(withDuration: 1.0) {
             self.layoutIfNeeded()
          }
       }
+      
+      guard let widthOfDistanceBar = widthOfDistanceBar else { return }
       
       widthOfDistanceBar.isActive = ((CLLocationManager.authorizationStatus() == .authorizedAlways
          || CLLocationManager.authorizationStatus() == .authorizedWhenInUse) && BikeStationController.shared.locationManager.location != nil)

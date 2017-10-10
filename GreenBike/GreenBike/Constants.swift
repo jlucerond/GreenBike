@@ -9,16 +9,17 @@
 import Foundation
 import UIKit
 
-class NotificationNotices {
-//   private let bikeStationsUpdatedKey = "BikeStationsUpdated"
-//   private let networkErrorKey = "NetworkError"
-//   
-//   let myError: Error
-   
+class ConstantNotificationNotices {
+   // Notifications
    static let bikeStationsUpdatedNotification = Notification.Name("bikeStationsUpdated")
    static let locationUpdatedNotification = Notification.Name("userLocationUpdated")
 }
 
+class ConstantKeys {
+   // Keys
+   static let setOfAllFavoriteBikeStations = "favoriteBikeStations"
+
+}
 
 extension UIColor {
    static var primaryAppColor: UIColor {

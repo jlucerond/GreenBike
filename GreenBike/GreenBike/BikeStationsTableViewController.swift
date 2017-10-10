@@ -12,7 +12,7 @@ import CoreLocation
 class BikeStationsTableViewController: UITableViewController {
    
    // MARK: - Variables
-   var setOfFavoriteBikeStationNames: Set<String> = []
+   var arrayOfFavoriteBikeStationNames: [String] = []
    var arrayOfFavoriteBikeStations: [BikeStation] = []
    var arrayOfAllBikeStationsSortedByProximity: [BikeStation] = [] {
       didSet {
@@ -30,6 +30,10 @@ class BikeStationsTableViewController: UITableViewController {
    // MARK: - Life Cycle Methods
    override func viewDidLoad() {
       super.viewDidLoad()
+      
+      self.tableView.sectionHeaderHeight = UITableViewAutomaticDimension
+      self.tableView.estimatedSectionHeaderHeight = 80;
+      
       tableView.refreshControl = myRefreshControl
       longPress.minimumPressDuration = 1.0
       longPress.addTarget(self, action: #selector(userDidLongPress))
@@ -37,16 +41,21 @@ class BikeStationsTableViewController: UITableViewController {
       
       myRefreshControl.addTarget(self, action: #selector(refreshControlWasPulled), for: .valueChanged)
       
+      if let arrayOfSavedBikeStationNames = UserDefaults.standard.array(forKey: ConstantKeys.setOfAllFavoriteBikeStations) as? [String] {
+         print("loading saved items")
+         arrayOfFavoriteBikeStationNames = arrayOfSavedBikeStationNames
+      }
+      
       updateNearestBikeStations()
       
       NotificationCenter.default.addObserver(self,
                                              selector: #selector(updateNearestBikeStations),
-                                             name: NotificationNotices.bikeStationsUpdatedNotification,
+                                             name: ConstantNotificationNotices.bikeStationsUpdatedNotification,
                                              object: nil)
       
       NotificationCenter.default.addObserver(self,
                                              selector: #selector(updateNearestBikeStations),
-                                             name: NotificationNotices.locationUpdatedNotification,
+                                             name: ConstantNotificationNotices.locationUpdatedNotification,
                                              object: nil)
       
    }
@@ -60,24 +69,18 @@ class BikeStationsTableViewController: UITableViewController {
 
 }
 
-// Table View Data Source & Delegate Methods
+// MARK: - Table View Data Source & Delegate Methods
 extension BikeStationsTableViewController {
+   // Header Methods
    override func numberOfSections(in tableView: UITableView) -> Int {
       guard !arrayOfAllBikeStationsSortedByProximity.isEmpty else { return 0 }
       
       return arrayOfFavoriteBikeStations.isEmpty ? 1 : 2
    }
    
-   override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-      if arrayOfFavoriteBikeStations.isEmpty {
-         return arrayOfAllBikeStationsSortedByProximity.count
-      } else {
-         return section == 0 ? arrayOfFavoriteBikeStations.count : arrayOfAllBikeStationsSortedByProximity.count
-      }
-   }
    
-   override func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
-      return "Help this"
+   override func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+      return 40.666666667
    }
    
    override func tableView(_ tableView: UITableView,
@@ -93,17 +96,25 @@ extension BikeStationsTableViewController {
       let frameForTitleLabel = CGRect(x: 10, y: 0, width: 50, height: 50)
       let titleLabel = UILabel(frame: frameForTitleLabel)
       titleLabel.text = titleForHeader
-      titleLabel.font = UIFont(name: "Copperplate", size: 25.0)
-      titleLabel.textColor = UIColor.secondaryAppColor
+      titleLabel.font = UIFont(name: "Copperplate", size: 40.0)
+      titleLabel.textColor = UIColor.primaryAppColor
       titleLabel.sizeToFit()
-
-      let frameForHeader = CGRect(x: 0, y: 0, width: tableView.frame.width, height: 0)
+      
+      let frameForHeader = CGRect()
       let viewForHeader = UIView(frame: frameForHeader)
-      viewForHeader.backgroundColor = UIColor.primaryAppColor
+      viewForHeader.backgroundColor = UIColor.secondaryAppColor
       viewForHeader.addSubview(titleLabel)
-
       
       return viewForHeader
+   }
+   
+   // Rows & Cells Methods
+   override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+      if arrayOfFavoriteBikeStations.isEmpty {
+         return arrayOfAllBikeStationsSortedByProximity.count
+      } else {
+         return section == 0 ? arrayOfFavoriteBikeStations.count : arrayOfAllBikeStationsSortedByProximity.count
+      }
    }
    
    override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -132,13 +143,36 @@ extension BikeStationsTableViewController {
       }
    }
    
+   override func tableView(_ tableView: UITableView,
+                           canEditRowAt indexPath: IndexPath) -> Bool {
+      if tableView.numberOfSections == 2 && (indexPath.section == 0) {
+         return true
+      } else {
+         return false
+      }
+   }
+   
+   override func tableView(_ tableView: UITableView,
+                           commit editingStyle: UITableViewCellEditingStyle,
+                           forRowAt indexPath: IndexPath) {
+      if indexPath.section == 0
+      && tableView.numberOfSections == 2
+      && editingStyle == .delete {
+         let stationToRemove = arrayOfFavoriteBikeStations[indexPath.row]
+         removeStationFromFavorites(stationToRemove)
+      }
+   }
+   
 }
 
 // MARK: - Helper Methods
 extension BikeStationsTableViewController {
    
-   func updateNearestBikeStations() {
-      myRefreshControl.endRefreshing()
+   @objc func updateNearestBikeStations() {
+      DispatchQueue.main.async {
+         self.myRefreshControl.endRefreshing()
+      }
+      
       guard let userLocation = BikeStationController.shared.locationManager.location else {
          arrayOfAllBikeStationsSortedByProximity = BikeStationController.shared.allBikeStations
          return }
@@ -152,25 +186,28 @@ extension BikeStationsTableViewController {
       }
    }
    
-   func refreshControlWasPulled() {
+   @objc func refreshControlWasPulled() {
       BikeStationController.shared.refreshBikeStationsStatuses()
    }
    
-   func userDidLongPress() {
+   @objc func userDidLongPress() {
       let pointSelected = longPress.location(in: tableView)
       guard let indexPath = tableView.indexPathForRow(at: pointSelected),
          let cell = tableView.cellForRow(at: indexPath) as? BikeStationTableViewCell,
          let bikeStationSelected = cell.bikeStation,
-         !setOfFavoriteBikeStationNames.contains(bikeStationSelected.name)  else { return }
+         !arrayOfFavoriteBikeStationNames.contains(bikeStationSelected.name),
+         longPress.state == .began else { return }
       
       askUserIfTheyWantToFavoriteStation(bikeStationSelected)
    }
    
    func askUserIfTheyWantToFavoriteStation(_ station: BikeStation) {
+
       let alert = UIAlertController(title: "Add To Favorites?", message: "\(station.name)", preferredStyle: .alert)
       
       let yesAction = UIAlertAction(title: "Yes", style: .default) { _ in
-         self.setOfFavoriteBikeStationNames.insert(station.name)
+         self.arrayOfFavoriteBikeStationNames.append(station.name)
+         self.saveToUserDefaults()
          self.updateFavoriteBikeStationsArray()
       }
       alert.addAction(yesAction)
@@ -181,14 +218,30 @@ extension BikeStationsTableViewController {
       self.present(alert, animated: true)
    }
    
+   func removeStationFromFavorites(_ station: BikeStation) {
+      for name in arrayOfFavoriteBikeStationNames where name == station.name {
+         guard let indexRowToDelete = arrayOfFavoriteBikeStationNames.index(of: name) else { return }
+         arrayOfFavoriteBikeStationNames.remove(at: indexRowToDelete)
+      }
+      saveToUserDefaults()
+      updateFavoriteBikeStationsArray()
+   }
+   
    func updateFavoriteBikeStationsArray() {
       arrayOfFavoriteBikeStations = []
-      for stationName in setOfFavoriteBikeStationNames {
+      for stationName in arrayOfFavoriteBikeStationNames {
          for station in arrayOfAllBikeStationsSortedByProximity {
             if stationName == station.name {
                arrayOfFavoriteBikeStations.append(station)
             }
          }
       }
+      DispatchQueue.main.async {
+         self.tableView.reloadData()
+      }
+   }
+   
+   func saveToUserDefaults() {
+      UserDefaults.standard.set(self.arrayOfFavoriteBikeStationNames, forKey: ConstantKeys.setOfAllFavoriteBikeStations)
    }
 }

@@ -54,7 +54,7 @@ class MapViewController: UIViewController {
       mapView.delegate = self
       NotificationCenter.default.addObserver(self,
                                              selector: #selector(bikeStationControllerWasReloaded),
-                                             name: NotificationNotices.bikeStationsUpdatedNotification,
+                                             name: ConstantNotificationNotices.bikeStationsUpdatedNotification,
                                              object: nil)
       
       loadMapForFirstTime()
@@ -79,7 +79,7 @@ extension MapViewController {
       
    }
    
-   func bikeStationControllerWasReloaded() {
+   @objc func bikeStationControllerWasReloaded() {
       arrayOfBikeStations = BikeStationController.shared.allBikeStations
    }
    

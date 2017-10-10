@@ -15,7 +15,7 @@ class BikeStationController: NSObject {
    
    var allBikeStations: [BikeStation] = [] {
       didSet {
-         NotificationCenter.default.post(name: NotificationNotices.bikeStationsUpdatedNotification, object: nil)
+         NotificationCenter.default.post(name: ConstantNotificationNotices.bikeStationsUpdatedNotification, object: nil)
       }
    }
    
@@ -49,6 +49,6 @@ extension BikeStationController: CLLocationManagerDelegate {
    
    func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
       print("updated location")
-      NotificationCenter.default.post(name: NotificationNotices.locationUpdatedNotification, object: nil)
+      NotificationCenter.default.post(name: ConstantNotificationNotices.locationUpdatedNotification, object: nil)
    }
 }
