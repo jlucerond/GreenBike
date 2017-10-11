@@ -19,9 +19,9 @@ class ConstantNotificationNotices {
 class ConstantKeys {
    // Keys
    static let setOfAllFavoriteBikeStations = "favoriteBikeStations"
-
 }
 
+// FIXME: - Do I need this here???
 enum ToOrFrom: String {
    case to
    case from
