@@ -67,9 +67,6 @@ extension MapViewController {
    
    func loadMapForFirstTime() {
       // FIXME: - Need to screenshot this and use as the loading screen
-      
-      BikeStationController.shared.refreshBikeStationsStatuses()
-      
       let slcCenter = CLLocationCoordinate2D(latitude: 40.76593214888245, longitude: -111.89142500000003)
       let slcLatMeters = 2500.0
       let slcLongMeters = 4000.0

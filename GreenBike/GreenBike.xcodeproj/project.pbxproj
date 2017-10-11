@@ -10,6 +10,8 @@
 		D8047A891F673D6C00212079 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8047A881F673D6C00212079 /* Constants.swift */; };
 		D895D98D1F69AA1900C7FD36 /* BikeStationsTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D895D98C1F69AA1900C7FD36 /* BikeStationsTableViewController.swift */; };
 		D895D98F1F69C6AE00C7FD36 /* BikeStationTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D895D98E1F69C6AE00C7FD36 /* BikeStationTableViewCell.swift */; };
+		D89D43211F8D49690064202C /* AlarmDetailTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D89D43201F8D49690064202C /* AlarmDetailTableViewController.swift */; };
+		D89D43241F8D64E10064202C /* BikeStationPickerTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D89D43231F8D64E10064202C /* BikeStationPickerTableViewController.swift */; };
 		D8E61DF01F66EF9D00A57157 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8E61DEF1F66EF9D00A57157 /* AppDelegate.swift */; };
 		D8E61DF21F66EF9D00A57157 /* MapViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8E61DF11F66EF9D00A57157 /* MapViewController.swift */; };
 		D8E61DF51F66EF9D00A57157 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = D8E61DF31F66EF9D00A57157 /* Main.storyboard */; };
@@ -24,6 +26,8 @@
 		D8047A881F673D6C00212079 /* Constants.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
 		D895D98C1F69AA1900C7FD36 /* BikeStationsTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BikeStationsTableViewController.swift; sourceTree = "<group>"; };
 		D895D98E1F69C6AE00C7FD36 /* BikeStationTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BikeStationTableViewCell.swift; sourceTree = "<group>"; };
+		D89D43201F8D49690064202C /* AlarmDetailTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlarmDetailTableViewController.swift; sourceTree = "<group>"; };
+		D89D43231F8D64E10064202C /* BikeStationPickerTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BikeStationPickerTableViewController.swift; sourceTree = "<group>"; };
 		D8E61DEC1F66EF9D00A57157 /* GreenBike.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = GreenBike.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		D8E61DEF1F66EF9D00A57157 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		D8E61DF11F66EF9D00A57157 /* MapViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapViewController.swift; sourceTree = "<group>"; };
@@ -47,6 +51,17 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		D89D43221F8D49730064202C /* ViewControllers */ = {
+			isa = PBXGroup;
+			children = (
+				D8E61DF11F66EF9D00A57157 /* MapViewController.swift */,
+				D895D98C1F69AA1900C7FD36 /* BikeStationsTableViewController.swift */,
+				D89D43201F8D49690064202C /* AlarmDetailTableViewController.swift */,
+				D89D43231F8D64E10064202C /* BikeStationPickerTableViewController.swift */,
+			);
+			name = ViewControllers;
+			sourceTree = "<group>";
+		};
 		D8E61DE31F66EF9D00A57157 = {
 			isa = PBXGroup;
 			children = (
@@ -70,6 +85,7 @@
 				D8E61E091F67095E00A57157 /* Model */,
 				D8E61E0A1F67096300A57157 /* ModelController */,
 				D8E61E0B1F67096E00A57157 /* NetworkController */,
+				D89D43221F8D49730064202C /* ViewControllers */,
 				D8E61E021F66FF2A00A57157 /* UI */,
 				D8E61E011F66FF1E00A57157 /* Resources */,
 			);
@@ -89,8 +105,6 @@
 		D8E61E021F66FF2A00A57157 /* UI */ = {
 			isa = PBXGroup;
 			children = (
-				D8E61DF11F66EF9D00A57157 /* MapViewController.swift */,
-				D895D98C1F69AA1900C7FD36 /* BikeStationsTableViewController.swift */,
 				D895D98E1F69C6AE00C7FD36 /* BikeStationTableViewCell.swift */,
 				D8E61DF31F66EF9D00A57157 /* Main.storyboard */,
 			);
@@ -197,8 +211,10 @@
 			buildActionMask = 2147483647;
 			files = (
 				D8E61DF21F66EF9D00A57157 /* MapViewController.swift in Sources */,
+				D89D43241F8D64E10064202C /* BikeStationPickerTableViewController.swift in Sources */,
 				D895D98F1F69C6AE00C7FD36 /* BikeStationTableViewCell.swift in Sources */,
 				D8E61E061F67095000A57157 /* BikeStation.swift in Sources */,
+				D89D43211F8D49690064202C /* AlarmDetailTableViewController.swift in Sources */,
 				D8E61DF01F66EF9D00A57157 /* AppDelegate.swift in Sources */,
 				D895D98D1F69AA1900C7FD36 /* BikeStationsTableViewController.swift in Sources */,
 				D8E61E081F67095A00A57157 /* BikeStationController.swift in Sources */,

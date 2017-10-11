@@ -13,12 +13,18 @@ class ConstantNotificationNotices {
    // Notifications
    static let bikeStationsUpdatedNotification = Notification.Name("bikeStationsUpdated")
    static let locationUpdatedNotification = Notification.Name("userLocationUpdated")
+   static let apiNotWorking = Notification.Name("apiNotWorking")
 }
 
 class ConstantKeys {
    // Keys
    static let setOfAllFavoriteBikeStations = "favoriteBikeStations"
 
+}
+
+enum ToOrFrom: String {
+   case to
+   case from
 }
 
 extension UIColor {

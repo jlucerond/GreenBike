@@ -19,11 +19,19 @@ class BikeStationController: NSObject {
       }
    }
    
+   var allBikeStationsSortedByDistance: [BikeStation]? {
+      guard let userLocation = locationManager.location else { return nil }
+      return BikeStationController.shared.allBikeStations.sorted(by: { (stationA, stationB) -> Bool in
+         stationA.location.distance(from: userLocation) < stationB.location.distance(from: userLocation)
+      })
+   }
+   
    func refreshBikeStationsStatuses() {
       NetworkController.shared.getBikeInfoFromWeb { (success, arrayOfStations) in
          if !success {
             print("did not get bike statuses")
             //FIXME: - Error Handling Needed
+            NotificationCenter.default.post(name: ConstantNotificationNotices.apiNotWorking, object: nil)
             return
          }
          self.allBikeStations = arrayOfStations.flatMap{ BikeStation(dictionary: $0) }
