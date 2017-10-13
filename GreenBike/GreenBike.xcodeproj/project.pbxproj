@@ -8,14 +8,15 @@
 
 /* Begin PBXBuildFile section */
 		D8047A891F673D6C00212079 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8047A881F673D6C00212079 /* Constants.swift */; };
+		D8364CB11F90449200420F9F /* SaveController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8364CB01F90449200420F9F /* SaveController.swift */; };
 		D895D98D1F69AA1900C7FD36 /* BikeStationsTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D895D98C1F69AA1900C7FD36 /* BikeStationsTableViewController.swift */; };
 		D895D98F1F69C6AE00C7FD36 /* BikeStationTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D895D98E1F69C6AE00C7FD36 /* BikeStationTableViewCell.swift */; };
-		D89D43211F8D49690064202C /* AlarmDetailTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D89D43201F8D49690064202C /* AlarmDetailTableViewController.swift */; };
+		D89D43211F8D49690064202C /* AlertDetailTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D89D43201F8D49690064202C /* AlertDetailTableViewController.swift */; };
 		D89D43241F8D64E10064202C /* BikeStationPickerTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D89D43231F8D64E10064202C /* BikeStationPickerTableViewController.swift */; };
 		D8A11B241F8E8BF00037EF55 /* DaysTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8A11B231F8E8BF00037EF55 /* DaysTableViewController.swift */; };
-		D8A11B261F8E98670037EF55 /* Alarm.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8A11B251F8E98670037EF55 /* Alarm.swift */; };
-		D8A11B281F8ED3370037EF55 /* AlarmsMainTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8A11B271F8ED3370037EF55 /* AlarmsMainTableViewController.swift */; };
-		D8A11B2A1F8ED56E0037EF55 /* AlarmTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8A11B291F8ED56E0037EF55 /* AlarmTableViewCell.swift */; };
+		D8A11B261F8E98670037EF55 /* Alert.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8A11B251F8E98670037EF55 /* Alert.swift */; };
+		D8A11B281F8ED3370037EF55 /* AlertsMainTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8A11B271F8ED3370037EF55 /* AlertsMainTableViewController.swift */; };
+		D8A11B2A1F8ED56E0037EF55 /* AlertTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8A11B291F8ED56E0037EF55 /* AlertTableViewCell.swift */; };
 		D8E61DF01F66EF9D00A57157 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8E61DEF1F66EF9D00A57157 /* AppDelegate.swift */; };
 		D8E61DF21F66EF9D00A57157 /* MapViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8E61DF11F66EF9D00A57157 /* MapViewController.swift */; };
 		D8E61DF51F66EF9D00A57157 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = D8E61DF31F66EF9D00A57157 /* Main.storyboard */; };
@@ -28,14 +29,15 @@
 
 /* Begin PBXFileReference section */
 		D8047A881F673D6C00212079 /* Constants.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
+		D8364CB01F90449200420F9F /* SaveController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SaveController.swift; sourceTree = "<group>"; };
 		D895D98C1F69AA1900C7FD36 /* BikeStationsTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BikeStationsTableViewController.swift; sourceTree = "<group>"; };
 		D895D98E1F69C6AE00C7FD36 /* BikeStationTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BikeStationTableViewCell.swift; sourceTree = "<group>"; };
-		D89D43201F8D49690064202C /* AlarmDetailTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlarmDetailTableViewController.swift; sourceTree = "<group>"; };
+		D89D43201F8D49690064202C /* AlertDetailTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlertDetailTableViewController.swift; sourceTree = "<group>"; };
 		D89D43231F8D64E10064202C /* BikeStationPickerTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BikeStationPickerTableViewController.swift; sourceTree = "<group>"; };
 		D8A11B231F8E8BF00037EF55 /* DaysTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DaysTableViewController.swift; sourceTree = "<group>"; };
-		D8A11B251F8E98670037EF55 /* Alarm.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Alarm.swift; sourceTree = "<group>"; };
-		D8A11B271F8ED3370037EF55 /* AlarmsMainTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlarmsMainTableViewController.swift; sourceTree = "<group>"; };
-		D8A11B291F8ED56E0037EF55 /* AlarmTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlarmTableViewCell.swift; sourceTree = "<group>"; };
+		D8A11B251F8E98670037EF55 /* Alert.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Alert.swift; sourceTree = "<group>"; };
+		D8A11B271F8ED3370037EF55 /* AlertsMainTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlertsMainTableViewController.swift; sourceTree = "<group>"; };
+		D8A11B291F8ED56E0037EF55 /* AlertTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlertTableViewCell.swift; sourceTree = "<group>"; };
 		D8E61DEC1F66EF9D00A57157 /* GreenBike.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = GreenBike.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		D8E61DEF1F66EF9D00A57157 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		D8E61DF11F66EF9D00A57157 /* MapViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapViewController.swift; sourceTree = "<group>"; };
@@ -59,13 +61,30 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		D8364CB21F90449800420F9F /* SaveController */ = {
+			isa = PBXGroup;
+			children = (
+				D8364CB01F90449200420F9F /* SaveController.swift */,
+			);
+			name = SaveController;
+			sourceTree = "<group>";
+		};
+		D8364CB31F9044AC00420F9F /* Cells */ = {
+			isa = PBXGroup;
+			children = (
+				D895D98E1F69C6AE00C7FD36 /* BikeStationTableViewCell.swift */,
+				D8A11B291F8ED56E0037EF55 /* AlertTableViewCell.swift */,
+			);
+			name = Cells;
+			sourceTree = "<group>";
+		};
 		D89D43221F8D49730064202C /* ViewControllers */ = {
 			isa = PBXGroup;
 			children = (
 				D8E61DF11F66EF9D00A57157 /* MapViewController.swift */,
 				D895D98C1F69AA1900C7FD36 /* BikeStationsTableViewController.swift */,
-				D8A11B271F8ED3370037EF55 /* AlarmsMainTableViewController.swift */,
-				D89D43201F8D49690064202C /* AlarmDetailTableViewController.swift */,
+				D8A11B271F8ED3370037EF55 /* AlertsMainTableViewController.swift */,
+				D89D43201F8D49690064202C /* AlertDetailTableViewController.swift */,
 				D89D43231F8D64E10064202C /* BikeStationPickerTableViewController.swift */,
 				D8A11B231F8E8BF00037EF55 /* DaysTableViewController.swift */,
 			);
@@ -95,6 +114,7 @@
 				D8E61E091F67095E00A57157 /* Model */,
 				D8E61E0A1F67096300A57157 /* ModelController */,
 				D8E61E0B1F67096E00A57157 /* NetworkController */,
+				D8364CB21F90449800420F9F /* SaveController */,
 				D89D43221F8D49730064202C /* ViewControllers */,
 				D8E61E021F66FF2A00A57157 /* UI */,
 				D8E61E011F66FF1E00A57157 /* Resources */,
@@ -116,8 +136,7 @@
 			isa = PBXGroup;
 			children = (
 				D8E61DF31F66EF9D00A57157 /* Main.storyboard */,
-				D895D98E1F69C6AE00C7FD36 /* BikeStationTableViewCell.swift */,
-				D8A11B291F8ED56E0037EF55 /* AlarmTableViewCell.swift */,
+				D8364CB31F9044AC00420F9F /* Cells */,
 			);
 			name = UI;
 			sourceTree = "<group>";
@@ -126,7 +145,7 @@
 			isa = PBXGroup;
 			children = (
 				D8E61E051F67095000A57157 /* BikeStation.swift */,
-				D8A11B251F8E98670037EF55 /* Alarm.swift */,
+				D8A11B251F8E98670037EF55 /* Alert.swift */,
 				D8047A881F673D6C00212079 /* Constants.swift */,
 			);
 			name = Model;
@@ -222,20 +241,21 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				D8A11B281F8ED3370037EF55 /* AlarmsMainTableViewController.swift in Sources */,
+				D8A11B281F8ED3370037EF55 /* AlertsMainTableViewController.swift in Sources */,
 				D8E61DF21F66EF9D00A57157 /* MapViewController.swift in Sources */,
 				D89D43241F8D64E10064202C /* BikeStationPickerTableViewController.swift in Sources */,
 				D895D98F1F69C6AE00C7FD36 /* BikeStationTableViewCell.swift in Sources */,
 				D8E61E061F67095000A57157 /* BikeStation.swift in Sources */,
-				D8A11B2A1F8ED56E0037EF55 /* AlarmTableViewCell.swift in Sources */,
-				D89D43211F8D49690064202C /* AlarmDetailTableViewController.swift in Sources */,
+				D8364CB11F90449200420F9F /* SaveController.swift in Sources */,
+				D8A11B2A1F8ED56E0037EF55 /* AlertTableViewCell.swift in Sources */,
+				D89D43211F8D49690064202C /* AlertDetailTableViewController.swift in Sources */,
 				D8E61DF01F66EF9D00A57157 /* AppDelegate.swift in Sources */,
 				D895D98D1F69AA1900C7FD36 /* BikeStationsTableViewController.swift in Sources */,
 				D8A11B241F8E8BF00037EF55 /* DaysTableViewController.swift in Sources */,
 				D8E61E081F67095A00A57157 /* BikeStationController.swift in Sources */,
 				D8E61E041F66FF3500A57157 /* NetworkController.swift in Sources */,
 				D8047A891F673D6C00212079 /* Constants.swift in Sources */,
-				D8A11B261F8E98670037EF55 /* Alarm.swift in Sources */,
+				D8A11B261F8E98670037EF55 /* Alert.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

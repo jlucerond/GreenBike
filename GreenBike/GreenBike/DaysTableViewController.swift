@@ -9,12 +9,12 @@
 import UIKit
 
 protocol DaysTableViewControllerDelegate {
-   func didSelectDay(day: AlarmDay)
+   func didSelectDay(day: AlertDay)
 }
 
 class DaysTableViewController: UITableViewController {
    
-   var weeklySchedule: AlarmWeek!
+   var weeklySchedule: AlertWeek!
    var delegate: DaysTableViewControllerDelegate?
    
    override func viewDidLoad() {

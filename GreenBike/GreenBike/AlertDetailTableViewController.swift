@@ -1,5 +1,5 @@
 //
-//  AlarmDetailTableViewController.swift
+//  AlertDetailTableViewController.swift
 //  GreenBike
 //
 //  Created by Joe Lucero on 10/10/17.
@@ -8,16 +8,32 @@
 
 import UIKit
 
-class AlarmDetailTableViewController: UITableViewController {
+protocol AlertDetailTableViewControllerDelegate {
+   func didCancel(_ controller: AlertDetailTableViewController)
+   func didAddNewAlert(_ controller: AlertDetailTableViewController, alert: Alert)
+   func didEditAlert(_ controller: AlertDetailTableViewController, alert: Alert)
+}
+
+class AlertDetailTableViewController: UITableViewController {
    
    @IBOutlet weak var timePicker: UIDatePicker!
    
    var fromBikeStation: BikeStation?
    var toBikeStation: BikeStation?
-   var weeklySchedule = AlarmWeek()
+   var weeklySchedule = AlertWeek()
+   
+   var alert: Alert?
+   var delegate: AlertDetailTableViewControllerDelegate?
    
    override func viewDidLoad() {
       super.viewDidLoad()
+      if let alert = alert {
+         self.timePicker.date = alert.timeOfDay
+         self.fromBikeStation = alert.fromBikeStation
+         self.toBikeStation = alert.toBikeStation
+         self.weeklySchedule = alert.weeklySchedule
+         setUpLabels()
+      }
    }
    
    override func viewWillAppear(_ animated: Bool) {
@@ -26,17 +42,33 @@ class AlarmDetailTableViewController: UITableViewController {
    }
    
    @IBAction func doneButtonPressed(_ sender: UIBarButtonItem) {
+      if let alert = alert {
+         // edit alert
+         alert.timeOfDay = timePicker.date
+         alert.fromBikeStation = fromBikeStation
+         alert.toBikeStation = toBikeStation
+         alert.weeklySchedule = weeklySchedule
+         delegate?.didEditAlert(self, alert: alert)
+      } else {
+         // add new alert
+         let alert = Alert(isOn: true,
+                           timeOfDay: timePicker.date,
+                           fromBikeStation: fromBikeStation,
+                           toBikeStation: toBikeStation,
+                           weeklySchedule: weeklySchedule)
+         delegate?.didAddNewAlert(self, alert: alert)
+      }
       
-      dismiss(animated: true, completion: nil)
    }
+   
    @IBAction func cancelButtonPressed(_ sender: UIBarButtonItem) {
-      dismiss(animated: true, completion: nil)
+      delegate?.didCancel(self)
    }
    
 }
 
 // MARK: - Navigation
-extension AlarmDetailTableViewController {
+extension AlertDetailTableViewController {
    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
       if segue.identifier == "fromSegue" {
          guard let pickerVC = segue.destination as? BikeStationPickerTableViewController else { return }
@@ -61,7 +93,7 @@ extension AlarmDetailTableViewController {
 }
 
 // MARK: - BikeStationPickerTableViewControllerDelegate Method
-extension AlarmDetailTableViewController: BikeStationPickerTableViewControllerDelegate {
+extension AlertDetailTableViewController: BikeStationPickerTableViewControllerDelegate {
    func didSelectBikeStation(_ controller: BikeStationPickerTableViewController,
                              bikeStation: BikeStation,
                              toOrFrom: ToOrFrom) {
@@ -80,8 +112,8 @@ extension AlarmDetailTableViewController: BikeStationPickerTableViewControllerDe
 }
 
 // MARK: - DaysTableViewControllerDelegate Method
-extension AlarmDetailTableViewController: DaysTableViewControllerDelegate {
-   func didSelectDay(day: AlarmDay) {
+extension AlertDetailTableViewController: DaysTableViewControllerDelegate {
+   func didSelectDay(day: AlertDay) {
       for eachDay in weeklySchedule.allDays {
          if eachDay.name == day.name {
             eachDay.toggle()
@@ -92,7 +124,7 @@ extension AlarmDetailTableViewController: DaysTableViewControllerDelegate {
 }
 
 // MARK: - Helper Methods
-extension AlarmDetailTableViewController {
+extension AlertDetailTableViewController {
    func setUpViews() {
       timePicker.setValue(UIColor.secondaryAppColor, forKey: "textColor")
       setUpLabels()
@@ -104,17 +136,6 @@ extension AlarmDetailTableViewController {
          let repeatCell = tableView.cellForRow(at: IndexPath(row: 3, section: 0)) else { return }
       fromCell.detailTextLabel?.text = fromBikeStation?.name ?? ""
       toCell.detailTextLabel?.text = toBikeStation?.name ?? ""
-      
-      var detailText = ""
-      for day in weeklySchedule.daysThatAlarmShouldRepeat {
-         detailText.append("\(day.name.characters.first!), ")
-      }
-      
-      if detailText.characters.count >= 2 {
-         detailText.removeLast()
-         detailText.removeLast()
-      }
-      
-      repeatCell.detailTextLabel?.text = detailText
+      repeatCell.detailTextLabel?.text = weeklySchedule.stringOfDaysThatAlertShouldRepeat
    }
 }
