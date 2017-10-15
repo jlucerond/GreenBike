@@ -18,7 +18,7 @@ class AlertsMainTableViewController: UITableViewController {
    
    override func viewDidLoad() {
       super.viewDidLoad()
-      //tableView.reloadData()
+      self.alerts = SaveController.shared.loadAlertsFromDisk()
    }
    
    // MARK: - Table view data source
@@ -75,10 +75,12 @@ extension AlertsMainTableViewController: AlertDetailTableViewControllerDelegate 
       self.alerts.append(alert)
       self.tableView.reloadData()
       dismiss(animated: true, completion: nil)
+      SaveController.shared.saveAlertsToDisk(self.alerts)
    }
    
    func didEditAlert(_ controller: AlertDetailTableViewController, alert: Alert) {
       tableView.reloadData()
       dismiss(animated: true, completion: nil)
+      SaveController.shared.saveAlertsToDisk(self.alerts)
    }
 }

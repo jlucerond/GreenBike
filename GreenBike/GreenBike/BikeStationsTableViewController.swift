@@ -48,15 +48,16 @@ class BikeStationsTableViewController: UITableViewController {
       
       updateNearestBikeStations()
       
-      NotificationCenter.default.addObserver(self,
-                                             selector: #selector(updateNearestBikeStations),
-                                             name: ConstantNotificationNotices.bikeStationsUpdatedNotification,
-                                             object: nil)
-      
-      NotificationCenter.default.addObserver(self,
-                                             selector: #selector(updateNearestBikeStations),
-                                             name: ConstantNotificationNotices.locationUpdatedNotification,
-                                             object: nil)
+      // taking this out to avoid choppiness in what's happening
+//      NotificationCenter.default.addObserver(self,
+//                                             selector: #selector(updateNearestBikeStations),
+//                                             name: ConstantNotificationNotices.bikeStationsUpdatedNotification,
+//                                             object: nil)
+//
+//      NotificationCenter.default.addObserver(self,
+//                                             selector: #selector(updateNearestBikeStations),
+//                                             name: ConstantNotificationNotices.locationUpdatedNotification,
+//                                             object: nil)
       
    }
    
@@ -104,6 +105,7 @@ extension BikeStationsTableViewController {
       let viewForHeader = UIView(frame: frameForHeader)
       viewForHeader.backgroundColor = UIColor.secondaryAppColor
       viewForHeader.addSubview(titleLabel)
+      viewForHeader.alpha = 1.0
       
       return viewForHeader
    }
@@ -169,12 +171,11 @@ extension BikeStationsTableViewController {
 extension BikeStationsTableViewController {
    
    @objc func updateNearestBikeStations() {
-      DispatchQueue.main.async {
-         self.myRefreshControl.endRefreshing()
-      }
+      self.myRefreshControl.beginRefreshing()
       
       guard let userLocation = BikeStationController.shared.locationManager.location else {
          arrayOfAllBikeStationsSortedByProximity = BikeStationController.shared.allBikeStations
+         myRefreshControl.endRefreshing()
          return }
       
       arrayOfAllBikeStationsSortedByProximity = BikeStationController.shared.allBikeStations.sorted(by: { (stationA, stationB) -> Bool in
@@ -183,11 +184,12 @@ extension BikeStationsTableViewController {
       
       DispatchQueue.main.async {
          self.tableView.reloadData()
+         self.myRefreshControl.endRefreshing()
       }
    }
    
    @objc func refreshControlWasPulled() {
-      BikeStationController.shared.refreshBikeStationsStatuses()
+      updateNearestBikeStations()
    }
    
    @objc func userDidLongPress() {

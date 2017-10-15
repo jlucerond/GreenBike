@@ -8,7 +8,17 @@
 
 import Foundation
 
-class Alert {
+fileprivate enum KeysForSaving {
+   static let alertDictionaryKey = "alertDictionaryKey"
+   static let isOn = "isOn"
+   static let timeOfDay = "timeOfDay"
+   static let fromBikeStation = "fromBikeStation"
+   static let toBikeStation = "toBikeStation"
+   static let weeklySchedule = "weeklySchedule"
+   static let uuid = "uuid"
+}
+
+class Alert: NSObject, Codable {
    private(set) var isOn: Bool
    var timeOfDay: Date
    var fromBikeStation: BikeStation?
@@ -32,6 +42,31 @@ class Alert {
       self.uuid = UUID()
    }
    
+   // FIXME: - See if this stuff will work
+//   required init(from decoder: Decoder) throws {
+//      guard let decoder = decoder as? PropertyListDecoder else { fatalError() }
+//
+//
+//      super.init()
+//   }
+//
+//   func encode(to encoder: Encoder) throws {
+//      guard let encoder = encoder as? PropertyListEncoder else { return }
+//
+//      var myDictionary: [String : Any] = [:]
+//      myDictionary[KeysForSaving.isOn] = self.isOn
+//      myDictionary[KeysForSaving.timeOfDay] = self.timeOfDay
+//      myDictionary[KeysForSaving.fromBikeStation] = self.fromBikeStation
+//      myDictionary[KeysForSaving.weeklySchedule] = self.weeklySchedule
+//      myDictionary[KeysForSaving.uuid] = self.uuid
+//
+//      do {
+//         let _ = try encoder.encode(myDictionary)
+//      } catch  {
+//         print("Error trying to save 1 alert: \(error.localizedDescription)")
+//      }
+//   }
+   
    func toggleOnOff() {
       isOn = !isOn
    }
@@ -41,7 +76,7 @@ class Alert {
    }
 }
 
-class AlertDay {
+class AlertDay: NSObject, Codable {
    let name: String
    private(set) var isOn: Bool
    
@@ -55,7 +90,7 @@ class AlertDay {
    }
 }
 
-class AlertWeek {
+class AlertWeek: NSObject, Codable {
    let allDays: [AlertDay]
    var daysThatAlertShouldRepeat: [AlertDay] {
       return allDays.filter{$0.isOn}
@@ -76,7 +111,7 @@ class AlertWeek {
    }
    
    
-   init() {
+   override init() {
       let sunday = AlertDay(name: "Sunday")
       let monday = AlertDay(name: "Monday")
       let tuesday = AlertDay(name: "Tuesday")

@@ -341,6 +341,7 @@
                                                 </stackView>
                                                 <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" on="YES" translatesAutoresizingMaskIntoConstraints="NO" id="LGo-Ss-Rbp">
                                                     <rect key="frame" x="310" y="37" width="51" height="31"/>
+                                                    <color key="onTintColor" red="0.92688906189999998" green="0.6475841403" blue="0.25487875939999999" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                                                     <connections>
                                                         <action selector="onOffSwitchToggled:" destination="GHE-nQ-k5S" eventType="valueChanged" id="wpp-GY-h8I"/>
                                                     </connections>

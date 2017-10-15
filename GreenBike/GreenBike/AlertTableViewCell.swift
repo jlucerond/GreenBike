@@ -49,9 +49,23 @@ extension AlertTableViewCell {
          amPmLabel.text = ""
       }
       
-      fromStationLabel.text = alert.fromBikeStation?.name ?? ""
-      toStationLabel.text = alert.toBikeStation?.name ?? ""
-      repeatsLabel.text = alert.weeklySchedule.stringOfDaysThatAlertShouldRepeat
+      if let fromBikeStationName = alert.fromBikeStation?.name {
+         fromStationLabel.text = "→ \(fromBikeStationName)"
+      } else {
+         fromStationLabel.text = ""
+      }
+      
+      if let toBikeStationName = alert.toBikeStation?.name {
+         toStationLabel.text = "← \(toBikeStationName)"
+      } else {
+         toStationLabel.text = ""
+      }
+      
+      if !alert.weeklySchedule.daysThatAlertShouldRepeat.isEmpty {
+         repeatsLabel.text = "↻ \(alert.weeklySchedule.stringOfDaysThatAlertShouldRepeat)"
+      } else {
+         repeatsLabel.text = alert.weeklySchedule.stringOfDaysThatAlertShouldRepeat
+      }
       
    }
    

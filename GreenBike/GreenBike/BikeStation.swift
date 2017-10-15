@@ -10,7 +10,7 @@ import Foundation
 import CoreLocation
 import MapKit
 
-class BikeStation: NSObject {
+class BikeStation: NSObject, Codable {
    private let nameKey = "name"
    private let latitudeKey = "latitude"
    private let longitudeKey = "longitude"
