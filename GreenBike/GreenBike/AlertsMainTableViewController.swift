@@ -18,7 +18,7 @@ class AlertsMainTableViewController: UITableViewController {
    
    override func viewDidLoad() {
       super.viewDidLoad()
-      self.alerts = SaveController.shared.loadAlertsFromDisk()
+      self.alerts =  SaveController.shared.loadAlertsFromDisk()
    }
    
    // MARK: - Table view data source
@@ -30,6 +30,7 @@ class AlertsMainTableViewController: UITableViewController {
       let alert = alerts[indexPath.row]
       guard let cell = tableView.dequeueReusableCell(withIdentifier: "AlertCell", for: indexPath) as? AlertTableViewCell else { return UITableViewCell() }
       cell.alert = alert
+      cell.delegate = self
       
       return cell
    }
@@ -39,6 +40,7 @@ class AlertsMainTableViewController: UITableViewController {
                            forRowAt indexPath: IndexPath) {
       if editingStyle == .delete {
          alerts.remove(at: indexPath.row)
+         SaveController.shared.saveAlertsToDisk(self.alerts)
          tableView.reloadData()
       }
    }
@@ -54,14 +56,22 @@ extension AlertsMainTableViewController {
             let alertDetailVC = navVC.topViewController as? AlertDetailTableViewController else { return }
          
          alertDetailVC.delegate = self
+         alertDetailVC.title = "Add Alert"
       } else if segue.identifier == "editAlert" {
          guard let navVC = segue.destination as? UINavigationController,
             let alertDetailVC = navVC.topViewController as? AlertDetailTableViewController,
             let indexPath = tableView.indexPathForSelectedRow else { return }
          
          alertDetailVC.delegate = self
+         alertDetailVC.title = "Edit Alert"
          alertDetailVC.alert = alerts[indexPath.row]
       }
+   }
+}
+
+extension AlertsMainTableViewController: AlertTableViewCellDelegate {
+   func didToggleOnOffSwitch() {
+      SaveController.shared.saveAlertsToDisk(self.alerts)
    }
 }
 

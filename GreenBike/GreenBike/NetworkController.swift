@@ -14,7 +14,7 @@ class NetworkController {
    private let baseURL = "https://api.citybik.es/v2/networks/greenbikeslc"
    private let networkKey = "network"
    private let stationsKey = "stations"
-   
+
    /// returns info from web with all green bike info. if successful, use the key "stations" to get JSON data of an array of GreenBike stations and their info
    func getBikeInfoFromWeb(completion: @escaping (_ success: Bool, [[String : Any]]) -> Void) {
       guard let fullURL = URL(string: baseURL) else { completion(false, []); return }
@@ -49,8 +49,6 @@ class NetworkController {
             // FIXME: Error Handling needs to happen in here
             completion(false, []); return
          }
-         
-         //fatalError("coding error: reached end of function without calling completion handler")
       }
       dataTask.resume()
    }

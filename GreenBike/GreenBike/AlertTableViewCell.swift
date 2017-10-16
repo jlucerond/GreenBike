@@ -8,6 +8,10 @@
 
 import UIKit
 
+protocol AlertTableViewCellDelegate {
+   func didToggleOnOffSwitch()
+}
+
 class AlertTableViewCell: UITableViewCell {
    // MARK: - IBOutlets
    @IBOutlet weak var timeLabel: UILabel!
@@ -23,16 +27,20 @@ class AlertTableViewCell: UITableViewCell {
          updateViews()
       }
    }
+   
    var dateFormatter: DateFormatter {
       let dateFormatter = DateFormatter()
       dateFormatter.timeStyle = .short
       
       return dateFormatter
    }
+   
+   var delegate: AlertTableViewCellDelegate?
 
    // MARK: - IBActions
    @IBAction func onOffSwitchToggled(_ sender: UISwitch) {
       alert?.toggleOnOff()
+      delegate?.didToggleOnOffSwitch()
    }
    
 }

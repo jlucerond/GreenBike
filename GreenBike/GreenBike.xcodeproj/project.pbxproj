@@ -17,6 +17,7 @@
 		D8A11B261F8E98670037EF55 /* Alert.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8A11B251F8E98670037EF55 /* Alert.swift */; };
 		D8A11B281F8ED3370037EF55 /* AlertsMainTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8A11B271F8ED3370037EF55 /* AlertsMainTableViewController.swift */; };
 		D8A11B2A1F8ED56E0037EF55 /* AlertTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8A11B291F8ED56E0037EF55 /* AlertTableViewCell.swift */; };
+		D8D3F9BB1F945C8D00F5F569 /* NotificationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8D3F9BA1F945C8D00F5F569 /* NotificationController.swift */; };
 		D8E61DF01F66EF9D00A57157 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8E61DEF1F66EF9D00A57157 /* AppDelegate.swift */; };
 		D8E61DF21F66EF9D00A57157 /* MapViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8E61DF11F66EF9D00A57157 /* MapViewController.swift */; };
 		D8E61DF51F66EF9D00A57157 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = D8E61DF31F66EF9D00A57157 /* Main.storyboard */; };
@@ -38,6 +39,7 @@
 		D8A11B251F8E98670037EF55 /* Alert.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Alert.swift; sourceTree = "<group>"; };
 		D8A11B271F8ED3370037EF55 /* AlertsMainTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlertsMainTableViewController.swift; sourceTree = "<group>"; };
 		D8A11B291F8ED56E0037EF55 /* AlertTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlertTableViewCell.swift; sourceTree = "<group>"; };
+		D8D3F9BA1F945C8D00F5F569 /* NotificationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationController.swift; sourceTree = "<group>"; };
 		D8E61DEC1F66EF9D00A57157 /* GreenBike.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = GreenBike.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		D8E61DEF1F66EF9D00A57157 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		D8E61DF11F66EF9D00A57157 /* MapViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapViewController.swift; sourceTree = "<group>"; };
@@ -91,6 +93,14 @@
 			name = ViewControllers;
 			sourceTree = "<group>";
 		};
+		D8D3F9BC1F945C9300F5F569 /* NotificationController */ = {
+			isa = PBXGroup;
+			children = (
+				D8D3F9BA1F945C8D00F5F569 /* NotificationController.swift */,
+			);
+			path = NotificationController;
+			sourceTree = "<group>";
+		};
 		D8E61DE31F66EF9D00A57157 = {
 			isa = PBXGroup;
 			children = (
@@ -115,6 +125,7 @@
 				D8E61E0A1F67096300A57157 /* ModelController */,
 				D8E61E0B1F67096E00A57157 /* NetworkController */,
 				D8364CB21F90449800420F9F /* SaveController */,
+				D8D3F9BC1F945C9300F5F569 /* NotificationController */,
 				D89D43221F8D49730064202C /* ViewControllers */,
 				D8E61E021F66FF2A00A57157 /* UI */,
 				D8E61E011F66FF1E00A57157 /* Resources */,
@@ -243,6 +254,7 @@
 			files = (
 				D8A11B281F8ED3370037EF55 /* AlertsMainTableViewController.swift in Sources */,
 				D8E61DF21F66EF9D00A57157 /* MapViewController.swift in Sources */,
+				D8D3F9BB1F945C8D00F5F569 /* NotificationController.swift in Sources */,
 				D89D43241F8D64E10064202C /* BikeStationPickerTableViewController.swift in Sources */,
 				D895D98F1F69C6AE00C7FD36 /* BikeStationTableViewCell.swift in Sources */,
 				D8E61E061F67095000A57157 /* BikeStation.swift in Sources */,
