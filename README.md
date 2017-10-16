@@ -15,6 +15,6 @@ TableView, Custom Cells, & Code-based Constraints
 TableView, Custom Cells, & Local Notifications
 - Custom cells show all alerts that the user has created with optional fromBikeStation, toBikeStation, and days on which the alert will repeat.  Local Notifications present an alert to the user at the set time.
 
-Other Skills
+Other Skills:
 Web APIs, Codable, Notification Center, 
 - Use the BikeSharing API (https://citybik.es) to get data from the web and show user. Codable to save the load alerts from local storage using .plist file that gets created in code. Notification Center to alert various view controllers when location gets updated.
