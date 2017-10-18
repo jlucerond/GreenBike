@@ -8,6 +8,7 @@
 //
 
 import UIKit
+import UserNotifications
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
@@ -16,18 +17,24 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
    func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
       let _ = BikeStationController.shared
-
       NotificationCenter.default.addObserver(self,
                                              selector: #selector(showSorry),
                                              name: ConstantNotificationNotices.apiNotWorking,
                                              object: nil)
+      
+      // FIXME: - Move this to the alerts controller during "first time + was pushed"
+      let center = UNUserNotificationCenter.current()
+      center.requestAuthorization(options: [.alert, .sound]) { (success, error) in
+         print("was successful: \(success)")
+      }
+      
       return true
    }
    
    @objc func showSorry() {
       guard let window = window else { return }
       
-      let alert = UIAlertController(title: "Uh-oh", message: "It looks like something is broken.\nWe'll try to fix this ASAP. Sorry :/", preferredStyle: .alert)
+      let alert = UIAlertController(title: "Uh-oh", message: "It looks like some servers are having issues.\nWe'll try to fix this ASAP. Sorry :/", preferredStyle: .alert)
       let action = UIAlertAction(title: "Darn", style: .default, handler: nil)
       alert.addAction(action)
       

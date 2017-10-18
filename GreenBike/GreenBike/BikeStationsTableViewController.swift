@@ -42,7 +42,6 @@ class BikeStationsTableViewController: UITableViewController {
       myRefreshControl.addTarget(self, action: #selector(refreshControlWasPulled), for: .valueChanged)
       
       if let arrayOfSavedBikeStationNames = UserDefaults.standard.array(forKey: ConstantKeys.setOfAllFavoriteBikeStations) as? [String] {
-         print("loading saved items")
          arrayOfFavoriteBikeStationNames = arrayOfSavedBikeStationNames
       }
       
@@ -64,7 +63,6 @@ class BikeStationsTableViewController: UITableViewController {
    // MARK: - Orientation Methods
    override func viewWillTransition(to size: CGSize,
                                     with coordinator: UIViewControllerTransitionCoordinator) {
-      print("resized")
       tableView.reloadData()
    }
 

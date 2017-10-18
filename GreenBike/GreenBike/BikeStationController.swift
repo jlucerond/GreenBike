@@ -29,8 +29,6 @@ class BikeStationController: NSObject {
    func refreshBikeStationsStatuses() {
       NetworkController.shared.getBikeInfoFromWeb { (success, arrayOfStations) in
          if !success {
-            print("did not get bike statuses")
-            //FIXME: - Error Handling Needed
             NotificationCenter.default.post(name: ConstantNotificationNotices.apiNotWorking, object: nil)
             return
          }
@@ -56,7 +54,6 @@ extension BikeStationController: CLLocationManagerDelegate {
    }
    
    func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
-      print("updated location")
       NotificationCenter.default.post(name: ConstantNotificationNotices.locationUpdatedNotification, object: nil)
    }
 }

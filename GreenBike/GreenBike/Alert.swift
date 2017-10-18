@@ -24,7 +24,7 @@ class Alert: NSObject, Codable {
    var fromBikeStation: BikeStation?
    var toBikeStation: BikeStation?
    var weeklySchedule: AlertWeek
-   private let uuid: UUID
+   let uuid: UUID
    var shouldRepeat: Bool {
       return !weeklySchedule.daysThatAlertShouldRepeat.isEmpty
    }
@@ -40,35 +40,27 @@ class Alert: NSObject, Codable {
       self.toBikeStation = toBikeStation
       self.weeklySchedule = weeklySchedule
       self.uuid = UUID()
+      
+      super.init()
+      
+      self.scheduleAlert()
    }
    
-   // FIXME: - See if this stuff will work
-//   required init(from decoder: Decoder) throws {
-//      guard let decoder = decoder as? PropertyListDecoder else { fatalError() }
-//
-//
-//      super.init()
-//   }
-//
-//   func encode(to encoder: Encoder) throws {
-//      guard let encoder = encoder as? PropertyListEncoder else { return }
-//
-//      var myDictionary: [String : Any] = [:]
-//      myDictionary[KeysForSaving.isOn] = self.isOn
-//      myDictionary[KeysForSaving.timeOfDay] = self.timeOfDay
-//      myDictionary[KeysForSaving.fromBikeStation] = self.fromBikeStation
-//      myDictionary[KeysForSaving.weeklySchedule] = self.weeklySchedule
-//      myDictionary[KeysForSaving.uuid] = self.uuid
-//
-//      do {
-//         let _ = try encoder.encode(myDictionary)
-//      } catch  {
-//         print("Error trying to save 1 alert: \(error.localizedDescription)")
-//      }
-//   }
+   deinit {
+      NotificationController.shared.deleteNotification(for: self)
+      print("Deinit: \(self.timeOfDay.description)")
+   }
    
    func toggleOnOff() {
       isOn = !isOn
+      scheduleAlert()
+   }
+   
+   func scheduleAlert() {
+      // FIXME: - this needs to be updated to work on specific repeated days
+      if isOn {
+         NotificationController.shared.createNotification(for: self)
+      }
    }
    
    static func ==(lhs: Alert, rhs: Alert) -> Bool {

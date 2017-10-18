@@ -13,12 +13,13 @@ class AlertsMainTableViewController: UITableViewController {
    var alerts: [Alert] = [] {
       didSet {
          // FIXME: - call save function from elsewhere
+         SaveController.shared.saveAlertsToDisk(alerts)
       }
    }
    
    override func viewDidLoad() {
       super.viewDidLoad()
-      self.alerts =  SaveController.shared.loadAlertsFromDisk()
+      self.alerts = SaveController.shared.loadAlertsFromDisk()
    }
    
    // MARK: - Table view data source
@@ -30,7 +31,6 @@ class AlertsMainTableViewController: UITableViewController {
       let alert = alerts[indexPath.row]
       guard let cell = tableView.dequeueReusableCell(withIdentifier: "AlertCell", for: indexPath) as? AlertTableViewCell else { return UITableViewCell() }
       cell.alert = alert
-      cell.delegate = self
       
       return cell
    }
@@ -38,9 +38,9 @@ class AlertsMainTableViewController: UITableViewController {
    override func tableView(_ tableView: UITableView,
                            commit editingStyle: UITableViewCellEditingStyle,
                            forRowAt indexPath: IndexPath) {
+      
       if editingStyle == .delete {
          alerts.remove(at: indexPath.row)
-         SaveController.shared.saveAlertsToDisk(self.alerts)
          tableView.reloadData()
       }
    }
@@ -69,12 +69,6 @@ extension AlertsMainTableViewController {
    }
 }
 
-extension AlertsMainTableViewController: AlertTableViewCellDelegate {
-   func didToggleOnOffSwitch() {
-      SaveController.shared.saveAlertsToDisk(self.alerts)
-   }
-}
-
 // MARK: - AlertDetailTableViewControllerDelegate Methods
 extension AlertsMainTableViewController: AlertDetailTableViewControllerDelegate {
    func didCancel(_ controller: AlertDetailTableViewController) {
@@ -85,12 +79,17 @@ extension AlertsMainTableViewController: AlertDetailTableViewControllerDelegate 
       self.alerts.append(alert)
       self.tableView.reloadData()
       dismiss(animated: true, completion: nil)
-      SaveController.shared.saveAlertsToDisk(self.alerts)
    }
    
    func didEditAlert(_ controller: AlertDetailTableViewController, alert: Alert) {
+      for eachAlert in alerts {
+         if alert == eachAlert {
+            let index = alerts.index(of: eachAlert)!
+            // found myself
+            alerts[index] = alert
+         }
+      }
       tableView.reloadData()
       dismiss(animated: true, completion: nil)
-      SaveController.shared.saveAlertsToDisk(self.alerts)
    }
 }

@@ -12,7 +12,6 @@ import Foundation
 
 class SaveController {
    static let shared = SaveController()
-   var alerts: [Alert] = []
    
    private func documentsDirectory() -> URL {
       let paths = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)
@@ -28,7 +27,7 @@ class SaveController {
       do {
          let data = try encoder.encode(alerts)
          try data.write(to: dataFilePath(), options: .atomic)
-         print("Saved at: \(dataFilePath().absoluteString)")
+         print("Saved alerts")
       } catch  {
          print("Error: \(error.localizedDescription)")
       }
@@ -46,6 +45,10 @@ class SaveController {
       }
       
       return []
+   }
+   
+   private init() {
+      
    }
 }
 

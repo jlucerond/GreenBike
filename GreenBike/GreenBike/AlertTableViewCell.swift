@@ -8,9 +8,9 @@
 
 import UIKit
 
-protocol AlertTableViewCellDelegate {
-   func didToggleOnOffSwitch()
-}
+//protocol AlertTableViewCellDelegate {
+//   func didToggleOnOffSwitch(for alert: Alert)
+//}
 
 class AlertTableViewCell: UITableViewCell {
    // MARK: - IBOutlets
@@ -35,12 +35,14 @@ class AlertTableViewCell: UITableViewCell {
       return dateFormatter
    }
    
-   var delegate: AlertTableViewCellDelegate?
+   deinit {
+      alert = nil
+   }
 
    // MARK: - IBActions
    @IBAction func onOffSwitchToggled(_ sender: UISwitch) {
-      alert?.toggleOnOff()
-      delegate?.didToggleOnOffSwitch()
+      guard let alert = alert else { return }
+      alert.toggleOnOff()
    }
    
 }
@@ -48,6 +50,8 @@ class AlertTableViewCell: UITableViewCell {
 extension AlertTableViewCell {
    func updateViews() {
       guard let alert = alert else { return }
+      onOffSwitch.isOn = alert.isOn
+      
       if let valueAndSymbol = dateFormatter.valueAndSymbol(date: alert.timeOfDay) {
          timeLabel.text = valueAndSymbol.number
          amPmLabel.text = valueAndSymbol.amPmSymbol
@@ -74,9 +78,7 @@ extension AlertTableViewCell {
       } else {
          repeatsLabel.text = alert.weeklySchedule.stringOfDaysThatAlertShouldRepeat
       }
-      
    }
-   
 }
 
 extension DateFormatter {
@@ -86,7 +88,6 @@ extension DateFormatter {
       
       let dateAsString = dateFormatter.string(from: date)
       let twoWords = dateAsString.components(separatedBy: " ")
-      print(twoWords)
       guard twoWords.count == 2 else { print("trouble with time") ; return nil }
       
       return (twoWords[0], twoWords[1])
