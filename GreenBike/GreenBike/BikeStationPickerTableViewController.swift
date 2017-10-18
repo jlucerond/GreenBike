@@ -8,14 +8,14 @@
 
 import UIKit
 
-protocol BikeStationPickerTableViewControllerDelegate {
+protocol BikeStationPickerTableViewControllerDelegate: class {
    func didSelectBikeStation(_ controller: BikeStationPickerTableViewController, bikeStation: BikeStation, toOrFrom: ToOrFrom)
 }
 
 class BikeStationPickerTableViewController: UITableViewController {
    
    var allBikeStationsSortedByDistance: [BikeStation] = []
-   var delegate: BikeStationPickerTableViewControllerDelegate?
+   weak var delegate: BikeStationPickerTableViewControllerDelegate?
    var toOrFrom: ToOrFrom!
    
    override func viewDidLoad() {

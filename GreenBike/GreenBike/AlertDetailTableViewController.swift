@@ -8,7 +8,7 @@
 
 import UIKit
 
-protocol AlertDetailTableViewControllerDelegate {
+protocol AlertDetailTableViewControllerDelegate: class {
    func didCancel(_ controller: AlertDetailTableViewController)
    func didAddNewAlert(_ controller: AlertDetailTableViewController, alert: Alert)
    func didEditAlert(_ controller: AlertDetailTableViewController, alert: Alert)
@@ -23,7 +23,7 @@ class AlertDetailTableViewController: UITableViewController {
    var weeklySchedule = AlertWeek()
    
    var alert: Alert?
-   var delegate: AlertDetailTableViewControllerDelegate?
+   weak var delegate: AlertDetailTableViewControllerDelegate?
    
    override func viewDidLoad() {
       super.viewDidLoad()
@@ -44,19 +44,30 @@ class AlertDetailTableViewController: UITableViewController {
    @IBAction func doneButtonPressed(_ sender: UIBarButtonItem) {
       if let alert = alert {
          // edit alert
-         alert.timeOfDay = timePicker.date
-         alert.fromBikeStation = fromBikeStation
-         alert.toBikeStation = toBikeStation
-         alert.weeklySchedule = weeklySchedule
-         delegate?.didEditAlert(self, alert: alert)
+         AlertController.shared.updateAlert(alert: alert,
+                                            newIsOn: alert.isOn
+                                            newTimeOfDay: timePicker.date,
+                                            newFromBikeStation: fromBikeStation,
+                                            newToBikeStation: toBikeStation,
+                                            newWeeklySchedule: weeklySchedule)
+//         alert.timeOfDay = timePicker.date
+//         alert.fromBikeStation = fromBikeStation
+//         alert.toBikeStation = toBikeStation
+//         alert.weeklySchedule = weeklySchedule
+//         delegate?.didEditAlert(self, alert: alert)
       } else {
          // add new alert
-         let alert = Alert(isOn: true,
-                           timeOfDay: timePicker.date,
-                           fromBikeStation: fromBikeStation,
-                           toBikeStation: toBikeStation,
-                           weeklySchedule: weeklySchedule)
-         delegate?.didAddNewAlert(self, alert: alert)
+         AlertController.shared.newAlert(isOn: true,
+                                         timeOfDay: timePicker.date,
+                                         fromBikeStation: fromBikeStation,
+                                         toBikeStation: toBikeStation,
+                                         weeklySchedule: weeklySchedule)
+//         let alert = Alert(isOn: true,
+//                           timeOfDay: timePicker.date,
+//                           fromBikeStation: fromBikeStation,
+//                           toBikeStation: toBikeStation,
+//                           weeklySchedule: weeklySchedule)
+//         delegate?.didAddNewAlert(self, alert: alert)
       }
       
    }

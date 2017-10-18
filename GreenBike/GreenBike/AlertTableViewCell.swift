@@ -8,9 +8,9 @@
 
 import UIKit
 
-//protocol AlertTableViewCellDelegate {
-//   func didToggleOnOffSwitch(for alert: Alert)
-//}
+protocol AlertTableViewCellDelegate: class {
+   func didToggleOnOffSwitch()
+}
 
 class AlertTableViewCell: UITableViewCell {
    // MARK: - IBOutlets
@@ -35,6 +35,8 @@ class AlertTableViewCell: UITableViewCell {
       return dateFormatter
    }
    
+   weak var delegate: AlertTableViewCellDelegate?
+   
    deinit {
       alert = nil
    }
@@ -42,7 +44,10 @@ class AlertTableViewCell: UITableViewCell {
    // MARK: - IBActions
    @IBAction func onOffSwitchToggled(_ sender: UISwitch) {
       guard let alert = alert else { return }
-      alert.toggleOnOff()
+      AlertController.shared.toggleAlert(alert: alert)
+      delegate?.didToggleOnOffSwitch()
+//      alert.toggleOnOff()
+//      delegate?.didToggleOnOffSwitch(for: alert)
    }
    
 }

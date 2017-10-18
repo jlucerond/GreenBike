@@ -16,9 +16,7 @@ class NotificationController {
    
    func createNotification(for alert: Alert) {
       notificationCenter.getNotificationSettings { (settings) in
-         if settings.authorizationStatus == .authorized {
-            print("do a notification here")
-            
+         if settings.authorizationStatus == .authorized {            
             let content = UNMutableNotificationContent()
             content.title = "Title"
             content.body = "Body"
@@ -30,10 +28,10 @@ class NotificationController {
             
             let trigger = UNCalendarNotificationTrigger(dateMatching: dateComponents, repeats: false)
             
-            let request = UNNotificationRequest(identifier: "MyNotification", content: content, trigger: trigger)
+            let request = UNNotificationRequest(identifier: "\(alert.uuid)", content: content, trigger: trigger)
             
             self.notificationCenter.add(request)
-            print("Scheduled: \(String(describing: request.trigger))")
+            print("Scheduled: \(alert.uuid.description)")
             
          } else {
             print("not registered for notifications")
@@ -43,9 +41,8 @@ class NotificationController {
    }
    
    func deleteNotification(for alert: Alert) {
-      notificationCenter.removePendingNotificationRequests(withIdentifiers: ["MyNotification"])
-      // FIXME: - this is not working as it should
-      print("Deleted alert")
+      notificationCenter.removePendingNotificationRequests(withIdentifiers: ["\(alert.uuid)"])
+      print("Deleted alert: \(alert.uuid.description)")
    }
    
    private init() {

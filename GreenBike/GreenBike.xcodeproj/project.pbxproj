@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		D8047A891F673D6C00212079 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8047A881F673D6C00212079 /* Constants.swift */; };
 		D8364CB11F90449200420F9F /* SaveController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8364CB01F90449200420F9F /* SaveController.swift */; };
+		D87286491F980F7C00E780E5 /* AlertController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D87286481F980F7C00E780E5 /* AlertController.swift */; };
 		D895D98D1F69AA1900C7FD36 /* BikeStationsTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D895D98C1F69AA1900C7FD36 /* BikeStationsTableViewController.swift */; };
 		D895D98F1F69C6AE00C7FD36 /* BikeStationTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D895D98E1F69C6AE00C7FD36 /* BikeStationTableViewCell.swift */; };
 		D89D43211F8D49690064202C /* AlertDetailTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D89D43201F8D49690064202C /* AlertDetailTableViewController.swift */; };
@@ -31,6 +32,7 @@
 /* Begin PBXFileReference section */
 		D8047A881F673D6C00212079 /* Constants.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
 		D8364CB01F90449200420F9F /* SaveController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SaveController.swift; sourceTree = "<group>"; };
+		D87286481F980F7C00E780E5 /* AlertController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlertController.swift; sourceTree = "<group>"; };
 		D895D98C1F69AA1900C7FD36 /* BikeStationsTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BikeStationsTableViewController.swift; sourceTree = "<group>"; };
 		D895D98E1F69C6AE00C7FD36 /* BikeStationTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BikeStationTableViewCell.swift; sourceTree = "<group>"; };
 		D89D43201F8D49690064202C /* AlertDetailTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlertDetailTableViewController.swift; sourceTree = "<group>"; };
@@ -166,6 +168,7 @@
 			isa = PBXGroup;
 			children = (
 				D8E61E071F67095A00A57157 /* BikeStationController.swift */,
+				D87286481F980F7C00E780E5 /* AlertController.swift */,
 			);
 			name = ModelController;
 			sourceTree = "<group>";
@@ -260,6 +263,7 @@
 				D8E61E061F67095000A57157 /* BikeStation.swift in Sources */,
 				D8364CB11F90449200420F9F /* SaveController.swift in Sources */,
 				D8A11B2A1F8ED56E0037EF55 /* AlertTableViewCell.swift in Sources */,
+				D87286491F980F7C00E780E5 /* AlertController.swift in Sources */,
 				D89D43211F8D49690064202C /* AlertDetailTableViewController.swift in Sources */,
 				D8E61DF01F66EF9D00A57157 /* AppDelegate.swift in Sources */,
 				D895D98D1F69AA1900C7FD36 /* BikeStationsTableViewController.swift in Sources */,
@@ -406,6 +410,8 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 53BVAZ8K9G;
 				INFOPLIST_FILE = GreenBike/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
@@ -413,6 +419,7 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_SWIFT3_OBJC_INFERENCE = Default;
 				SWIFT_VERSION = 4.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Debug;
 		};
@@ -420,6 +427,8 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 53BVAZ8K9G;
 				INFOPLIST_FILE = GreenBike/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
@@ -427,6 +436,7 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_SWIFT3_OBJC_INFERENCE = Default;
 				SWIFT_VERSION = 4.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Release;
 		};

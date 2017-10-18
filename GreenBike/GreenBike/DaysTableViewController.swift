@@ -8,14 +8,14 @@
 
 import UIKit
 
-protocol DaysTableViewControllerDelegate {
+protocol DaysTableViewControllerDelegate: class {
    func didSelectDay(day: AlertDay)
 }
 
 class DaysTableViewController: UITableViewController {
    
    var weeklySchedule: AlertWeek!
-   var delegate: DaysTableViewControllerDelegate?
+   weak var delegate: DaysTableViewControllerDelegate?
    
    override func viewDidLoad() {
       super.viewDidLoad()

@@ -10,16 +10,11 @@ import UIKit
 
 class AlertsMainTableViewController: UITableViewController {
    // FIXME: - Change this when figuring out loading/persisting data
-   var alerts: [Alert] = [] {
-      didSet {
-         // FIXME: - call save function from elsewhere
-         SaveController.shared.saveAlertsToDisk(alerts)
-      }
-   }
+   var alerts: [Alert] = []
    
    override func viewDidLoad() {
       super.viewDidLoad()
-      self.alerts = SaveController.shared.loadAlertsFromDisk()
+      self.alerts = AlertController.shared.alerts
    }
    
    // MARK: - Table view data source
@@ -31,6 +26,7 @@ class AlertsMainTableViewController: UITableViewController {
       let alert = alerts[indexPath.row]
       guard let cell = tableView.dequeueReusableCell(withIdentifier: "AlertCell", for: indexPath) as? AlertTableViewCell else { return UITableViewCell() }
       cell.alert = alert
+      cell.delegate = self
       
       return cell
    }
@@ -40,11 +36,13 @@ class AlertsMainTableViewController: UITableViewController {
                            forRowAt indexPath: IndexPath) {
       
       if editingStyle == .delete {
-         alerts.remove(at: indexPath.row)
-         tableView.reloadData()
+         guard let cell = tableView.cellForRow(at: indexPath) as? AlertTableViewCell,
+         let alert = cell.alert else { return }
+         AlertController.shared.deleteAlert(alert: alert)
+   //         cell.alert = nil
+         updateAlerts()
       }
    }
-   
 }
 
 // MARK: - Navigation
@@ -76,20 +74,33 @@ extension AlertsMainTableViewController: AlertDetailTableViewControllerDelegate 
    }
    
    func didAddNewAlert(_ controller: AlertDetailTableViewController, alert: Alert) {
-      self.alerts.append(alert)
-      self.tableView.reloadData()
+//      alerts.append(alert)
+//      alert.scheduleAlert()
+//      tableView.reloadData()
+      updateAlerts()
       dismiss(animated: true, completion: nil)
    }
    
    func didEditAlert(_ controller: AlertDetailTableViewController, alert: Alert) {
-      for eachAlert in alerts {
-         if alert == eachAlert {
-            let index = alerts.index(of: eachAlert)!
-            // found myself
-            alerts[index] = alert
-         }
-      }
-      tableView.reloadData()
+//      updateAlert(alert)
+//      tableView.reloadData()
+      updateAlerts()
       dismiss(animated: true, completion: nil)
+   }
+}
+
+// MARK: - AlertTableViewCellDelegate Methods
+extension AlertsMainTableViewController: AlertTableViewCellDelegate {   
+   func didToggleOnOffSwitch() {
+      updateAlerts()
+   }
+
+}
+
+// MARK: - Helper Methods
+extension AlertsMainTableViewController {
+   func updateAlerts() {
+      alerts = AlertController.shared.alerts
+      tableView.reloadData()
    }
 }

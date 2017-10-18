@@ -19,7 +19,7 @@ fileprivate enum KeysForSaving {
 }
 
 class Alert: NSObject, Codable {
-   private(set) var isOn: Bool
+   var isOn: Bool
    var timeOfDay: Date
    var fromBikeStation: BikeStation?
    var toBikeStation: BikeStation?
@@ -42,24 +42,19 @@ class Alert: NSObject, Codable {
       self.uuid = UUID()
       
       super.init()
-      
-      self.scheduleAlert()
    }
    
    deinit {
       NotificationController.shared.deleteNotification(for: self)
-      print("Deinit: \(self.timeOfDay.description)")
-   }
-   
-   func toggleOnOff() {
-      isOn = !isOn
-      scheduleAlert()
+      print("Deinit: \(uuid.uuidString)")
    }
    
    func scheduleAlert() {
-      // FIXME: - this needs to be updated to work on specific repeated days
       if isOn {
+         NotificationController.shared.deleteNotification(for: self)
          NotificationController.shared.createNotification(for: self)
+      } else {
+         NotificationController.shared.deleteNotification(for: self)
       }
    }
    
