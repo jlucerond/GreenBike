@@ -289,14 +289,14 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" red="0.047151904549999998" green="0.1512607336" blue="0.34912750120000002" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                         <prototypes>
-                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="AlertCell" rowHeight="120" id="GHE-nQ-k5S" userLabel="AlertCell" customClass="AlertTableViewCell" customModule="GreenBike" customModuleProvider="target">
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" reuseIdentifier="AlertCell" rowHeight="120" id="GHE-nQ-k5S" userLabel="AlertCell" customClass="AlertTableViewCell" customModule="GreenBike" customModuleProvider="target">
                                 <rect key="frame" x="0.0" y="28" width="375" height="120"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="GHE-nQ-k5S" id="Zwo-6O-PxA">
                                     <rect key="frame" x="0.0" y="0.0" width="375" height="119.5"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
-                                        <stackView opaque="NO" contentMode="scaleToFill" alignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="XWn-d6-oHf">
+                                        <stackView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="252" verticalHuggingPriority="252" alignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="XWn-d6-oHf">
                                             <rect key="frame" x="8" y="7.5" width="359" height="105"/>
                                             <subviews>
                                                 <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="1" translatesAutoresizingMaskIntoConstraints="NO" id="Rbo-Uf-EuH" userLabel="Alarm Info Stack">

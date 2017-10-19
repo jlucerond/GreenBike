@@ -46,7 +46,7 @@ class Alert: NSObject, Codable {
    
    deinit {
       NotificationController.shared.deleteNotification(for: self)
-      print("Deinit: \(uuid.uuidString)")
+      print("Deinit: \(uuid)")
    }
    
    func scheduleAlert() {

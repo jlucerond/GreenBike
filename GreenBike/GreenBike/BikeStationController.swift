@@ -36,6 +36,32 @@ class BikeStationController: NSObject {
       }
    }
    
+   func requestStatusOf(_ toBikeStation: BikeStation?,
+                        _ fromBikeStation: BikeStation?,
+                        completion: @escaping (_ success: Bool, _ toBikeStation: BikeStation?, _ fromBikeStation: BikeStation?) -> Void) {
+      NetworkController.shared.getBikeInfoFromWeb { (success, arrayOfStations) in
+         if !success {
+            print("did not get bike info from Web")
+            completion(false, nil, nil)
+         } else {
+            var returnToBikeStation: BikeStation?
+            var returnFromBikeStation: BikeStation?
+            
+            let allBikeStations = arrayOfStations.flatMap{ BikeStation(dictionary: $0) }
+            
+            for station in allBikeStations {
+               // FIXME: - I need to make the 'toBikeStation' and 'fromBikeStation' non-optional
+               if station == toBikeStation { returnToBikeStation = station  }
+               if station == fromBikeStation { returnFromBikeStation = station }
+            }
+            
+            completion(true, returnToBikeStation, returnFromBikeStation)
+            print("I just returned: \(returnToBikeStation?.name) & \(returnFromBikeStation?.name)")
+         }
+      }
+      
+   }
+   
    private override init() {
       super.init()
       refreshBikeStationsStatuses()

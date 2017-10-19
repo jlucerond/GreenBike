@@ -51,6 +51,10 @@ class BikeStation: NSObject, Codable {
       self.returning = returning
    }
    
+   static func ==(lhs: BikeStation, rhs: BikeStation) -> Bool {
+      return lhs.name == rhs.name && lhs.latitude == rhs.latitude && lhs.longitude == rhs.longitude
+   }
+   
 }
 
 extension BikeStation: MKAnnotation {

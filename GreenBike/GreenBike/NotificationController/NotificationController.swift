@@ -16,22 +16,33 @@ class NotificationController {
    
    func createNotification(for alert: Alert) {
       notificationCenter.getNotificationSettings { (settings) in
-         if settings.authorizationStatus == .authorized {            
-            let content = UNMutableNotificationContent()
-            content.title = "Title"
-            content.body = "Body"
-            content.sound = UNNotificationSound.default()
+         if settings.authorizationStatus == .authorized {
             
-            // FIXME: - chnage time interval to something else
-            let calendar = Calendar(identifier: .gregorian)
-            let dateComponents = calendar.dateComponents([.hour, .minute], from: alert.timeOfDay)
+            // FIXME: - I think this might just be getting the current status of the bikes and not at the desired time
+            print("\(alert.toBikeStation)")
+            print("\(alert.fromBikeStation)")
             
-            let trigger = UNCalendarNotificationTrigger(dateMatching: dateComponents, repeats: false)
+            BikeStationController.shared.requestStatusOf(alert.toBikeStation, alert.fromBikeStation, completion: { (success, station1, station2) in
+               
+               let content = UNMutableNotificationContent()
+               content.title = "\(station1?.name)"
+               content.subtitle = "\(station2?.name)"
+               content.body = "Body"
+               content.sound = UNNotificationSound.default()
+               
+               // FIXME: - right now does not repeat alerts
+               // FIXME: - right now does not turn off after alert goes off
+               let calendar = Calendar(identifier: .gregorian)
+               let dateComponents = calendar.dateComponents([.hour, .minute], from: alert.timeOfDay)
+               
+               let trigger = UNCalendarNotificationTrigger(dateMatching: dateComponents, repeats: false)
+               
+               let request = UNNotificationRequest(identifier: "\(alert.uuid)", content: content, trigger: trigger)
+               
+               self.notificationCenter.add(request)
+               print("Scheduled: \(alert.uuid)")
+            })
             
-            let request = UNNotificationRequest(identifier: "\(alert.uuid)", content: content, trigger: trigger)
-            
-            self.notificationCenter.add(request)
-            print("Scheduled: \(alert.uuid.description)")
             
          } else {
             print("not registered for notifications")
@@ -42,7 +53,14 @@ class NotificationController {
    
    func deleteNotification(for alert: Alert) {
       notificationCenter.removePendingNotificationRequests(withIdentifiers: ["\(alert.uuid)"])
-      print("Deleted alert: \(alert.uuid.description)")
+      print("Deleted alert: \(alert.uuid)")
+
+      notificationCenter.removeAllPendingNotificationRequests()
+      notificationCenter.getPendingNotificationRequests { (requests) in
+         for request in requests {
+            print("old request: \(request.identifier)")
+         }
+      }
    }
    
    private init() {

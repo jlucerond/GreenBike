@@ -10,23 +10,25 @@ import UIKit
 
 class AlertsMainTableViewController: UITableViewController {
    // FIXME: - Change this when figuring out loading/persisting data
-   var alerts: [Alert] = []
    
    override func viewDidLoad() {
       super.viewDidLoad()
-      self.alerts = AlertController.shared.alerts
+   }
+   
+   override func viewWillAppear(_ animated: Bool) {
+      super.viewWillAppear(animated)
+      tableView.reloadData()
    }
    
    // MARK: - Table view data source
    override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-      return alerts.count
+      return AlertController.shared.alerts.count
    }
    
    override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-      let alert = alerts[indexPath.row]
-      guard let cell = tableView.dequeueReusableCell(withIdentifier: "AlertCell", for: indexPath) as? AlertTableViewCell else { return UITableViewCell() }
+      let alert = AlertController.shared.alerts[indexPath.row]
+      guard let cell = tableView.dequeueReusableCell(withIdentifier: "AlertCell", for: indexPath) as? AlertTableViewCell else { return AlertTableViewCell() }
       cell.alert = alert
-      cell.delegate = self
       
       return cell
    }
@@ -36,11 +38,13 @@ class AlertsMainTableViewController: UITableViewController {
                            forRowAt indexPath: IndexPath) {
       
       if editingStyle == .delete {
-         guard let cell = tableView.cellForRow(at: indexPath) as? AlertTableViewCell,
-         let alert = cell.alert else { return }
+         let alert = AlertController.shared.alerts[indexPath.row]
          AlertController.shared.deleteAlert(alert: alert)
-   //         cell.alert = nil
-         updateAlerts()
+         
+         guard let cell = tableView.cellForRow(at: indexPath) as? AlertTableViewCell else { return }
+         cell.alert = nil
+         
+         tableView.deleteRows(at: [indexPath], with: .automatic)
       }
    }
 }
@@ -53,54 +57,14 @@ extension AlertsMainTableViewController {
          guard let navVC = segue.destination as? UINavigationController,
             let alertDetailVC = navVC.topViewController as? AlertDetailTableViewController else { return }
          
-         alertDetailVC.delegate = self
          alertDetailVC.title = "Add Alert"
       } else if segue.identifier == "editAlert" {
          guard let navVC = segue.destination as? UINavigationController,
             let alertDetailVC = navVC.topViewController as? AlertDetailTableViewController,
             let indexPath = tableView.indexPathForSelectedRow else { return }
          
-         alertDetailVC.delegate = self
          alertDetailVC.title = "Edit Alert"
-         alertDetailVC.alert = alerts[indexPath.row]
+         alertDetailVC.alert = AlertController.shared.alerts[indexPath.row]
       }
-   }
-}
-
-// MARK: - AlertDetailTableViewControllerDelegate Methods
-extension AlertsMainTableViewController: AlertDetailTableViewControllerDelegate {
-   func didCancel(_ controller: AlertDetailTableViewController) {
-      dismiss(animated: true, completion: nil)
-   }
-   
-   func didAddNewAlert(_ controller: AlertDetailTableViewController, alert: Alert) {
-//      alerts.append(alert)
-//      alert.scheduleAlert()
-//      tableView.reloadData()
-      updateAlerts()
-      dismiss(animated: true, completion: nil)
-   }
-   
-   func didEditAlert(_ controller: AlertDetailTableViewController, alert: Alert) {
-//      updateAlert(alert)
-//      tableView.reloadData()
-      updateAlerts()
-      dismiss(animated: true, completion: nil)
-   }
-}
-
-// MARK: - AlertTableViewCellDelegate Methods
-extension AlertsMainTableViewController: AlertTableViewCellDelegate {   
-   func didToggleOnOffSwitch() {
-      updateAlerts()
-   }
-
-}
-
-// MARK: - Helper Methods
-extension AlertsMainTableViewController {
-   func updateAlerts() {
-      alerts = AlertController.shared.alerts
-      tableView.reloadData()
    }
 }

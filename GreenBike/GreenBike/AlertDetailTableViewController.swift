@@ -8,12 +8,6 @@
 
 import UIKit
 
-protocol AlertDetailTableViewControllerDelegate: class {
-   func didCancel(_ controller: AlertDetailTableViewController)
-   func didAddNewAlert(_ controller: AlertDetailTableViewController, alert: Alert)
-   func didEditAlert(_ controller: AlertDetailTableViewController, alert: Alert)
-}
-
 class AlertDetailTableViewController: UITableViewController {
    
    @IBOutlet weak var timePicker: UIDatePicker!
@@ -23,7 +17,6 @@ class AlertDetailTableViewController: UITableViewController {
    var weeklySchedule = AlertWeek()
    
    var alert: Alert?
-   weak var delegate: AlertDetailTableViewControllerDelegate?
    
    override func viewDidLoad() {
       super.viewDidLoad()
@@ -45,16 +38,13 @@ class AlertDetailTableViewController: UITableViewController {
       if let alert = alert {
          // edit alert
          AlertController.shared.updateAlert(alert: alert,
-                                            newIsOn: alert.isOn
+                                            newIsOn: alert.isOn,
                                             newTimeOfDay: timePicker.date,
                                             newFromBikeStation: fromBikeStation,
                                             newToBikeStation: toBikeStation,
                                             newWeeklySchedule: weeklySchedule)
-//         alert.timeOfDay = timePicker.date
-//         alert.fromBikeStation = fromBikeStation
-//         alert.toBikeStation = toBikeStation
-//         alert.weeklySchedule = weeklySchedule
-//         delegate?.didEditAlert(self, alert: alert)
+
+         dismiss(animated: true, completion: nil)
       } else {
          // add new alert
          AlertController.shared.newAlert(isOn: true,
@@ -62,18 +52,15 @@ class AlertDetailTableViewController: UITableViewController {
                                          fromBikeStation: fromBikeStation,
                                          toBikeStation: toBikeStation,
                                          weeklySchedule: weeklySchedule)
-//         let alert = Alert(isOn: true,
-//                           timeOfDay: timePicker.date,
-//                           fromBikeStation: fromBikeStation,
-//                           toBikeStation: toBikeStation,
-//                           weeklySchedule: weeklySchedule)
-//         delegate?.didAddNewAlert(self, alert: alert)
+
+         dismiss(animated: true, completion: nil)
+
       }
       
    }
    
    @IBAction func cancelButtonPressed(_ sender: UIBarButtonItem) {
-      delegate?.didCancel(self)
+      dismiss(animated: true, completion: nil)
    }
    
 }

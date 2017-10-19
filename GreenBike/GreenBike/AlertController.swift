@@ -9,13 +9,9 @@
 import Foundation
 
 class AlertController {
-   // CRUD
+
    static let shared = AlertController()
-   var alerts: [Alert] = [] {
-      didSet {
-         SaveController.shared.saveAlertsToDisk(alerts)
-      }
-   }
+   var alerts: [Alert] = []
    
    private init() {
       alerts = SaveController.shared.loadAlertsFromDisk()
@@ -34,6 +30,8 @@ class AlertController {
       
       alert.scheduleAlert()
       alerts.append(alert)
+      SaveController.shared.saveAlertsToDisk(alerts)
+
    }
    
    func updateAlert(alert: Alert,
@@ -67,16 +65,19 @@ class AlertController {
       
       alert.scheduleAlert()
       alerts[index] = alert
+      SaveController.shared.saveAlertsToDisk(alerts)
    }
    
    func toggleAlert(alert: Alert) {
       alert.isOn = !alert.isOn
       alert.scheduleAlert()
+      
+      SaveController.shared.saveAlertsToDisk(alerts)
    }
    
    func deleteAlert(alert: Alert) {
       guard let index = alerts.index(of: alert) else { return }
       alerts.remove(at: index)
-      // FIXME: - does this delete the notification
+      SaveController.shared.saveAlertsToDisk(alerts)
    }
 }

@@ -8,9 +8,9 @@
 
 import UIKit
 
-protocol AlertTableViewCellDelegate: class {
-   func didToggleOnOffSwitch()
-}
+//protocol AlertTableViewCellDelegate: class {
+//   func didToggleOnOffSwitch()
+//}
 
 class AlertTableViewCell: UITableViewCell {
    // MARK: - IBOutlets
@@ -35,19 +35,15 @@ class AlertTableViewCell: UITableViewCell {
       return dateFormatter
    }
    
-   weak var delegate: AlertTableViewCellDelegate?
-   
-   deinit {
-      alert = nil
-   }
-
    // MARK: - IBActions
    @IBAction func onOffSwitchToggled(_ sender: UISwitch) {
       guard let alert = alert else { return }
       AlertController.shared.toggleAlert(alert: alert)
-      delegate?.didToggleOnOffSwitch()
-//      alert.toggleOnOff()
-//      delegate?.didToggleOnOffSwitch(for: alert)
+   }
+   
+   override func prepareForReuse() {
+      super.prepareForReuse()
+      alert = nil
    }
    
 }
@@ -61,7 +57,7 @@ extension AlertTableViewCell {
          timeLabel.text = valueAndSymbol.number
          amPmLabel.text = valueAndSymbol.amPmSymbol
       } else {
-         // this should not run ever
+         // this should never run
          timeLabel.text = dateFormatter.string(from: alert.timeOfDay)
          amPmLabel.text = ""
       }
@@ -84,6 +80,7 @@ extension AlertTableViewCell {
          repeatsLabel.text = alert.weeklySchedule.stringOfDaysThatAlertShouldRepeat
       }
    }
+
 }
 
 extension DateFormatter {
