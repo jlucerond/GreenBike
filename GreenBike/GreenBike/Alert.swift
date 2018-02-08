@@ -20,7 +20,7 @@ fileprivate enum KeysForSaving {
 
 class Alert: NSObject, Codable {
    var isOn: Bool
-   var timeOfDay: Date
+   var timeOfDay: AlertTime
    var fromBikeStation: BikeStation?
    var toBikeStation: BikeStation?
    var weeklySchedule: AlertWeek
@@ -30,7 +30,7 @@ class Alert: NSObject, Codable {
    }
    
    init(isOn: Bool,
-        timeOfDay: Date,
+        timeOfDay: AlertTime,
         fromBikeStation: BikeStation?,
         toBikeStation: BikeStation?,
         weeklySchedule: AlertWeek) {
@@ -60,6 +60,28 @@ class Alert: NSObject, Codable {
    
    static func ==(lhs: Alert, rhs: Alert) -> Bool {
       return lhs.uuid == rhs.uuid
+   }
+}
+
+class AlertTime: NSObject, Codable, Comparable {
+   let hour: Int
+   let minute: Int
+   
+   init(hour: Int, minute: Int) {
+      self.hour = hour
+      self.minute = minute
+   }
+   
+   static func ==(lhs: AlertTime, rhs: AlertTime) -> Bool {
+      return lhs.hour == rhs.hour && lhs.minute == rhs.minute
+   }
+   
+   static func <(lhs: AlertTime, rhs: AlertTime) -> Bool {
+      if lhs.hour != rhs.hour {
+         return lhs.hour < rhs.hour
+      } else {
+         return lhs.minute < rhs.minute
+      }
    }
 }
 

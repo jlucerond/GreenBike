@@ -20,8 +20,14 @@ class AlertDetailTableViewController: UITableViewController {
    
    override func viewDidLoad() {
       super.viewDidLoad()
+      title = (alert == nil) ? "Add Alarm" : "Edit Alarm"
       if let alert = alert {
-         self.timePicker.date = alert.timeOfDay
+         
+         let formatter = DateFormatter()
+         formatter.dateFormat = "yyyy/MM/dd HH:mm"
+         guard let date = formatter.date(from: "2017/10/06 \(alert.timeOfDay.hour):\(alert.timeOfDay.minute)") else { print("Can't display date"); return }
+         
+         self.timePicker.setDate(date, animated: true)
          self.fromBikeStation = alert.fromBikeStation
          self.toBikeStation = alert.toBikeStation
          self.weeklySchedule = alert.weeklySchedule
@@ -39,7 +45,7 @@ class AlertDetailTableViewController: UITableViewController {
          // edit alert
          AlertController.shared.updateAlert(alert: alert,
                                             newIsOn: alert.isOn,
-                                            newTimeOfDay: timePicker.date,
+                                            newTimeFrom: timePicker.date,
                                             newFromBikeStation: fromBikeStation,
                                             newToBikeStation: toBikeStation,
                                             newWeeklySchedule: weeklySchedule)
@@ -47,11 +53,10 @@ class AlertDetailTableViewController: UITableViewController {
          dismiss(animated: true, completion: nil)
       } else {
          // add new alert
-         AlertController.shared.newAlert(isOn: true,
-                                         timeOfDay: timePicker.date,
-                                         fromBikeStation: fromBikeStation,
-                                         toBikeStation: toBikeStation,
-                                         weeklySchedule: weeklySchedule)
+         AlertController.shared.createNewAlert(timeFrom: timePicker.date,
+                                               fromBikeStation: fromBikeStation,
+                                               toBikeStation: toBikeStation,
+                                               weeklySchedule: weeklySchedule)
 
          dismiss(animated: true, completion: nil)
 

@@ -14,7 +14,10 @@ class NotificationController {
    static let shared = NotificationController()
    private let notificationCenter = UNUserNotificationCenter.current()
    
+   
    func createNotification(for alert: Alert) {
+      print("Need to fix this function next")
+      /*
       notificationCenter.getNotificationSettings { (settings) in
          if settings.authorizationStatus == .authorized {
             
@@ -32,9 +35,9 @@ class NotificationController {
                
                // FIXME: - right now does not repeat alerts
                // FIXME: - right now does not turn off after alert goes off
-               let calendar = Calendar.autoupdatingCurrent
-               let dateComponents = calendar.dateComponents([.hour, .minute], from: alert.timeOfDay)
-               dateComponents.day
+//               let calendar = Calendar.autoupdatingCurrent
+//               let dateComponents = calendar.dateComponents([.hour, .minute], from: alert.timeOfDay)
+//               dateComponents.day
                
                // FIXME: - create up to 7 alerts that include .weekday, .hour, .minute and have it repeat?
                
@@ -51,7 +54,7 @@ class NotificationController {
             print("not registered for notifications")
          }
       }
-      
+      */
    }
    
    func deleteNotification(for alert: Alert) {

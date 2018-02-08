@@ -17,12 +17,15 @@ class AlertController {
       alerts = SaveController.shared.loadAlertsFromDisk()
    }
    
-   func newAlert(isOn: Bool,
-                 timeOfDay: Date,
-                 fromBikeStation: BikeStation?,
-                 toBikeStation: BikeStation?,
-                 weeklySchedule: AlertWeek) {
-      let alert = Alert(isOn: isOn,
+   func createNewAlert(timeFrom date: Date,
+                       fromBikeStation: BikeStation?,
+                       toBikeStation: BikeStation?,
+                       weeklySchedule: AlertWeek) {
+      
+      let dateComponents = Calendar.autoupdatingCurrent.dateComponents([.hour, .minute], from: date)
+      let timeOfDay = AlertTime(hour: dateComponents.hour!, minute: dateComponents.minute!)
+      
+      let alert = Alert(isOn: true,
                         timeOfDay: timeOfDay,
                         fromBikeStation: fromBikeStation,
                         toBikeStation: toBikeStation,
@@ -30,63 +33,45 @@ class AlertController {
       
       alerts.append(alert)
       alert.scheduleAlert()
-      sortAlerts()
-      SaveController.shared.saveAlertsToDisk(alerts)
-
+      sortThenSaveAlerts()
    }
    
    func updateAlert(alert: Alert,
-                    newIsOn: Bool?,
-                    newTimeOfDay: Date?,
+                    newIsOn: Bool,
+                    newTimeFrom date: Date,
                     newFromBikeStation: BikeStation?,
                     newToBikeStation: BikeStation?,
-                    newWeeklySchedule: AlertWeek?) {
+                    newWeeklySchedule: AlertWeek) {
       
-      guard let index = alerts.index(of: alert) else { return }
+      let dateComponents = Calendar.autoupdatingCurrent.dateComponents([.hour, .minute], from: date)
+      let newTimeOfDay = AlertTime(hour: dateComponents.hour!, minute: dateComponents.minute!)
 
-      if let newIsOn = newIsOn {
-         alert.isOn = newIsOn
-      }
-      
-      if let newTimeOfDay = newTimeOfDay {
-         alert.timeOfDay = newTimeOfDay
-      }
-      
-      if let newFromBikeStation = newFromBikeStation {
-         alert.fromBikeStation = newFromBikeStation
-      }
-      
-      if let newToBikeStation = newToBikeStation {
-         alert.toBikeStation = newToBikeStation
-      }
-      
-      if let newWeeklySchedule = newWeeklySchedule {
-         alert.weeklySchedule = newWeeklySchedule
-      }
+      alert.isOn = newIsOn
+      alert.timeOfDay = newTimeOfDay
+      alert.fromBikeStation = newFromBikeStation
+      alert.toBikeStation = newToBikeStation
+      alert.weeklySchedule = newWeeklySchedule
       
       alert.scheduleAlert()
-      alerts[index] = alert
-      sortAlerts()
-      SaveController.shared.saveAlertsToDisk(alerts)
+      sortThenSaveAlerts()
    }
    
    func toggleAlert(alert: Alert) {
       alert.isOn = !alert.isOn
       alert.scheduleAlert()
-      
-      SaveController.shared.saveAlertsToDisk(alerts)
+      sortThenSaveAlerts()
    }
    
    func deleteAlert(alert: Alert) {
       guard let index = alerts.index(of: alert) else { return }
       alerts.remove(at: index)
-      sortAlerts()
-      SaveController.shared.saveAlertsToDisk(alerts)
+      sortThenSaveAlerts()
    }
    
-   private func sortAlerts() {
-      alerts.sort { (alarm1, alarm2) -> Bool in
-         return alarm1.timeOfDay < alarm2.timeOfDay
+   private func sortThenSaveAlerts() {
+      alerts.sort { (alert1, alert2) -> Bool in
+         return alert1.timeOfDay < alert2.timeOfDay
       }
+      SaveController.shared.saveAlertsToDisk(alerts)
    }
 }

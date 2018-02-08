@@ -52,18 +52,11 @@ class AlertsMainTableViewController: UITableViewController {
 // MARK: - Navigation
 extension AlertsMainTableViewController {
    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-      if segue.identifier == "newAlert" {
-         
-         guard let navVC = segue.destination as? UINavigationController,
-            let alertDetailVC = navVC.topViewController as? AlertDetailTableViewController else { return }
-         
-         alertDetailVC.title = "Add Alert"
-      } else if segue.identifier == "editAlert" {
+      if segue.identifier == "editAlert" {
          guard let navVC = segue.destination as? UINavigationController,
             let alertDetailVC = navVC.topViewController as? AlertDetailTableViewController,
             let indexPath = tableView.indexPathForSelectedRow else { return }
          
-         alertDetailVC.title = "Edit Alert"
          alertDetailVC.alert = AlertController.shared.alerts[indexPath.row]
       }
    }

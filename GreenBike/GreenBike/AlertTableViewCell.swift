@@ -54,12 +54,12 @@ extension AlertTableViewCell {
       guard let alert = alert else { return }
       onOffSwitch.isOn = alert.isOn
       
-      if let valueAndSymbol = dateFormatter.valueAndSymbol(date: alert.timeOfDay) {
+      if let valueAndSymbol = dateFormatter.valueAndSymbol(alertTime: alert.timeOfDay) {
          timeLabel.text = valueAndSymbol.number
          amPmLabel.text = valueAndSymbol.amPmSymbol
       } else {
          // this should never run
-         timeLabel.text = dateFormatter.string(from: alert.timeOfDay)
+         timeLabel.text = ""
          amPmLabel.text = ""
       }
       
@@ -85,15 +85,19 @@ extension AlertTableViewCell {
 }
 
 extension DateFormatter {
-   func valueAndSymbol(date : Date) -> (number: String, amPmSymbol: String)? {
-      let dateFormatter = DateFormatter()
-      dateFormatter.timeStyle = .short
-      
-      let dateAsString = dateFormatter.string(from: date)
-      let twoWords = dateAsString.components(separatedBy: " ")
-      guard twoWords.count == 2 else { print("trouble with time") ; return nil }
-      
-      return (twoWords[0], twoWords[1])
+   func valueAndSymbol(alertTime : AlertTime) -> (number: String, amPmSymbol: String)? {
+      switch alertTime.hour {
+      case 0:
+         return (String(format: "12:%02i", alertTime.minute), "am")
+      case 1...11:
+         return (String(format: "%i:%02i", alertTime.hour, alertTime.minute), "am")
+      case 12:
+         return (String(format: "12:%02i", alertTime.minute), "pm")
+      case 13...23:
+         return (String(format: "%i:%02i", (alertTime.hour - 12), alertTime.minute), "pm")
+      default:
+         return nil
+      }
    }
 }
 
