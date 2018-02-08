@@ -16,6 +16,7 @@ class NotificationController {
    
    
    func createNotification(for alert: Alert) {
+      deleteNotification(for: alert)
       print("Need to fix this function next")
       /*
       notificationCenter.getNotificationSettings { (settings) in
@@ -63,7 +64,7 @@ class NotificationController {
 
       notificationCenter.getPendingNotificationRequests { (requests) in
          for request in requests {
-            print("old request: \(request.identifier)")
+            print("Requests still pending: \(request.identifier)")
          }
       }
    }

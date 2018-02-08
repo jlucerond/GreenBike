@@ -68,6 +68,7 @@ class AlertDetailTableViewController: UITableViewController {
       dismiss(animated: true, completion: nil)
    }
    
+   
 }
 
 // MARK: - Navigation
@@ -134,9 +135,9 @@ extension AlertDetailTableViewController {
    }
    
    func setUpLabels() {
-         guard let fromCell = tableView.cellForRow(at: IndexPath(row: 1, section: 0)),
-         let toCell = tableView.cellForRow(at: IndexPath(row: 2, section: 0)),
-         let repeatCell = tableView.cellForRow(at: IndexPath(row: 3, section: 0)) else { return }
+         guard let fromCell = tableView.cellForRow(at: IndexPath(row: 0, section: 1)),
+         let toCell = tableView.cellForRow(at: IndexPath(row: 1, section: 1)),
+         let repeatCell = tableView.cellForRow(at: IndexPath(row: 0, section: 2)) else { return }
       fromCell.detailTextLabel?.text = fromBikeStation?.name ?? ""
       toCell.detailTextLabel?.text = toBikeStation?.name ?? ""
       repeatCell.detailTextLabel?.text = weeklySchedule.stringOfDaysThatAlertShouldRepeat

@@ -51,7 +51,6 @@ class Alert: NSObject, Codable {
    
    func scheduleAlert() {
       if isOn {
-         NotificationController.shared.deleteNotification(for: self)
          NotificationController.shared.createNotification(for: self)
       } else {
          NotificationController.shared.deleteNotification(for: self)
