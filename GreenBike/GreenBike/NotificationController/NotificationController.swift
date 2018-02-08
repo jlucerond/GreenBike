@@ -32,10 +32,13 @@ class NotificationController {
                
                // FIXME: - right now does not repeat alerts
                // FIXME: - right now does not turn off after alert goes off
-               let calendar = Calendar(identifier: .gregorian)
+               let calendar = Calendar.autoupdatingCurrent
                let dateComponents = calendar.dateComponents([.hour, .minute], from: alert.timeOfDay)
+               dateComponents.day
                
-               let trigger = UNCalendarNotificationTrigger(dateMatching: dateComponents, repeats: false)
+               // FIXME: - create up to 7 alerts that include .weekday, .hour, .minute and have it repeat?
+               
+               let trigger = UNCalendarNotificationTrigger(dateMatching: dateComponents, repeats: alert.shouldRepeat)
                
                let request = UNNotificationRequest(identifier: "\(alert.uuid)", content: content, trigger: trigger)
                
@@ -55,7 +58,6 @@ class NotificationController {
       notificationCenter.removePendingNotificationRequests(withIdentifiers: ["\(alert.uuid)"])
       print("Deleted alert: \(alert.uuid)")
 
-      notificationCenter.removeAllPendingNotificationRequests()
       notificationCenter.getPendingNotificationRequests { (requests) in
          for request in requests {
             print("old request: \(request.identifier)")

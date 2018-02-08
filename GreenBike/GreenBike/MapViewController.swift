@@ -103,11 +103,11 @@ extension MapViewController {
       mapView.showAnnotations(allItemsToShow, animated: true)
    }
 }
-
-// MARK: - Core Location Methods
-extension MapViewController: CLLocationManagerDelegate {
-   
-}
+//
+//// MARK: - Core Location Methods
+//extension MapViewController: CLLocationManagerDelegate {
+//   
+//}
 
 // MARK: - Mapview Delegate Methods
 extension MapViewController: MKMapViewDelegate {

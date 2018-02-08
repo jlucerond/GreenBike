@@ -28,8 +28,9 @@ class AlertController {
                         toBikeStation: toBikeStation,
                         weeklySchedule: weeklySchedule)
       
-      alert.scheduleAlert()
       alerts.append(alert)
+      alert.scheduleAlert()
+      sortAlerts()
       SaveController.shared.saveAlertsToDisk(alerts)
 
    }
@@ -65,6 +66,7 @@ class AlertController {
       
       alert.scheduleAlert()
       alerts[index] = alert
+      sortAlerts()
       SaveController.shared.saveAlertsToDisk(alerts)
    }
    
@@ -78,6 +80,13 @@ class AlertController {
    func deleteAlert(alert: Alert) {
       guard let index = alerts.index(of: alert) else { return }
       alerts.remove(at: index)
+      sortAlerts()
       SaveController.shared.saveAlertsToDisk(alerts)
+   }
+   
+   private func sortAlerts() {
+      alerts.sort { (alarm1, alarm2) -> Bool in
+         return alarm1.timeOfDay < alarm2.timeOfDay
+      }
    }
 }

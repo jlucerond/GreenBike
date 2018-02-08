@@ -36,27 +36,35 @@ class BikeStationController: NSObject {
       }
    }
    
-   func requestStatusOf(_ toBikeStation: BikeStation?,
-                        _ fromBikeStation: BikeStation?,
-                        completion: @escaping (_ success: Bool, _ toBikeStation: BikeStation?, _ fromBikeStation: BikeStation?) -> Void) {
+   func requestStatusOf(_ fromBikeStation: BikeStation?,
+                        _ toBikeStation: BikeStation?,
+                        completion: @escaping (_ success: Bool, _ fromBikeStation: BikeStation?, _ toBikeStation: BikeStation?) -> Void) {
       NetworkController.shared.getBikeInfoFromWeb { (success, arrayOfStations) in
          if !success {
             print("did not get bike info from Web")
             completion(false, nil, nil)
          } else {
-            var returnToBikeStation: BikeStation?
             var returnFromBikeStation: BikeStation?
+            var returnToBikeStation: BikeStation?
             
             let allBikeStations = arrayOfStations.flatMap{ BikeStation(dictionary: $0) }
             
-            for station in allBikeStations {
-               // FIXME: - I need to make the 'toBikeStation' and 'fromBikeStation' non-optional
-               if station == toBikeStation { returnToBikeStation = station  }
-               if station == fromBikeStation { returnFromBikeStation = station }
+            if let fromBikeStation = fromBikeStation {
+               for station in allBikeStations {
+                  if station == fromBikeStation { returnFromBikeStation = station }
+               }
             }
             
+            if let toBikeStation = toBikeStation {
+               for station in allBikeStations {
+                  if station == toBikeStation { returnToBikeStation = station  }
+               }
+            }
+            
+            // FIXME: - this might need to get called when the user pulls the app back up
+            
             completion(true, returnToBikeStation, returnFromBikeStation)
-            print("I just returned: \(returnToBikeStation?.name) & \(returnFromBikeStation?.name)")
+            print("I just returned: \(returnFromBikeStation?.name) & \(returnToBikeStation?.name)")
          }
       }
       

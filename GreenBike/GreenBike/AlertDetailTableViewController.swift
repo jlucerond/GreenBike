@@ -129,7 +129,7 @@ extension AlertDetailTableViewController {
    }
    
    func setUpLabels() {
-      guard let fromCell = tableView.cellForRow(at: IndexPath(row: 1, section: 0)),
+         guard let fromCell = tableView.cellForRow(at: IndexPath(row: 1, section: 0)),
          let toCell = tableView.cellForRow(at: IndexPath(row: 2, section: 0)),
          let repeatCell = tableView.cellForRow(at: IndexPath(row: 3, section: 0)) else { return }
       fromCell.detailTextLabel?.text = fromBikeStation?.name ?? ""

@@ -45,6 +45,7 @@ class AlertTableViewCell: UITableViewCell {
       super.prepareForReuse()
       alert = nil
    }
+
    
 }
 
