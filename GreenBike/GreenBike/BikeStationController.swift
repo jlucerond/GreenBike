@@ -12,6 +12,7 @@ import CoreLocation
 class BikeStationController: NSObject {
    static let shared = BikeStationController()
    let locationManager = CLLocationManager()
+   var isDownloadingBikeStationInfo = false
    
    var allBikeStations: [BikeStation] = [] {
       didSet {
@@ -19,6 +20,7 @@ class BikeStationController: NSObject {
       }
    }
    
+   /// Does not contain the most recent info on bike stations, but sorts allBikeStations by user location. If needed, call 'refreshBikeStationsStatuses' and listen for 'ConstantNotificationNotices.bikeStationsUpdatedNotification' to get the most current info on bike stations locations. Will return nil if location services are not enabled
    var allBikeStationsSortedByDistance: [BikeStation]? {
       guard let userLocation = locationManager.location else { return nil }
       return BikeStationController.shared.allBikeStations.sorted(by: { (stationA, stationB) -> Bool in
@@ -26,16 +28,25 @@ class BikeStationController: NSObject {
       })
    }
    
+   /// Will update the user's location and then send a network call out for the status of all bike stations. Once finished, this will either result in call to NotificationCenter of .apiNotWorking or .bikeStationsUpdatedNotification
    func refreshBikeStationsStatuses() {
-      NetworkController.shared.getBikeInfoFromWeb { (success, arrayOfStations) in
-         if !success {
-            NotificationCenter.default.post(name: ConstantNotificationNotices.apiNotWorking, object: nil)
-            return
+      locationManager.requestLocation()
+      if !isDownloadingBikeStationInfo {
+         isDownloadingBikeStationInfo = true
+         NetworkController.shared.getBikeInfoFromWeb { (success, arrayOfStations) in
+            if !success {
+               NotificationCenter.default.post(name: ConstantNotificationNotices.apiNotWorking, object: nil)
+               self.isDownloadingBikeStationInfo = false
+               
+               return
+            }
+            self.allBikeStations = arrayOfStations.flatMap{ BikeStation(dictionary: $0) }
+            self.isDownloadingBikeStationInfo = false
          }
-         self.allBikeStations = arrayOfStations.flatMap{ BikeStation(dictionary: $0) }
       }
    }
    
+   /// In background, call this function at the time when a notification should go out to the user.
    func requestStatusOf(_ fromBikeStation: BikeStation?,
                         _ toBikeStation: BikeStation?,
                         completion: @escaping (_ success: Bool, _ fromBikeStation: BikeStation?, _ toBikeStation: BikeStation?) -> Void) {
@@ -61,10 +72,10 @@ class BikeStationController: NSObject {
                }
             }
             
-            // FIXME: - this might need to get called when the user pulls the app back up
+            // FIXME: - this will need to get called when the user pulls the app back up
             
             completion(true, returnToBikeStation, returnFromBikeStation)
-            print("I just returned: \(returnFromBikeStation?.name) & \(returnToBikeStation?.name)")
+            print("I just returned: \(returnFromBikeStation?.name ?? "No From Station Requested") & \(returnToBikeStation?.name ?? "No To Station Requested")")
          }
       }
       
@@ -72,9 +83,10 @@ class BikeStationController: NSObject {
    
    private override init() {
       super.init()
-      refreshBikeStationsStatuses()
       locationManager.delegate = self
-      locationManager.desiredAccuracy = kCLLocationAccuracyBest
+      locationManager.desiredAccuracy = kCLLocationAccuracyNearestTenMeters
+      locationManager.distanceFilter = 161
+      refreshBikeStationsStatuses()
    }
 }
 
@@ -82,12 +94,17 @@ extension BikeStationController: CLLocationManagerDelegate {
    
    func locationManager(_ manager: CLLocationManager,
                         didChangeAuthorization status: CLAuthorizationStatus) {
-      if status == .authorizedAlways || status == .authorizedWhenInUse {
-         BikeStationController.shared.locationManager.startUpdatingLocation()
+      if (status == .authorizedAlways || status == .authorizedWhenInUse) {
+         locationManager.startUpdatingLocation()
       }
    }
    
    func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
-      NotificationCenter.default.post(name: ConstantNotificationNotices.locationUpdatedNotification, object: nil)
+      print("location was updated")
+      refreshBikeStationsStatuses()
+   }
+   
+   func locationManager(_ manager: CLLocationManager, didFailWithError error: Error) {
+      print("failure")
    }
 }

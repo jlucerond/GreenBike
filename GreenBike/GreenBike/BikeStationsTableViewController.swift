@@ -47,16 +47,10 @@ class BikeStationsTableViewController: UITableViewController {
       
       updateNearestBikeStations()
       
-      // taking this out to avoid choppiness in what's happening
-//      NotificationCenter.default.addObserver(self,
-//                                             selector: #selector(updateNearestBikeStations),
-//                                             name: ConstantNotificationNotices.bikeStationsUpdatedNotification,
-//                                             object: nil)
-//
-//      NotificationCenter.default.addObserver(self,
-//                                             selector: #selector(updateNearestBikeStations),
-//                                             name: ConstantNotificationNotices.locationUpdatedNotification,
-//                                             object: nil)
+      NotificationCenter.default.addObserver(self,
+                                             selector: #selector(updateNearestBikeStations),
+                                             name: ConstantNotificationNotices.bikeStationsUpdatedNotification,
+                                             object: nil)
       
    }
    
@@ -169,7 +163,10 @@ extension BikeStationsTableViewController {
 extension BikeStationsTableViewController {
    
    @objc func updateNearestBikeStations() {
-      self.myRefreshControl.beginRefreshing()
+      // FIXME: - I need to add something else in this code on the main thread
+      DispatchQueue.main.async {
+         self.myRefreshControl.beginRefreshing()
+      }
       
       guard let userLocation = BikeStationController.shared.locationManager.location else {
          arrayOfAllBikeStationsSortedByProximity = BikeStationController.shared.allBikeStations

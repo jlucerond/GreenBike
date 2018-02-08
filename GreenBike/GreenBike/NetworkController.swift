@@ -45,8 +45,8 @@ class NetworkController {
             
             completion(true, arrayOfDataToReturnCalledStations)
             
-         } catch {
-            // FIXME: Error Handling needs to happen in here
+         } catch let error {
+            print("Error in NetworkController: \(error.localizedDescription)")
             completion(false, []); return
          }
       }

@@ -13,51 +13,34 @@ class MapViewController: UIViewController {
    
    // IBOutlets
    @IBOutlet weak var mapView: MKMapView!
+   private var isFirstTimeLoadingMap = true
    
    // Variables
    fileprivate let bikeStationIdentifier = "BikeStationPinIdentifier"
-   //   var locationManager: CLLocationManager?
-   var arrayOfBikeStations: [BikeStation] = [] {
-      willSet {
-         DispatchQueue.main.async {
-            let allAnnotations = self.mapView.annotations
-            self.mapView.removeAnnotations(allAnnotations)
-         }
-      } didSet {
-         DispatchQueue.main.async {
-            self.mapView.addAnnotations(self.arrayOfBikeStations)
-         }
-      }
-   }
    
    // IBActions
    @IBAction func refreshButtonPushed(_ sender: UIBarButtonItem) {
-      self.mapView.removeAnnotations(self.arrayOfBikeStations)
+//      self.mapView.removeAnnotations(self.arrayOfBikeStations)
+      isFirstTimeLoadingMap = false
       BikeStationController.shared.refreshBikeStationsStatuses()
    }
    
    @IBAction func locateUserButtonPressed(_ sender: UIButton) {
+      isFirstTimeLoadingMap = false
       BikeStationController.shared.locationManager.requestWhenInUseAuthorization()
-      
-      // if we have a user location, then center on the user. else, center on all bike shares
-      if CLLocationManager.locationServicesEnabled() && (CLLocationManager.authorizationStatus() == .authorizedAlways || CLLocationManager.authorizationStatus() == .authorizedWhenInUse) {
-         mapShouldShowUserAndThreeNearestStations()
-      } else {
-         mapShouldShowAllStations()
-      }
-      
+      mapShowUserAndThreeNearestStations()
    }
    
    // Life Cycle Methods
    override func viewDidLoad() {
       super.viewDidLoad()
+      loadMapForFirstTime()
       mapView.delegate = self
       NotificationCenter.default.addObserver(self,
-                                             selector: #selector(bikeStationControllerWasReloaded),
+                                             selector: #selector(updateAnnotations),
                                              name: ConstantNotificationNotices.bikeStationsUpdatedNotification,
                                              object: nil)
       
-      loadMapForFirstTime()
    }
    
 }
@@ -66,32 +49,37 @@ class MapViewController: UIViewController {
 extension MapViewController {
    
    func loadMapForFirstTime() {
-      // FIXME: - Need to screenshot this and use as the loading screen
+      // FIXME: - Take screenshots on different phone sizes and use as the loading screen
       let slcCenter = CLLocationCoordinate2D(latitude: 40.76593214888245, longitude: -111.89142500000003)
       let slcLatMeters = 2500.0
       let slcLongMeters = 4000.0
       
       let slcRegion = MKCoordinateRegionMakeWithDistance(slcCenter, slcLatMeters, slcLongMeters)
       mapView.setRegion(slcRegion, animated: true)
+   }
+   
+   @objc func updateAnnotations() {
+      //FIXME: - do I need to delete annotations here??
+      DispatchQueue.main.sync {
+         let oldAnnotations = self.mapView.annotations
+         self.mapView.addAnnotations(BikeStationController.shared.allBikeStations)
+         print("A) Number of annotations on map: \(self.mapView.annotations.count)")
+         self.mapView.removeAnnotations(oldAnnotations)
+         print("B) Number of annotations on map: \(self.mapView.annotations.count)")
+      }
+   }
+   
+   func mapShowAllStations() {
+      mapView.showAnnotations(BikeStationController.shared.allBikeStations, animated: true)
+   }
+   
+   func mapShowUserAndThreeNearestStations() {
       
-   }
-   
-   @objc func bikeStationControllerWasReloaded() {
-      arrayOfBikeStations = BikeStationController.shared.allBikeStations
-   }
-   
-   func mapShouldShowAllStations() {
-      mapView.showAnnotations(arrayOfBikeStations, animated: true)
-   }
-   
-   func mapShouldShowUserAndThreeNearestStations() {
-      guard let usersUnwrappedLocation = BikeStationController.shared.locationManager.location else { return }
-      
-      let allBikeStationsInOrder = arrayOfBikeStations.sorted { (stationA, stationB) -> Bool in
-         return stationA.location.distance(from: usersUnwrappedLocation) < stationB.location.distance(from: usersUnwrappedLocation)
+      guard let allBikeStationsInOrder = BikeStationController.shared.allBikeStationsSortedByDistance, allBikeStationsInOrder.count >= 2 else {
+         mapShowAllStations()
+         return
       }
       
-      guard allBikeStationsInOrder.count >= 2 else { return }
       var allItemsToShow: [MKAnnotation] = [mapView.userLocation]
       
       for station in allBikeStationsInOrder[0...2] {
@@ -99,36 +87,31 @@ extension MapViewController {
          allItemsToShow.append(stationAsAnnotation)
       }
       
-      
       mapView.showAnnotations(allItemsToShow, animated: true)
    }
 }
-//
-//// MARK: - Core Location Methods
-//extension MapViewController: CLLocationManagerDelegate {
-//   
-//}
 
 // MARK: - Mapview Delegate Methods
 extension MapViewController: MKMapViewDelegate {
+   // FIXME: - this is where I'll need to add custom image for bike stations
    func mapView(_ mapView: MKMapView, viewFor annotation: MKAnnotation) -> MKAnnotationView? {
-      
+      print("inside of 'mapView viewFor' function")
       if (annotation is MKUserLocation) {
          return nil
       }
-      
+
       var annotationView = mapView.dequeueReusableAnnotationView(withIdentifier: bikeStationIdentifier) as? MKPinAnnotationView
-      
+
       if annotationView == nil {
          annotationView = MKPinAnnotationView(annotation: annotation, reuseIdentifier: bikeStationIdentifier)
       } else {
          annotationView?.annotation = annotation
       }
-      
+
       annotationView?.pinTintColor = UIColor.tertiaryAppColor
       annotationView?.canShowCallout = true
-      annotationView?.animatesDrop = true
-      
+      annotationView?.animatesDrop = isFirstTimeLoadingMap
+
       return annotationView
    }
 }

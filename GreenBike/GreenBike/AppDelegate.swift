@@ -22,19 +22,20 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                                              name: ConstantNotificationNotices.apiNotWorking,
                                              object: nil)
       
-      // FIXME: - Move this to the alerts controller during "first time + was pushed"
+      // FIXME: - Move this logic to when the first alert has been created"
       let center = UNUserNotificationCenter.current()
-      center.requestAuthorization(options: [.alert, .sound]) { (success, error) in
+      center.requestAuthorization(options: [.alert, .sound, .badge]) { (success, error) in
          print("was successful: \(success)")
       }
       
       return true
    }
    
+   // MARK: - Error Handling
    @objc func showSorry() {
       guard let window = window else { return }
       
-      let alert = UIAlertController(title: "Uh-oh", message: "It looks like some servers are having issues.\nWe'll try to fix this ASAP. Sorry :/", preferredStyle: .alert)
+      let alert = UIAlertController(title: "Uh-oh", message: "Network error. This is usually the result of a bad network signal or server issues.", preferredStyle: .alert)
       let action = UIAlertAction(title: "Darn", style: .default, handler: nil)
       alert.addAction(action)
       
@@ -43,10 +44,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
          tabBarVC.topMostViewController().present(alert, animated: true, completion: nil)
       }
    }
-
 }
 
-
+// MARK: - Top-most VC for presenting error
 extension UIViewController {
    func topMostViewController() -> UIViewController {
       if self.presentedViewController == nil {
@@ -62,12 +62,6 @@ extension UIViewController {
          return tab.topMostViewController()
       }
       return self.presentedViewController!.topMostViewController()
-   }
-}
-
-extension UIApplication {
-   func topMostViewController() -> UIViewController? {
-      return self.keyWindow?.rootViewController?.topMostViewController()
    }
 }
 

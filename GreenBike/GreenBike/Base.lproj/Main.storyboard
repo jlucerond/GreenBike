@@ -126,20 +126,22 @@
                                                 <stackView opaque="NO" contentMode="scaleToFill" alignment="center" spacing="25" translatesAutoresizingMaskIntoConstraints="NO" id="cJX-hU-G7V" userLabel="InformationStackView">
                                                     <rect key="frame" x="0.0" y="20" width="375" height="80"/>
                                                     <subviews>
-                                                        <stackView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="248" verticalHuggingPriority="248" axis="vertical" alignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="UCS-iN-J7G" userLabel="NameAddressStackView">
-                                                            <rect key="frame" x="0.0" y="21" width="256.5" height="38.5"/>
+                                                        <stackView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="248" verticalHuggingPriority="248" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="UCS-iN-J7G" userLabel="NameAddressStackView">
+                                                            <rect key="frame" x="0.0" y="1.5" width="256.5" height="77.5"/>
                                                             <subviews>
-                                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="(Address)" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumFontSize="11" translatesAutoresizingMaskIntoConstraints="NO" id="dY8-59-XMc">
-                                                                    <rect key="frame" x="71.5" y="8" width="114" height="22.5"/>
+                                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="(Name) (Name 2)" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" minimumFontSize="11" translatesAutoresizingMaskIntoConstraints="NO" id="dY8-59-XMc">
+                                                                    <rect key="frame" x="8" y="8" width="240.5" height="45"/>
                                                                     <fontDescription key="fontDescription" name="Copperplate-Bold" family="Copperplate" pointSize="22"/>
                                                                     <color key="textColor" red="0.92688906189999998" green="0.6475841403" blue="0.25487875939999999" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                                                                     <nil key="highlightedColor"/>
                                                                 </label>
-                                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" text="(Name) (Name2)" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" minimumFontSize="8" translatesAutoresizingMaskIntoConstraints="NO" id="KVT-nb-kr9">
-                                                                    <rect key="frame" x="0.0" y="30.5" width="0.0" height="0.0"/>
+                                                                <label opaque="NO" userInteractionEnabled="NO" alpha="0.69999999999999996" contentMode="left" horizontalHuggingPriority="251" text="(Address)" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" minimumFontSize="8" translatesAutoresizingMaskIntoConstraints="NO" id="KVT-nb-kr9">
+                                                                    <rect key="frame" x="8" y="53" width="240.5" height="16.5"/>
                                                                     <fontDescription key="fontDescription" name="Copperplate" family="Copperplate" pointSize="15"/>
                                                                     <color key="textColor" red="0.92688906189999998" green="0.6475841403" blue="0.25487875939999999" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                                                                     <nil key="highlightedColor"/>
+                                                                    <color key="shadowColor" red="0.10980392156862745" green="0.26666666666666666" blue="0.12549019607843137" alpha="0.5" colorSpace="custom" customColorSpace="displayP3"/>
+                                                                    <size key="shadowOffset" width="1" height="-1"/>
                                                                 </label>
                                                             </subviews>
                                                             <edgeInsets key="layoutMargins" top="8" left="8" bottom="8" right="8"/>
@@ -253,9 +255,9 @@
                                     </constraints>
                                 </tableViewCellContentView>
                                 <connections>
-                                    <outlet property="addressLabel" destination="dY8-59-XMc" id="bN1-et-46d"/>
+                                    <outlet property="addressLabel" destination="KVT-nb-kr9" id="ti6-cC-1zr"/>
                                     <outlet property="distanceFromUserLabel" destination="SdE-lZ-OEV" id="zoP-Zc-6nI"/>
-                                    <outlet property="nameLabel" destination="KVT-nb-kr9" id="Eod-ss-3S3"/>
+                                    <outlet property="nameLabel" destination="dY8-59-XMc" id="PXw-qF-46t"/>
                                     <outlet property="numberOfBikesLabel" destination="1mz-sf-efc" id="fsI-fO-sHN"/>
                                     <outlet property="numberOfDocksLabel" destination="NEd-6R-Xlz" id="0Wc-25-cJP"/>
                                     <outlet property="widthOfBikeBar" destination="YYC-zQ-xuJ" id="CNy-lr-aZ3"/>

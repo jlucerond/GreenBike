@@ -12,7 +12,6 @@ import UIKit
 class ConstantNotificationNotices {
    // Notifications
    static let bikeStationsUpdatedNotification = Notification.Name("bikeStationsUpdated")
-   static let locationUpdatedNotification = Notification.Name("userLocationUpdated")
    static let apiNotWorking = Notification.Name("apiNotWorking")
 }
 

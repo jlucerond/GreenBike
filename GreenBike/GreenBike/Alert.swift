@@ -86,10 +86,10 @@ class AlertWeek: NSObject, Codable {
    var stringOfDaysThatAlertShouldRepeat: String {
       var detailText = ""
       for day in daysThatAlertShouldRepeat {
-         detailText.append("\(day.name.characters.first!), ")
+         detailText.append("\(day.name.first!), ")
       }
       
-      if detailText.characters.count >= 2 {
+      if detailText.count >= 2 {
          detailText.removeLast()
          detailText.removeLast()
       }
