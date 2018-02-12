@@ -21,11 +21,13 @@ class AlertsMainTableViewController: UITableViewController {
    }
    
    // MARK: - Table view data source
-   override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+   override func tableView(_ tableView: UITableView,
+                           numberOfRowsInSection section: Int) -> Int {
       return AlertController.shared.alerts.count
    }
    
-   override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+   override func tableView(_ tableView: UITableView,
+                           cellForRowAt indexPath: IndexPath) -> UITableViewCell {
       let alert = AlertController.shared.alerts[indexPath.row]
       guard let cell = tableView.dequeueReusableCell(withIdentifier: "AlertCell", for: indexPath) as? AlertTableViewCell else { return AlertTableViewCell() }
       cell.alert = alert

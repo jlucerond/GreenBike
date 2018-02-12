@@ -14,7 +14,23 @@ class NotificationController {
    static let shared = NotificationController()
    private let notificationCenter = UNUserNotificationCenter.current()
    
+   enum UserInfoDictionary {
+      static let numberOfBikesKey = "NumberOfBikes"
+      
+      enum numberOfBikesValues {
+         static let zero = "Zero"
+         static let some = "Some"
+      }
+      
+      static let alertKey = "Alert"
+      static let fromBikeStationNameKey = "FromBikeStation"
+      static let toBikeStationNameKey = "ToBikeStation"
+   }
    
+   
+   /// Create a new local notification for an alert. When the user opens the notification, a new view controller will be presented that shows the status of the bike stations that are being alerted. If both the to and from station are nil, it will open the screen and show the table view controller.
+   ///
+   /// - Parameter alert: The alert that the user would like to create
    func createNotification(for alert: Alert) {
       deleteNotification(for: alert)
       print("Need to fix this function next")

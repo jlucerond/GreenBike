@@ -667,6 +667,81 @@
             </objects>
             <point key="canvasLocation" x="1369" y="1885"/>
         </scene>
+        <!--Bike Stations Notification Overlay View Controller-->
+        <scene sceneID="KmC-56-icE">
+            <objects>
+                <viewController storyboardIdentifier="ShowOneBikeStationInfo" id="rIv-Mu-uYS" customClass="BikeStationsNotificationOverlayViewController" customModule="GreenBike" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="RxE-PQ-kBA"/>
+                        <viewControllerLayoutGuide type="bottom" id="LpS-3U-P7R"/>
+                    </layoutGuides>
+                    <view key="view" opaque="NO" contentMode="scaleToFill" id="pIV-9W-X5W">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <view alpha="0.5" contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="qbt-Ze-Gea">
+                                <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                                <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                                <color key="backgroundColor" white="0.33333333333333331" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            </view>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="sKF-1B-oPl">
+                                <rect key="frame" x="62" y="208.5" width="250" height="250"/>
+                                <subviews>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="h2K-J1-c3N">
+                                        <rect key="frame" x="0.0" y="200" width="250" height="50"/>
+                                        <color key="backgroundColor" red="0.92688906189999998" green="0.6475841403" blue="0.25487875939999999" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="50" id="L9G-jG-a3w"/>
+                                        </constraints>
+                                        <fontDescription key="fontDescription" type="system" pointSize="25"/>
+                                        <state key="normal" title="Close">
+                                            <color key="titleColor" red="0.1138217822" green="0.26830896739999999" blue="0.12546369430000001" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+                                        </state>
+                                        <connections>
+                                            <action selector="closeTapped" destination="rIv-Mu-uYS" eventType="touchUpInside" id="Cx4-hx-2on"/>
+                                        </connections>
+                                    </button>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Bike Info Here" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="qMk-dO-srY">
+                                        <rect key="frame" x="72" y="83" width="107" height="21"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                        <nil key="textColor"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                    <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="bikeWheel" translatesAutoresizingMaskIntoConstraints="NO" id="DDb-sp-8p4">
+                                        <rect key="frame" x="50" y="25" width="150" height="150"/>
+                                        <constraints>
+                                            <constraint firstAttribute="width" constant="150" id="jst-cG-xb6"/>
+                                            <constraint firstAttribute="height" constant="150" id="sq9-zg-hrQ"/>
+                                        </constraints>
+                                    </imageView>
+                                </subviews>
+                                <color key="backgroundColor" red="0.1138217822" green="0.26830896739999999" blue="0.12546369430000001" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+                                <constraints>
+                                    <constraint firstAttribute="bottom" secondItem="h2K-J1-c3N" secondAttribute="bottom" id="2Iy-K3-Li1"/>
+                                    <constraint firstItem="DDb-sp-8p4" firstAttribute="top" secondItem="sKF-1B-oPl" secondAttribute="top" constant="25" id="AIg-As-dzw"/>
+                                    <constraint firstAttribute="trailing" secondItem="h2K-J1-c3N" secondAttribute="trailing" id="RmM-Nq-HxL"/>
+                                    <constraint firstAttribute="height" constant="250" id="XNg-Dj-dXR"/>
+                                    <constraint firstItem="DDb-sp-8p4" firstAttribute="centerX" secondItem="sKF-1B-oPl" secondAttribute="centerX" id="lZD-jA-fxO"/>
+                                    <constraint firstItem="h2K-J1-c3N" firstAttribute="leading" secondItem="sKF-1B-oPl" secondAttribute="leading" id="mqW-MQ-q6t"/>
+                                    <constraint firstAttribute="width" constant="250" id="zfh-Pm-A5i"/>
+                                </constraints>
+                            </view>
+                        </subviews>
+                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <constraints>
+                            <constraint firstItem="sKF-1B-oPl" firstAttribute="centerX" secondItem="pIV-9W-X5W" secondAttribute="centerX" id="Ydd-6h-kXB"/>
+                            <constraint firstItem="sKF-1B-oPl" firstAttribute="centerY" secondItem="pIV-9W-X5W" secondAttribute="centerY" id="lHF-zJ-6Kr"/>
+                        </constraints>
+                    </view>
+                    <connections>
+                        <outlet property="bikeWheel" destination="DDb-sp-8p4" id="p3h-be-DbJ"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="94w-WY-aXl" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="778.39999999999998" y="3347.6761619190406"/>
+        </scene>
         <!--Stations-->
         <scene sceneID="nlM-wN-8LC">
             <objects>
@@ -723,6 +798,7 @@
         <image name="LocationIcon" width="29" height="29"/>
         <image name="MapIcon" width="29" height="29"/>
         <image name="TableIcon" width="29" height="29"/>
+        <image name="bikeWheel" width="708" height="710"/>
     </resources>
     <inferredMetricsTieBreakers>
         <segue reference="rar-qb-uQl"/>

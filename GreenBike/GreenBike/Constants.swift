@@ -9,13 +9,13 @@
 import Foundation
 import UIKit
 
-class ConstantNotificationNotices {
+enum ConstantNotificationNotices {
    // Notifications
    static let bikeStationsUpdatedNotification = Notification.Name("bikeStationsUpdated")
    static let apiNotWorking = Notification.Name("apiNotWorking")
 }
 
-class ConstantKeys {
+enum ConstantKeys {
    // Keys
    static let setOfAllFavoriteBikeStations = "favoriteBikeStations"
 }
@@ -25,6 +25,7 @@ enum ToOrFrom: String {
    case to
    case from
 }
+
 
 extension UIColor {
    static var primaryAppColor: UIColor {

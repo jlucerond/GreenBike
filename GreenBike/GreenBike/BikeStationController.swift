@@ -83,9 +83,9 @@ class BikeStationController: NSObject {
    
    private override init() {
       super.init()
-      locationManager.delegate = self
       locationManager.desiredAccuracy = kCLLocationAccuracyNearestTenMeters
       locationManager.distanceFilter = 161
+      locationManager.delegate = self
       refreshBikeStationsStatuses()
    }
 }
@@ -105,6 +105,6 @@ extension BikeStationController: CLLocationManagerDelegate {
    }
    
    func locationManager(_ manager: CLLocationManager, didFailWithError error: Error) {
-      print("failure")
+      print("location manager did fail")
    }
 }

@@ -63,9 +63,7 @@ extension MapViewController {
       DispatchQueue.main.sync {
          let oldAnnotations = self.mapView.annotations
          self.mapView.addAnnotations(BikeStationController.shared.allBikeStations)
-         print("A) Number of annotations on map: \(self.mapView.annotations.count)")
          self.mapView.removeAnnotations(oldAnnotations)
-         print("B) Number of annotations on map: \(self.mapView.annotations.count)")
       }
    }
    
@@ -95,7 +93,6 @@ extension MapViewController {
 extension MapViewController: MKMapViewDelegate {
    // FIXME: - this is where I'll need to add custom image for bike stations
    func mapView(_ mapView: MKMapView, viewFor annotation: MKAnnotation) -> MKAnnotationView? {
-      print("inside of 'mapView viewFor' function")
       if (annotation is MKUserLocation) {
          return nil
       }

@@ -28,6 +28,9 @@ class Alert: NSObject, Codable {
    var shouldRepeat: Bool {
       return !weeklySchedule.daysThatAlertShouldRepeat.isEmpty
    }
+   override var description: String {
+      return "Alert from: \(fromBikeStation?.name ?? "no from station")\nto: \(toBikeStation?.name ?? "no to station")\non\(weeklySchedule.stringOfDaysThatAlertShouldRepeat)"
+   }
    
    init(isOn: Bool,
         timeOfDay: AlertTime,
@@ -60,6 +63,8 @@ class Alert: NSObject, Codable {
    static func ==(lhs: Alert, rhs: Alert) -> Bool {
       return lhs.uuid == rhs.uuid
    }
+   
+   
 }
 
 class AlertTime: NSObject, Codable, Comparable {
