@@ -28,7 +28,11 @@ class NotificationController {
    
    func requestAuthorizationForAlerts() {
       notificationCenter.requestAuthorization(options: [.alert, .sound, .badge]) { (success, error) in
-         print("Allowed to send alerts to user: \(success)")
+         if success {
+            for alert in AlertController.shared.alerts {
+               self.createNotifications(for: alert)
+            }
+         }
       }
    }
    

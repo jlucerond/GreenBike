@@ -9,7 +9,7 @@
 import UIKit
 
 class AlertsMainTableViewController: UITableViewController {
-   // FIXME: - Change this when figuring out loading/persisting data
+
    override func viewDidLoad() {
       super.viewDidLoad()
    }

@@ -170,7 +170,9 @@ extension BikeStationsTableViewController {
       
       guard let userLocation = BikeStationController.shared.locationManager.location else {
          arrayOfAllBikeStationsSortedByProximity = BikeStationController.shared.allBikeStations
-         myRefreshControl.endRefreshing()
+         DispatchQueue.main.async {
+            self.myRefreshControl.endRefreshing()
+         }
          return }
       
       arrayOfAllBikeStationsSortedByProximity = BikeStationController.shared.allBikeStations.sorted(by: { (stationA, stationB) -> Bool in

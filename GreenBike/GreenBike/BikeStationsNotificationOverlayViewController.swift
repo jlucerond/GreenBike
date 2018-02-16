@@ -102,8 +102,8 @@ extension BikeStationsNotificationOverlayViewController {
          self.bikeWheel.alpha = 0.0
          
          if self.animationLength >= 10 {
-            // FIXME: - show error
             print("too long! cancel out of this")
+            NotificationCenter.default.post(name: ConstantNotificationNotices.apiNotWorking, object: nil)
             completion(false)
          } else if BikeStationController.shared.allBikeStations.count == 0 {
             self.runLoadingAnimation(duration: duration, completion: completion)
@@ -157,19 +157,3 @@ extension BikeStationsNotificationOverlayViewController {
    }
    
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

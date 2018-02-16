@@ -46,41 +46,6 @@ class BikeStationController: NSObject {
       }
    }
    
-   /// In background, call this function at the time when a notification should go out to the user.
-   func requestStatusOf(_ fromBikeStation: BikeStation?,
-                        _ toBikeStation: BikeStation?,
-                        completion: @escaping (_ success: Bool, _ fromBikeStation: BikeStation?, _ toBikeStation: BikeStation?) -> Void) {
-      NetworkController.shared.getBikeInfoFromWeb { (success, arrayOfStations) in
-         if !success {
-            print("did not get bike info from Web")
-            completion(false, nil, nil)
-         } else {
-            var returnFromBikeStation: BikeStation?
-            var returnToBikeStation: BikeStation?
-            
-            let allBikeStations = arrayOfStations.flatMap{ BikeStation(dictionary: $0) }
-            
-            if let fromBikeStation = fromBikeStation {
-               for station in allBikeStations {
-                  if station == fromBikeStation { returnFromBikeStation = station }
-               }
-            }
-            
-            if let toBikeStation = toBikeStation {
-               for station in allBikeStations {
-                  if station == toBikeStation { returnToBikeStation = station  }
-               }
-            }
-            
-            // FIXME: - this will need to get called when the user pulls the app back up
-            
-            completion(true, returnToBikeStation, returnFromBikeStation)
-            print("I just returned: \(returnFromBikeStation?.name ?? "No From Station Requested") & \(returnToBikeStation?.name ?? "No To Station Requested")")
-         }
-      }
-      
-   }
-   
    private override init() {
       super.init()
       locationManager.desiredAccuracy = kCLLocationAccuracyNearestTenMeters
