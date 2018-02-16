@@ -15,6 +15,8 @@ class AlertsMainTableViewController: UITableViewController {
       super.viewDidLoad()
    }
    
+   // FIXME: - I need to make sure that I request authorization from user here, the first time that the user hits the + button
+   
    override func viewWillAppear(_ animated: Bool) {
       super.viewWillAppear(animated)
       tableView.reloadData()

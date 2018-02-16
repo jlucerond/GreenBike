@@ -63,9 +63,10 @@ class AlertController {
    }
    
    func deleteAlert(alert: Alert) {
+      alert.isOn = false
+      alert.scheduleAlert()
       guard let index = alerts.index(of: alert) else { return }
       alerts.remove(at: index)
-      sortThenSaveAlerts()
    }
    
    private func sortThenSaveAlerts() {

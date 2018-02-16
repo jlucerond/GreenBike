@@ -6,7 +6,6 @@
 //  Copyright © 2017 Joe Lucero. All rights reserved.
 //
 
-import Foundation
 import UIKit
 import UserNotifications
 
@@ -27,57 +26,91 @@ class NotificationController {
       static let toBikeStationNameKey = "ToBikeStation"
    }
    
+   func requestAuthorizationForAlerts() {
+      notificationCenter.requestAuthorization(options: [.alert, .sound, .badge]) { (success, error) in
+         print("Allowed to send alerts to user: \(success)")
+      }
+   }
+   
    
    /// Create a new local notification for an alert. When the user opens the notification, a new view controller will be presented that shows the status of the bike stations that are being alerted. If both the to and from station are nil, it will open the screen and show the table view controller.
    ///
    /// - Parameter alert: The alert that the user would like to create
-   func createNotification(for alert: Alert) {
-      deleteNotification(for: alert)
-      print("Need to fix this function next")
-      /*
+   func createNotifications(for alert: Alert) {
+      
       notificationCenter.getNotificationSettings { (settings) in
-         if settings.authorizationStatus == .authorized {
+         guard settings.authorizationStatus == .authorized else {
+            self.requestAuthorizationForAlerts()
+            return
+         }
+         
+         self.deleteNotifications(for: alert)
+         
+         var userInfoDictionary:[AnyHashable : Any] = [:]
+         if alert.fromBikeStation == nil && alert.toBikeStation == nil {
             
-            // FIXME: - I think this might just be getting the current status of the bikes and not at the desired time
-            print("\(alert.toBikeStation)")
-            print("\(alert.fromBikeStation)")
-            
-            BikeStationController.shared.requestStatusOf(alert.toBikeStation, alert.fromBikeStation, completion: { (success, station1, station2) in
-               
-               let content = UNMutableNotificationContent()
-               content.title = "\(station1?.name)"
-               content.subtitle = "\(station2?.name)"
-               content.body = "Body"
-               content.sound = UNNotificationSound.default()
-               
-               // FIXME: - right now does not repeat alerts
-               // FIXME: - right now does not turn off after alert goes off
-//               let calendar = Calendar.autoupdatingCurrent
-//               let dateComponents = calendar.dateComponents([.hour, .minute], from: alert.timeOfDay)
-//               dateComponents.day
-               
-               // FIXME: - create up to 7 alerts that include .weekday, .hour, .minute and have it repeat?
-               
-               let trigger = UNCalendarNotificationTrigger(dateMatching: dateComponents, repeats: alert.shouldRepeat)
-               
-               let request = UNNotificationRequest(identifier: "\(alert.uuid)", content: content, trigger: trigger)
-               
-               self.notificationCenter.add(request)
-               print("Scheduled: \(alert.uuid)")
-            })
-            
+            userInfoDictionary[NotificationController.UserInfoDictionary.numberOfBikesKey] = NotificationController.UserInfoDictionary.numberOfBikesValues.zero
             
          } else {
-            print("not registered for notifications")
+            userInfoDictionary[NotificationController.UserInfoDictionary.numberOfBikesKey] = NotificationController.UserInfoDictionary.numberOfBikesValues.some
+            
+            if let fromBikeStation = alert.fromBikeStation {
+               userInfoDictionary[NotificationController.UserInfoDictionary.fromBikeStationNameKey] = fromBikeStation.name
+            }
+            if let toBikeStation = alert.toBikeStation {
+               userInfoDictionary[NotificationController.UserInfoDictionary.toBikeStationNameKey] = toBikeStation.name
+            }
+            
          }
+         
+         
+         let content = UNMutableNotificationContent()
+         content.title = "💚🚲"
+         content.sound = UNNotificationSound.default()
+         content.userInfo = userInfoDictionary
+         
+         
+         if alert.shouldRepeat {
+            for day in alert.weeklySchedule.daysThatAlertShouldRepeat {
+               
+               let date = self.createDateForAlert(weekday: day.value, hour: alert.timeOfDay.hour, minute: alert.timeOfDay.minute)
+               
+               let dateComponents = Calendar(identifier: .gregorian).dateComponents([.weekday, .hour, .minute], from: date)
+               
+               let trigger = UNCalendarNotificationTrigger(dateMatching: dateComponents, repeats: true)
+               
+               let request = UNNotificationRequest(identifier: "\(alert.uuid)+\(day.value)", content: content, trigger: trigger)
+               
+               print("Should go off at: \(String(describing: trigger.nextTriggerDate()))")
+               
+               self.notificationCenter.add(request)
+            }
+            
+         } else {
+            
+            let date = self.createDateForAlert(weekday: 1, hour: alert.timeOfDay.hour, minute: alert.timeOfDay.minute)
+            
+            let dateComponents = Calendar(identifier: .gregorian).dateComponents([.hour, .minute], from: date)
+            
+            let trigger = UNCalendarNotificationTrigger(dateMatching: dateComponents, repeats: false)
+            
+            let request = UNNotificationRequest(identifier: "\(alert.uuid)+0", content: content, trigger: trigger)
+            
+            print("Should go off at: \(String(describing: trigger.nextTriggerDate()))")
+            
+            self.notificationCenter.add(request)
+         }
+         
       }
-      */
+      
    }
    
-   func deleteNotification(for alert: Alert) {
-      notificationCenter.removePendingNotificationRequests(withIdentifiers: ["\(alert.uuid)"])
-      print("Deleted alert: \(alert.uuid)")
-
+   func deleteNotifications(for alert: Alert) {
+      for suffix in 0...7 {
+         notificationCenter.removePendingNotificationRequests(withIdentifiers: ["\(alert.uuid)+\(suffix)"])
+         print("Deleted alert: \(alert.uuid)+\(suffix)")
+      }
+      
       notificationCenter.getPendingNotificationRequests { (requests) in
          for request in requests {
             print("Requests still pending: \(request.identifier)")
@@ -85,6 +118,19 @@ class NotificationController {
       }
    }
    
-   private init() {
+   private func createDateForAlert(weekday: Int, hour: Int, minute: Int) -> Date {
+      var components = DateComponents()
+      components.hour = hour
+      components.minute = minute
+      components.year = 2018
+      components.weekday = weekday
+      components.weekdayOrdinal = 1
+      components.timeZone = .autoupdatingCurrent
+      
+      let calendar = Calendar(identifier: .gregorian)
+      return calendar.date(from: components)!
    }
+   
+   private init() { }
+   
 }

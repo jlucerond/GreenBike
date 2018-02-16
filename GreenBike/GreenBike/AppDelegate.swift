@@ -26,12 +26,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                                              selector: #selector(showSorry),
                                              name: ConstantNotificationNotices.apiNotWorking,
                                              object: nil)
-      
-      // FIXME: - Move this logic to when the first alert has been created"
-      let center = UNUserNotificationCenter.current()
-      center.requestAuthorization(options: [.alert, .sound, .badge]) { (success, error) in
-         //         print("Allowed to send alerts to user: \(success)")
-      }
+
       return true
    }
    
@@ -42,7 +37,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
    @objc func showSorry() {
       guard let window = window else { return }
       
-      let alert = UIAlertController(title: "Uh-oh", message: "Network error. This is usually the result of a bad network signal or server issues.", preferredStyle: .alert)
+      let alert = UIAlertController(title: "Uh-oh", message: "Network error.\n\nThis is usually the result of a bad network signal or server issues.", preferredStyle: .alert)
       let action = UIAlertAction(title: "Darn", style: .default, handler: nil)
       alert.addAction(action)
       
@@ -120,6 +115,13 @@ extension AppDelegate: UNUserNotificationCenterDelegate {
       if let toBikeStation = fakeAlert.toBikeStation {
          userInfoDictionary[NotificationController.UserInfoDictionary.toBikeStationNameKey] = toBikeStation.name
       }
+      
+      // FIXME: - Take this out later. Only used for testing purposes.
+      userInfoDictionary[NotificationController.UserInfoDictionary.fromBikeStationNameKey] = "Key Bank Station"
+      
+      userInfoDictionary[NotificationController.UserInfoDictionary.toBikeStationNameKey] = "Rocky Mountain Power Station "
+      
+      // FIXME: - End of comment
       
       let content = UNMutableNotificationContent()
       content.title = "Title"

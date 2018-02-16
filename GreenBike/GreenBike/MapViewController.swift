@@ -20,13 +20,10 @@ class MapViewController: UIViewController {
    
    // IBActions
    @IBAction func refreshButtonPushed(_ sender: UIBarButtonItem) {
-//      self.mapView.removeAnnotations(self.arrayOfBikeStations)
-      isFirstTimeLoadingMap = false
       BikeStationController.shared.refreshBikeStationsStatuses()
    }
    
    @IBAction func locateUserButtonPressed(_ sender: UIButton) {
-      isFirstTimeLoadingMap = false
       BikeStationController.shared.locationManager.requestWhenInUseAuthorization()
       mapShowUserAndThreeNearestStations()
    }
@@ -59,12 +56,12 @@ extension MapViewController {
    }
    
    @objc func updateAnnotations() {
-      //FIXME: - do I need to delete annotations here??
       DispatchQueue.main.sync {
          let oldAnnotations = self.mapView.annotations
          self.mapView.addAnnotations(BikeStationController.shared.allBikeStations)
          self.mapView.removeAnnotations(oldAnnotations)
       }
+      isFirstTimeLoadingMap = false
    }
    
    func mapShowAllStations() {

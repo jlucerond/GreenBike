@@ -48,15 +48,15 @@ class Alert: NSObject, Codable {
    }
    
    deinit {
-      NotificationController.shared.deleteNotification(for: self)
+      NotificationController.shared.deleteNotifications(for: self)
       print("Deinit: \(uuid)")
    }
    
    func scheduleAlert() {
       if isOn {
-         NotificationController.shared.createNotification(for: self)
+         NotificationController.shared.createNotifications(for: self)
       } else {
-         NotificationController.shared.deleteNotification(for: self)
+         NotificationController.shared.deleteNotifications(for: self)
       }
    }
    
@@ -91,15 +91,17 @@ class AlertTime: NSObject, Codable, Comparable {
 
 class AlertDay: NSObject, Codable {
    let name: String
+   let value: Int
    private(set) var isOn: Bool
    
    func toggle() {
       isOn = !isOn
    }
    
-   init(name: String, isOn: Bool = false) {
+   init(name: String, value: Int) {
       self.name = name
-      self.isOn = isOn
+      self.value = value
+      self.isOn = false
    }
 }
 
@@ -125,13 +127,13 @@ class AlertWeek: NSObject, Codable {
    
    
    override init() {
-      let sunday = AlertDay(name: "Sunday")
-      let monday = AlertDay(name: "Monday")
-      let tuesday = AlertDay(name: "Tuesday")
-      let wednesday = AlertDay(name: "Wednesday")
-      let thursday = AlertDay(name: "Thursday")
-      let friday = AlertDay(name: "Friday")
-      let saturday = AlertDay(name: "Saturday")
+      let sunday = AlertDay(name: "Sunday", value: 1)
+      let monday = AlertDay(name: "Monday", value: 2)
+      let tuesday = AlertDay(name: "Tuesday", value: 3)
+      let wednesday = AlertDay(name: "Wednesday", value: 4)
+      let thursday = AlertDay(name: "Thursday", value: 5)
+      let friday = AlertDay(name: "Friday", value: 6)
+      let saturday = AlertDay(name: "Saturday", value: 7)
       
       allDays = [sunday, monday, tuesday, wednesday, thursday, friday, saturday]
    }
