@@ -20,7 +20,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
       let _ = BikeStationController.shared
       
       UNUserNotificationCenter.current().delegate = self
-      scheduleLocalNotification()
       
       NotificationCenter.default.addObserver(self,
                                              selector: #selector(showSorry),
@@ -48,26 +47,33 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
    }
 }
 
-// MARK: - Notification Practice (move elsewhere once fixed)
+// MARK: - Notification Center Delegate Methods
 extension AppDelegate: UNUserNotificationCenterDelegate {
    
-   // run when the notification occurs and app is in foreground
+   // run when the notification occurs and the app is in foreground
    func userNotificationCenter(_ center: UNUserNotificationCenter,
                                willPresent notification: UNNotification,
                                withCompletionHandler completionHandler: @escaping (UNNotificationPresentationOptions) -> Void) {
       completionHandler([UNNotificationPresentationOptions.alert, UNNotificationPresentationOptions.sound])
    }
    
-   // run when the notification occurs an the app is in the background
+   // run when the notification occurs and the app is in the background
    func userNotificationCenter(_ center: UNUserNotificationCenter,
                                didReceive response: UNNotificationResponse,
                                withCompletionHandler completionHandler: @escaping () -> Void) {
       let userInfo = response.notification.request.content.userInfo
       redirectToPage(userInfo: userInfo)
+      
+      if let alertIdentifer = userInfo[NotificationController.UserInfoDictionary.alertToTurnOff] as? String {
+         if let alert = AlertController.shared.findAlertWith(identifier: alertIdentifer) {
+            AlertController.shared.toggleAlert(alert: alert)
+            print("Successfully finished app!!!!")
+         }
+      }
+      
       completionHandler()
    }
    
-   // FIXME: - Refactor this later
    func redirectToPage(userInfo:[AnyHashable : Any]) {
       
       guard let pageType = userInfo[NotificationController.UserInfoDictionary.numberOfBikesKey] as? String else { print("Error grabbing alert info from local notification") ; return }
@@ -102,37 +108,7 @@ extension AppDelegate: UNUserNotificationCenterDelegate {
       }
       
    }
-   
-   // FIXME: - I should eventually change this to take an alert parameter and take out the bikestation names inside
-   func scheduleLocalNotification(){
-      let fakeAlert = Alert(isOn: true, timeOfDay: AlertTime(hour: 7, minute: 30), fromBikeStation: nil, toBikeStation: nil, weeklySchedule: AlertWeek())
-      
-      var userInfoDictionary = [NotificationController.UserInfoDictionary.numberOfBikesKey : NotificationController.UserInfoDictionary.numberOfBikesValues.some]
-      
-      if let fromBikeStation = fakeAlert.fromBikeStation {
-         userInfoDictionary[NotificationController.UserInfoDictionary.fromBikeStationNameKey] = fromBikeStation.name
-      }
-      if let toBikeStation = fakeAlert.toBikeStation {
-         userInfoDictionary[NotificationController.UserInfoDictionary.toBikeStationNameKey] = toBikeStation.name
-      }
-      
-      // FIXME: - Take this out later. Only used for testing purposes.
-      userInfoDictionary[NotificationController.UserInfoDictionary.fromBikeStationNameKey] = "Key Bank Station"
-      
-      userInfoDictionary[NotificationController.UserInfoDictionary.toBikeStationNameKey] = "Rocky Mountain Power Station "
-      
-      // FIXME: - End of comment
-      
-      let content = UNMutableNotificationContent()
-      content.title = "Title"
-      content.userInfo = userInfoDictionary
-      
-      let trigger = UNTimeIntervalNotificationTrigger(timeInterval: 5, repeats: false)
-      let request = UNNotificationRequest(identifier: "test", content: content, trigger: trigger)
-      UNUserNotificationCenter.current().add(request) { (error) in
-         print("notification scheduled for 5 seconds from now")
-      }
-   }
+
 }
 
 // MARK: - Helper Methods

@@ -17,6 +17,16 @@ class AlertController {
       alerts = SaveController.shared.loadAlertsFromDisk()
    }
    
+   func findAlertWith(identifier: String) -> Alert? {
+      for alert in alerts {
+         if alert.uuid.uuidString == identifier {
+            return alert
+         }
+      }
+      
+      return nil
+   }
+   
    func createNewAlert(timeFrom date: Date,
                        fromBikeStation: BikeStation?,
                        toBikeStation: BikeStation?,

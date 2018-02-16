@@ -15,15 +15,15 @@ class NotificationController {
    
    enum UserInfoDictionary {
       static let numberOfBikesKey = "NumberOfBikes"
-      
       enum numberOfBikesValues {
          static let zero = "Zero"
          static let some = "Some"
       }
       
-      static let alertKey = "Alert"
       static let fromBikeStationNameKey = "FromBikeStation"
       static let toBikeStationNameKey = "ToBikeStation"
+      
+      static let alertToTurnOff = "AlertToTurnOff"
    }
    
    func requestAuthorizationForAlerts() {
@@ -61,6 +61,10 @@ class NotificationController {
                userInfoDictionary[NotificationController.UserInfoDictionary.toBikeStationNameKey] = toBikeStation.name
             }
             
+         }
+         
+         if !alert.shouldRepeat {
+            userInfoDictionary[NotificationController.UserInfoDictionary.alertToTurnOff] = alert.uuid.uuidString
          }
          
          
