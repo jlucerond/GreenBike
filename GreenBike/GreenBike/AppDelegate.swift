@@ -21,12 +21,22 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
       
       UNUserNotificationCenter.current().delegate = self
       
+
+
+      return true
+   }
+   
+   func applicationDidBecomeActive(_ application: UIApplication) {
       NotificationCenter.default.addObserver(self,
                                              selector: #selector(showSorry),
                                              name: ConstantNotificationNotices.apiNotWorking,
                                              object: nil)
-
-      return true
+   }
+   
+   func applicationDidEnterBackground(_ application: UIApplication) {
+      NotificationCenter.default.removeObserver(self,
+                                                name: ConstantNotificationNotices.apiNotWorking,
+                                                object: nil)
    }
    
    

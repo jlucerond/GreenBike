@@ -424,7 +424,7 @@
 				DEVELOPMENT_TEAM = 53BVAZ8K9G;
 				INFOPLIST_FILE = GreenBike/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = com.iOSDevelopr.SLCBike;
+				PRODUCT_BUNDLE_IDENTIFIER = "com.iOSDevelopr.SLC-Bike";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_SWIFT3_OBJC_INFERENCE = Default;
 				SWIFT_VERSION = 4.0;
@@ -441,7 +441,7 @@
 				DEVELOPMENT_TEAM = 53BVAZ8K9G;
 				INFOPLIST_FILE = GreenBike/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = com.iOSDevelopr.SLCBike;
+				PRODUCT_BUNDLE_IDENTIFIER = "com.iOSDevelopr.SLC-Bike";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_SWIFT3_OBJC_INFERENCE = Default;
 				SWIFT_VERSION = 4.0;
