@@ -22,26 +22,29 @@ class BikeStationsNotificationOverlayViewController: UIViewController {
    @IBOutlet weak var toStationNameLabel: UILabel!
    @IBOutlet weak var toStationInfoLabel: UILabel!
    
-   var animationLength: Double = 0
    var fromBikeStationName: String?
    var toBikeStationName: String?
    var fromBikeStation: BikeStation?
    var toBikeStation: BikeStation?
+   
+   override func viewWillAppear(_ animated: Bool) {
+      super.viewWillAppear(animated)
+      moveIconsOffScreenAndHide()
+   }
 
    
    override func viewDidAppear(_ animated: Bool) {
       super.viewDidAppear(animated)
-      moveIconsOffScreenAndHide()
-      let duration = 3.0
-      runLoadingAnimation(duration: duration) { (success) in
+      runLoadingAnimation(duration: 3.0) { [weak self] (success) in
          if success {
             // update bikes
-            self.updateBikeStationInformation()
+            self?.updateBikeStationInformation()
             
             // run 3 animations
-            self.runDockAnimation(duration: 1.0) { _ in
-               self.runBikeAnimation(duration: 1.0) { _ in
-                  self.runInfoAnimation(duration: 1.0)
+
+            self?.runDockAnimation(duration: 1.0) { _ in
+               self?.runBikeAnimation(duration: 1.0) { _ in
+                  self?.runInfoAnimation(duration: 1.0)
                }
             }
             
@@ -50,7 +53,7 @@ class BikeStationsNotificationOverlayViewController: UIViewController {
    }
    
    @IBAction func closeTapped() {
-      dismiss(animated: false, completion: nil)
+      dismiss(animated: true, completion: nil)
    }
    
    func moveIconsOffScreenAndHide() {
@@ -90,23 +93,30 @@ class BikeStationsNotificationOverlayViewController: UIViewController {
          toStationInfoLabel.removeFromSuperview()
       }
    }
+   
+   deinit {
+      print("the notification overlay has been deinitialized")
+   }
 }
 
 // Animations
 extension BikeStationsNotificationOverlayViewController {
    func runLoadingAnimation(duration: Double, completion: @escaping ((_ success: Bool) -> Void)) {
       
-      UIView.animate(withDuration: duration, animations: {
-         self.animationLength += duration
-         self.bikeWheel.transform = CGAffineTransform(rotationAngle: CGFloat(Double.pi * -1))
-         self.bikeWheel.alpha = 0.0
+      var animationLength = 0.0
+
+      UIView.animate(withDuration: duration, animations: { [weak self] in
+         guard self != nil else { completion(false) ; return }
+         animationLength += duration
+         self?.bikeWheel.transform = CGAffineTransform(rotationAngle: CGFloat(Double.pi * -1))
+         self?.bikeWheel.alpha = 0.0
          
-         if self.animationLength >= 10 {
+         if animationLength >= 10 {
             print("too long! cancel out of this")
             NotificationCenter.default.post(name: ConstantNotificationNotices.apiNotWorking, object: nil)
             completion(false)
          } else if BikeStationController.shared.allBikeStations.count == 0 {
-            self.runLoadingAnimation(duration: duration, completion: completion)
+            self?.runLoadingAnimation(duration: duration, completion: completion)
          }
       }) {(success) in
          completion(success)
@@ -125,11 +135,7 @@ extension BikeStationsNotificationOverlayViewController {
       } else {
          completion(false)
       }
-      
-
-      
-
-      
+ 
    }
    
    func runBikeAnimation(duration: Double, completion: @escaping ((Bool) -> Void)) {
@@ -155,5 +161,7 @@ extension BikeStationsNotificationOverlayViewController {
                         self.bikeAndStationInfoView.alpha = 1.0 },
                      completion: nil)
    }
+   
+
    
 }

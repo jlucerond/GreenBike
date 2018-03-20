@@ -670,7 +670,7 @@
         <!--Bike Stations Notification Overlay View Controller-->
         <scene sceneID="KmC-56-icE">
             <objects>
-                <viewController storyboardIdentifier="ShowOneBikeStationInfo" id="rIv-Mu-uYS" customClass="BikeStationsNotificationOverlayViewController" customModule="GreenBike" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="ShowBikeStationInfo" id="rIv-Mu-uYS" customClass="BikeStationsNotificationOverlayViewController" customModule="GreenBike" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="RxE-PQ-kBA"/>
                         <viewControllerLayoutGuide type="bottom" id="LpS-3U-P7R"/>

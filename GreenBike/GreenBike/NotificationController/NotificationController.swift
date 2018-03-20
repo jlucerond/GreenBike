@@ -118,12 +118,6 @@ class NotificationController {
          notificationCenter.removePendingNotificationRequests(withIdentifiers: ["\(alert.uuid)+\(suffix)"])
          print("Deleted alert: \(alert.uuid)+\(suffix)")
       }
-      
-      notificationCenter.getPendingNotificationRequests { (requests) in
-         for request in requests {
-            print("Requests still pending: \(request.identifier)")
-         }
-      }
    }
    
    private func createDateForAlert(weekday: Int, hour: Int, minute: Int) -> Date {

@@ -44,15 +44,22 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
    // MARK: - Error Handling
    /// Show error
    @objc func showSorry() {
-      guard let window = window else { return }
-      
-      let alert = UIAlertController(title: "Uh-oh", message: "Network error.\n\nThis is usually the result of a bad network signal or server issues.", preferredStyle: .alert)
-      let action = UIAlertAction(title: "Darn", style: .default, handler: nil)
-      alert.addAction(action)
-      
       DispatchQueue.main.async {
+         guard UIApplication.shared.applicationState == .active else { return }
+         guard let window = self.window else { return }
+         
+         let alert = UIAlertController(title: "Uh-oh", message: "Network error.\n\nThis is usually the result of a bad network signal or server issues.", preferredStyle: .alert)
+         let action = UIAlertAction(title: "Darn", style: .default, handler: nil)
+         alert.addAction(action)
+         
          guard let tabBarVC = window.rootViewController else { return }
-         tabBarVC.topMostViewController().present(alert, animated: true, completion: nil)
+         
+         if let _ =  tabBarVC.topMostViewController() as? UIAlertController {
+            // trying to debug issue with multiple alerts being presented
+            return
+         } else {
+            tabBarVC.topMostViewController().present(alert, animated: true, completion: nil)
+         }
       }
    }
 }
@@ -77,7 +84,6 @@ extension AppDelegate: UNUserNotificationCenterDelegate {
       if let alertIdentifer = userInfo[NotificationController.UserInfoDictionary.alertToTurnOff] as? String {
          if let alert = AlertController.shared.findAlertWith(identifier: alertIdentifer) {
             AlertController.shared.toggleAlert(alert: alert)
-            print("Successfully finished app!!!!")
          }
       }
       
@@ -100,8 +106,8 @@ extension AppDelegate: UNUserNotificationCenterDelegate {
          // show alert overlay view controller
       case NotificationController.UserInfoDictionary.numberOfBikesValues.some:
          let storyboard = UIStoryboard(name: "Main", bundle: nil)
-         guard let bikeStationOverlayVC = storyboard.instantiateViewController(withIdentifier: "ShowOneBikeStationInfo") as? BikeStationsNotificationOverlayViewController,
-            let currentVC = self.window?.rootViewController?.topMostViewController() else  { return }
+         guard let bikeStationOverlayVC = storyboard.instantiateViewController(withIdentifier: "ShowBikeStationInfo") as? BikeStationsNotificationOverlayViewController,
+            let currentVC = window?.rootViewController?.topMostViewController() else  { return }
          
          let fromBikeStation = userInfo[NotificationController.UserInfoDictionary.fromBikeStationNameKey] as? String
          let toBikeStation = userInfo[NotificationController.UserInfoDictionary.toBikeStationNameKey] as? String
