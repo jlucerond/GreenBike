@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		D8047A891F673D6C00212079 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8047A881F673D6C00212079 /* Constants.swift */; };
 		D8364CB11F90449200420F9F /* SaveController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8364CB01F90449200420F9F /* SaveController.swift */; };
+		D8505AC82066FC2C00D41AC1 /* BikeMapPinView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8505AC72066FC2C00D41AC1 /* BikeMapPinView.swift */; };
 		D87286491F980F7C00E780E5 /* AlertController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D87286481F980F7C00E780E5 /* AlertController.swift */; };
 		D88E46992030D7EC0074F367 /* BikeStationsNotificationOverlayViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D88E46982030D7EC0074F367 /* BikeStationsNotificationOverlayViewController.swift */; };
 		D895D98D1F69AA1900C7FD36 /* BikeStationsTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D895D98C1F69AA1900C7FD36 /* BikeStationsTableViewController.swift */; };
@@ -33,6 +34,7 @@
 /* Begin PBXFileReference section */
 		D8047A881F673D6C00212079 /* Constants.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
 		D8364CB01F90449200420F9F /* SaveController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SaveController.swift; sourceTree = "<group>"; };
+		D8505AC72066FC2C00D41AC1 /* BikeMapPinView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BikeMapPinView.swift; sourceTree = "<group>"; };
 		D87286481F980F7C00E780E5 /* AlertController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlertController.swift; sourceTree = "<group>"; };
 		D88E46982030D7EC0074F367 /* BikeStationsNotificationOverlayViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BikeStationsNotificationOverlayViewController.swift; sourceTree = "<group>"; };
 		D895D98C1F69AA1900C7FD36 /* BikeStationsTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BikeStationsTableViewController.swift; sourceTree = "<group>"; };
@@ -94,6 +96,7 @@
 				D89D43231F8D64E10064202C /* BikeStationPickerTableViewController.swift */,
 				D8A11B231F8E8BF00037EF55 /* DaysTableViewController.swift */,
 				D88E46982030D7EC0074F367 /* BikeStationsNotificationOverlayViewController.swift */,
+				D8505AC72066FC2C00D41AC1 /* BikeMapPinView.swift */,
 			);
 			name = ViewControllers;
 			sourceTree = "<group>";
@@ -272,6 +275,7 @@
 				D8E61E061F67095000A57157 /* BikeStation.swift in Sources */,
 				D8364CB11F90449200420F9F /* SaveController.swift in Sources */,
 				D8A11B2A1F8ED56E0037EF55 /* AlertTableViewCell.swift in Sources */,
+				D8505AC82066FC2C00D41AC1 /* BikeMapPinView.swift in Sources */,
 				D87286491F980F7C00E780E5 /* AlertController.swift in Sources */,
 				D89D43211F8D49690064202C /* AlertDetailTableViewController.swift in Sources */,
 				D8E61DF01F66EF9D00A57157 /* AppDelegate.swift in Sources */,

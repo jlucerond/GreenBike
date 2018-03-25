@@ -93,20 +93,20 @@ extension MapViewController: MKMapViewDelegate {
       if (annotation is MKUserLocation) {
          return nil
       }
+      
+      guard let bikeStation = annotation as? BikeStation else { return nil }
+      
+      var bikeStationPinView = mapView.dequeueReusableAnnotationView(withIdentifier: bikeStationIdentifier) as? BikeMapPinView
 
-      var annotationView = mapView.dequeueReusableAnnotationView(withIdentifier: bikeStationIdentifier) as? MKPinAnnotationView
-
-      if annotationView == nil {
-         annotationView = MKPinAnnotationView(annotation: annotation, reuseIdentifier: bikeStationIdentifier)
+      if bikeStationPinView == nil {
+         bikeStationPinView = BikeMapPinView(bikeStation: bikeStation, reuseIdentifier: bikeStationIdentifier)
       } else {
-         annotationView?.annotation = annotation
+         bikeStationPinView?.annotation = bikeStation
       }
 
-      annotationView?.pinTintColor = UIColor.tertiaryAppColor
-      annotationView?.canShowCallout = true
-      annotationView?.animatesDrop = isFirstTimeLoadingMap
+      bikeStationPinView?.canShowCallout = true
 
-      return annotationView
+      return bikeStationPinView
    }
 }
 
