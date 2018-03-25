@@ -17,14 +17,12 @@ class BikeMapPinView: MKAnnotationView {
       self.bikeStation = bikeStation
       super.init(annotation: bikeStation, reuseIdentifier: reuseIdentifier)
       let oversizedPinImage = UIImage(named: "LocationPin")
+      let backgroundImage = resizePinImage(image: oversizedPinImage, newWidth: 45.0)?.tinted(fillWith: .secondaryAppColor)
       let resizedImage = resizePinImage(image: oversizedPinImage, newWidth: 40.0)
-      let firstTint = resizedImage?.tinted(with: UIColor.primaryAppColor)
-      // fill
-      let imageWithBikeNumber = addTextLabelTo(image: firstTint)
-      self.image = imageWithBikeNumber
-      
-      
-      // add another image on top of this
+      let shadedImage = resizedImage?.tinted(fillWith: .primaryAppColor)
+      let imageWithBikeNumber = addTextLabelTo(image: shadedImage)
+      let combinedImages = overlapImages(backgroundImage: backgroundImage, foregroundImage: imageWithBikeNumber)
+      self.image = combinedImages
    }
    
    /// do not save annotations. will crash the app
@@ -48,38 +46,6 @@ class BikeMapPinView: MKAnnotationView {
       return newImage
    }
    
-//   private func addBikeNumber(to image: UIImage?) -> UIImage? {
-//      guard let unwrappedImage = image,
-//         let numberOfBikes = bikeStation?.freeBikes else { return image }
-//
-//      let imageView = UIImageView(image: unwrappedImage)
-//      let pinImage = unwrappedImage
-//
-//      let cgRect = CGRect()
-//      let textLabel = UILabel(frame: cgRect)
-//      textLabel.text = "\(numberOfBikes)"
-//      textLabel.sizeToFit()
-//      textLabel.translatesAutoresizingMaskIntoConstraints = false
-//      imageView.translatesAutoresizingMaskIntoConstraints = false
-//      imageView.addSubview(textLabel)
-//      textLabel.centerXAnchor.constraint(equalTo: imageView.centerXAnchor).isActive = true
-//      textLabel.centerYAnchor.constraint(equalTo: imageView.centerYAnchor).isActive = true
-//
-//      let size = unwrappedImage.size
-//      UIGraphicsBeginImageContext(size)
-//
-//      let areaSize = CGRect(x: 0, y: 0, width: size.width, height: size.height)
-//      pinImage.draw(in: areaSize)
-//
-//      textLabel.drawText(in: areaSize)
-////      textLabel!.drawInRect(areaSize, blendMode: kCGBlendModeNormal, alpha: 0.8)
-//
-//      let newImage: UIImage? = UIGraphicsGetImageFromCurrentImageContext()
-//      UIGraphicsEndImageContext()
-//
-//      return newImage
-//   }
-   
    private func addTextLabelTo(image: UIImage?) -> UIImage? {
       
       guard let unwrappedImage = image else { return nil }
@@ -88,11 +54,12 @@ class BikeMapPinView: MKAnnotationView {
       UIGraphicsBeginImageContext(size)
       
       let areaSize = CGRect(x: 0, y: 0, width: size.width, height: size.height)
-      unwrappedImage.draw(in: areaSize, blendMode: CGBlendMode.normal, alpha: 0.9)
+      unwrappedImage.draw(in: areaSize, blendMode: CGBlendMode.normal, alpha: 1.0)
       
       let freeBikesString = String(bikeStation!.freeBikes)
       let label = UILabel()
       label.text = freeBikesString
+      label.font = UIFont(name: "STHeitiSC-Medium", size: 20.0)
       label.textColor = UIColor.secondaryAppColor
       label.sizeToFit()
       
@@ -109,14 +76,40 @@ class BikeMapPinView: MKAnnotationView {
       
       return newImage
    }
+
+   private func overlapImages(backgroundImage: UIImage?, foregroundImage: UIImage?) -> UIImage? {
+      
+      guard let backgroundImage = backgroundImage, let foregroundImage = foregroundImage else { return nil }
+      
+      let size = backgroundImage.size
+      UIGraphicsBeginImageContext(size)
+      
+      let areaSize = CGRect(x: 0, y: 0, width: size.width, height: size.height)
+      backgroundImage.draw(in: areaSize, blendMode: CGBlendMode.normal, alpha: 1.0)
+      
+      let xValue = (areaSize.width - foregroundImage.size.width) / 2
+      let yValue = ((areaSize.height - foregroundImage.size.height) / 2) - 1
+      let origin = CGPoint(x: xValue, y: yValue)
+      let foregroundRect = CGRect(origin: origin, size: foregroundImage.size)
+      
+      foregroundImage.draw(in: foregroundRect)
+      
+      let newImage: UIImage? = UIGraphicsGetImageFromCurrentImageContext()
+      UIGraphicsEndImageContext()
+      
+      return newImage
+   }
 }
 
 extension UIImage {
-   func tinted(with color: UIColor) -> UIImage? {
+   func tinted(fillWith color: UIColor) -> UIImage? {
       defer { UIGraphicsEndImageContext() }
       UIGraphicsBeginImageContextWithOptions(size, false, scale)
       color.set()
+      
       withRenderingMode(.alwaysTemplate).draw(in: CGRect(origin: .zero, size: size))
       return UIGraphicsGetImageFromCurrentImageContext()
    }
+   
+
 }

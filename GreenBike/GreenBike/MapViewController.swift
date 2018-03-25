@@ -37,7 +37,6 @@ class MapViewController: UIViewController {
                                              selector: #selector(updateAnnotations),
                                              name: ConstantNotificationNotices.bikeStationsUpdatedNotification,
                                              object: nil)
-      
    }
    
 }
