@@ -14,10 +14,7 @@ class MapViewController: UIViewController {
    // IBOutlets
    @IBOutlet weak var mapView: MKMapView!
    @IBOutlet weak var locationFinderButton: UIButton!
-   
-   // Variables
-   fileprivate let bikeStationIdentifier = "BikeStationPinIdentifier"
-   
+      
    // IBActions
    @IBAction func refreshButtonPushed(_ sender: UIBarButtonItem) {
       BikeStationController.shared.refreshBikeStationsStatuses()
@@ -104,7 +101,7 @@ extension MapViewController: MKMapViewDelegate {
       
       guard let bikeStation = annotation as? BikeStation else { return nil }
       
-      let bikeStationPinView = BikeMapPinView(bikeStation: bikeStation, reuseIdentifier: bikeStationIdentifier)
+      let bikeStationPinView = BikeMapPinView(bikeStation: bikeStation, reuseIdentifier: "BikeStationPinIdentifier")
 
       bikeStationPinView.canShowCallout = true
       bikeStationPinView.updateView()
