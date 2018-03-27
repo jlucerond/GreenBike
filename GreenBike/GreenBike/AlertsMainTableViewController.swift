@@ -12,11 +12,20 @@ class AlertsMainTableViewController: UITableViewController {
 
    override func viewDidLoad() {
       super.viewDidLoad()
+      
+      if #available(iOS 11.0, *) {
+         let attributes = [
+            NSAttributedStringKey.foregroundColor : UIColor.secondaryAppColor
+         ]
+         navigationController?.navigationBar.largeTitleTextAttributes = attributes
+      }
    }
    
    override func viewWillAppear(_ animated: Bool) {
       super.viewWillAppear(animated)
       tableView.reloadData()
+      
+      
    }
    
    // MARK: - Table view data source

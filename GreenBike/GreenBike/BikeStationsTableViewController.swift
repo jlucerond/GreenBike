@@ -31,6 +31,13 @@ class BikeStationsTableViewController: UITableViewController {
    override func viewDidLoad() {
       super.viewDidLoad()
       
+      if #available(iOS 11.0, *) {
+         let attributes = [
+            NSAttributedStringKey.foregroundColor : UIColor.secondaryAppColor
+         ]
+         navigationController?.navigationBar.largeTitleTextAttributes = attributes
+      }
+      
       self.tableView.sectionHeaderHeight = UITableViewAutomaticDimension
       self.tableView.estimatedSectionHeaderHeight = 80;
       

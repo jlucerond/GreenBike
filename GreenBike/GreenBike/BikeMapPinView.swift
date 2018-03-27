@@ -10,12 +10,24 @@ import UIKit
 import MapKit
 
 class BikeMapPinView: MKAnnotationView {
-
-   var bikeStation: BikeStation?
    
-   required init(bikeStation: BikeStation, reuseIdentifier: String) {
-      self.bikeStation = bikeStation
-      super.init(annotation: bikeStation, reuseIdentifier: reuseIdentifier)
+   override var annotation: MKAnnotation? {
+      didSet {
+         updateView()
+      }
+   }
+   
+//   override func prepareForReuse() {
+//      self.image = nil
+//   }
+   
+//   override func prepareForDisplay() {
+//      self.image = nil
+//   }
+   
+   func updateView() {
+      guard let _ = annotation as? BikeStation else { return }
+      
       let oversizedPinImage = UIImage(named: "LocationPin")
       let backgroundImage = resizePinImage(image: oversizedPinImage, newWidth: 45.0)?.tinted(fillWith: .secondaryAppColor)
       let resizedImage = resizePinImage(image: oversizedPinImage, newWidth: 40.0)
@@ -23,6 +35,11 @@ class BikeMapPinView: MKAnnotationView {
       let imageWithBikeNumber = addTextLabelTo(image: shadedImage)
       let combinedImages = overlapImages(backgroundImage: backgroundImage, foregroundImage: imageWithBikeNumber)
       self.image = combinedImages
+   }
+   
+   required init(bikeStation: BikeStation, reuseIdentifier: String) {
+      super.init(annotation: bikeStation, reuseIdentifier: reuseIdentifier)
+      updateView()
    }
    
    /// do not save annotations. will crash the app
@@ -56,9 +73,10 @@ class BikeMapPinView: MKAnnotationView {
       let areaSize = CGRect(x: 0, y: 0, width: size.width, height: size.height)
       unwrappedImage.draw(in: areaSize, blendMode: CGBlendMode.normal, alpha: 1.0)
       
-      let freeBikesString = String(bikeStation!.freeBikes)
+      guard let bikeStation = annotation as? BikeStation else { return nil }
+
       let label = UILabel()
-      label.text = freeBikesString
+      label.text = "\(bikeStation.freeBikes)"
       label.font = UIFont(name: "STHeitiSC-Medium", size: 20.0)
       label.textColor = UIColor.secondaryAppColor
       label.sizeToFit()
@@ -69,7 +87,6 @@ class BikeMapPinView: MKAnnotationView {
       let labelSize = CGRect(origin: origin, size: label.frame.size)
       
       label.drawText(in: labelSize)
-      //      textLabel!.drawInRect(areaSize, blendMode: kCGBlendModeNormal, alpha: 0.8)
       
       let newImage: UIImage? = UIGraphicsGetImageFromCurrentImageContext()
       UIGraphicsEndImageContext()

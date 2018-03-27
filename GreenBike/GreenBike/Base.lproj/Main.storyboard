@@ -26,22 +26,19 @@
                         <viewControllerLayoutGuide type="bottom" id="wfy-db-euE"/>
                     </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="8bC-Xf-vdC">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="554"/>
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="502"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <mapView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" mapType="standard" rotateEnabled="NO" showsUserLocation="YES" showsScale="YES" showsTraffic="YES" translatesAutoresizingMaskIntoConstraints="NO" id="S0w-aq-tao">
-                                <rect key="frame" x="0.0" y="0.0" width="375" height="554"/>
+                                <rect key="frame" x="0.0" y="0.0" width="375" height="502"/>
                             </mapView>
                             <button opaque="NO" alpha="0.80000000000000004" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" reversesTitleShadowWhenHighlighted="YES" showsTouchWhenHighlighted="YES" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="aX7-lh-dKJ">
-                                <rect key="frame" x="309" y="496" width="50" height="50"/>
+                                <rect key="frame" x="309" y="444" width="50" height="50"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="50" id="066-6I-cZt"/>
                                     <constraint firstAttribute="height" constant="50" id="0bR-jj-tsG"/>
                                 </constraints>
-                                <state key="normal" backgroundImage="LocationIcon">
-                                    <color key="titleColor" red="0.92688906189999998" green="0.6475841403" blue="0.25487875939999999" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
-                                    <color key="titleShadowColor" red="0.92688906189999998" green="0.6475841403" blue="0.25487875939999999" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
-                                </state>
+                                <state key="normal" backgroundImage="LocationIcon"/>
                                 <connections>
                                     <action selector="locateUserButtonPressed:" destination="BYZ-38-t0r" eventType="touchUpInside" id="TiV-7c-qc0"/>
                                 </connections>
@@ -65,6 +62,7 @@
                         </barButtonItem>
                     </navigationItem>
                     <connections>
+                        <outlet property="locationFinderButton" destination="aX7-lh-dKJ" id="Wd9-6u-h87"/>
                         <outlet property="mapView" destination="S0w-aq-tao" id="ON7-V6-dUv"/>
                     </connections>
                 </viewController>
@@ -100,7 +98,7 @@
             <objects>
                 <tableViewController id="IXJ-dh-Sqa" customClass="BikeStationsTableViewController" customModule="GreenBike" customModuleProvider="target" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="none" rowHeight="175" sectionHeaderHeight="28" sectionFooterHeight="28" id="RNw-4v-4SK">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="554"/>
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="502"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" red="0.047151904549999998" green="0.1512607336" blue="0.34912750120000002" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                         <color key="separatorColor" red="0.92688906189999998" green="0.6475841403" blue="0.25487875939999999" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
@@ -286,7 +284,7 @@
             <objects>
                 <tableViewController id="cUe-jb-F8P" customClass="AlertsMainTableViewController" customModule="GreenBike" customModuleProvider="target" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="120" sectionHeaderHeight="28" sectionFooterHeight="28" id="D09-xE-kLQ">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="554"/>
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="502"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" red="0.047151904549999998" green="0.1512607336" blue="0.34912750120000002" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                         <prototypes>
@@ -647,8 +645,8 @@
             <objects>
                 <navigationController id="7iS-nE-i2A" sceneMemberID="viewController">
                     <tabBarItem key="tabBarItem" title="Alerts" image="AlertIcon" selectedImage="AlertIcon" id="u6r-VO-WSG"/>
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" translucent="NO" id="dZf-ZU-ZdB">
-                        <rect key="frame" x="0.0" y="20" width="375" height="44"/>
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" translucent="NO" largeTitles="YES" id="dZf-ZU-ZdB">
+                        <rect key="frame" x="0.0" y="20" width="375" height="96"/>
                         <autoresizingMask key="autoresizingMask"/>
                         <color key="backgroundColor" red="0.1100517064" green="0.26840814950000003" blue="0.12558355930000001" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                         <color key="tintColor" red="0.92688906189999998" green="0.6475841403" blue="0.25487875939999999" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
@@ -828,8 +826,8 @@
             <objects>
                 <navigationController id="MhO-AP-JpK" sceneMemberID="viewController">
                     <tabBarItem key="tabBarItem" title="Stations" image="TableIcon" selectedImage="TableIcon" id="tgm-1n-YF2"/>
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" translucent="NO" id="x2l-sw-jiB">
-                        <rect key="frame" x="0.0" y="20" width="375" height="44"/>
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" translucent="NO" largeTitles="YES" id="x2l-sw-jiB">
+                        <rect key="frame" x="0.0" y="20" width="375" height="96"/>
                         <autoresizingMask key="autoresizingMask"/>
                         <color key="barTintColor" red="0.047151904549999998" green="0.1512607336" blue="0.34912750120000002" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                         <textAttributes key="titleTextAttributes">
@@ -852,8 +850,8 @@
                 <navigationController automaticallyAdjustsScrollViewInsets="NO" id="ZDe-3e-Mtf" sceneMemberID="viewController">
                     <tabBarItem key="tabBarItem" title="Map" image="MapIcon" selectedImage="MapIcon" id="8Xr-EH-EmC"/>
                     <toolbarItems/>
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" translucent="NO" id="iiS-t5-crV">
-                        <rect key="frame" x="0.0" y="20" width="375" height="44"/>
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" translucent="NO" largeTitles="YES" id="iiS-t5-crV">
+                        <rect key="frame" x="0.0" y="20" width="375" height="96"/>
                         <autoresizingMask key="autoresizingMask"/>
                         <color key="backgroundColor" red="0.92688906189999998" green="0.6475841403" blue="0.25487875939999999" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                         <color key="barTintColor" red="0.047151904549999998" green="0.1512607336" blue="0.34912750120000002" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>

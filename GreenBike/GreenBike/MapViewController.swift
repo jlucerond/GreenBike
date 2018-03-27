@@ -13,7 +13,7 @@ class MapViewController: UIViewController {
    
    // IBOutlets
    @IBOutlet weak var mapView: MKMapView!
-   private var isFirstTimeLoadingMap = true
+   @IBOutlet weak var locationFinderButton: UIButton!
    
    // Variables
    fileprivate let bikeStationIdentifier = "BikeStationPinIdentifier"
@@ -37,6 +37,16 @@ class MapViewController: UIViewController {
                                              selector: #selector(updateAnnotations),
                                              name: ConstantNotificationNotices.bikeStationsUpdatedNotification,
                                              object: nil)
+      
+      if #available(iOS 11.0, *) {
+         let attributes = [
+            NSAttributedStringKey.foregroundColor : UIColor.secondaryAppColor
+         ]
+         navigationController?.navigationBar.largeTitleTextAttributes = attributes
+      }
+      
+      let tintedImage = UIImage(named: "LocationIcon")?.tinted(fillWith: .secondaryAppColor)
+      locationFinderButton.setBackgroundImage(tintedImage, for: .normal)
    }
    
 }
@@ -60,7 +70,6 @@ extension MapViewController {
          self.mapView.addAnnotations(BikeStationController.shared.allBikeStations)
          self.mapView.removeAnnotations(oldAnnotations)
       }
-      isFirstTimeLoadingMap = false
    }
    
    func mapShowAllStations() {
@@ -95,17 +104,13 @@ extension MapViewController: MKMapViewDelegate {
       
       guard let bikeStation = annotation as? BikeStation else { return nil }
       
-      var bikeStationPinView = mapView.dequeueReusableAnnotationView(withIdentifier: bikeStationIdentifier) as? BikeMapPinView
+      let bikeStationPinView = BikeMapPinView(bikeStation: bikeStation, reuseIdentifier: bikeStationIdentifier)
 
-      if bikeStationPinView == nil {
-         bikeStationPinView = BikeMapPinView(bikeStation: bikeStation, reuseIdentifier: bikeStationIdentifier)
-      } else {
-         bikeStationPinView?.annotation = bikeStation
-      }
-
-      bikeStationPinView?.canShowCallout = true
+      bikeStationPinView.canShowCallout = true
+      bikeStationPinView.updateView()
 
       return bikeStationPinView
    }
+   
 }
 
