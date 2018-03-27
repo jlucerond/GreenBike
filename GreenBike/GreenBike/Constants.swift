@@ -10,17 +10,14 @@ import Foundation
 import UIKit
 
 enum ConstantNotificationNotices {
-   // Notifications
    static let bikeStationsUpdatedNotification = Notification.Name("bikeStationsUpdated")
    static let apiNotWorking = Notification.Name("apiNotWorking")
 }
 
 enum ConstantKeys {
-   // Keys
    static let setOfAllFavoriteBikeStations = "favoriteBikeStations"
 }
 
-// FIXME: - Do I need this here???
 enum ToOrFrom: String {
    case to
    case from

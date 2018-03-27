@@ -93,7 +93,7 @@ extension MapViewController {
 
 // MARK: - Mapview Delegate Methods
 extension MapViewController: MKMapViewDelegate {
-   // FIXME: - this is where I'll need to add custom image for bike stations
+
    func mapView(_ mapView: MKMapView, viewFor annotation: MKAnnotation) -> MKAnnotationView? {
       if (annotation is MKUserLocation) {
          return nil

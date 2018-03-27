@@ -17,14 +17,6 @@ class BikeMapPinView: MKAnnotationView {
       }
    }
    
-//   override func prepareForReuse() {
-//      self.image = nil
-//   }
-   
-//   override func prepareForDisplay() {
-//      self.image = nil
-//   }
-   
    func updateView() {
       guard let _ = annotation as? BikeStation else { return }
       
