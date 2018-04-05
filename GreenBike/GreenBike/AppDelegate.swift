@@ -44,7 +44,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
    // MARK: - Error Handling
    /// Show error
    @objc func showSorry() {
-      DispatchQueue.main.async {
          guard UIApplication.shared.applicationState == .active else { return }
          guard let window = self.window else { return }
          
@@ -55,12 +54,12 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
          guard let tabBarVC = window.rootViewController else { return }
          
          if let _ =  tabBarVC.topMostViewController() as? UIAlertController {
-            // trying to debug issue with multiple alerts being presented
             return
          } else {
-            tabBarVC.topMostViewController().present(alert, animated: true, completion: nil)
+            DispatchQueue.main.async {
+               tabBarVC.topMostViewController().present(alert, animated: true, completion: nil)
+            }
          }
-      }
    }
 }
 
@@ -71,7 +70,7 @@ extension AppDelegate: UNUserNotificationCenterDelegate {
    func userNotificationCenter(_ center: UNUserNotificationCenter,
                                willPresent notification: UNNotification,
                                withCompletionHandler completionHandler: @escaping (UNNotificationPresentationOptions) -> Void) {
-      completionHandler([UNNotificationPresentationOptions.alert, UNNotificationPresentationOptions.sound])
+      completionHandler([.alert, .sound]) 
    }
    
    // run when the notification occurs and the app is in the background

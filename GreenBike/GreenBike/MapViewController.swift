@@ -62,7 +62,7 @@ extension MapViewController {
    }
    
    @objc func updateAnnotations() {
-      DispatchQueue.main.sync {
+      DispatchQueue.main.async {
          let oldAnnotations = self.mapView.annotations
          self.mapView.addAnnotations(BikeStationController.shared.allBikeStations)
          self.mapView.removeAnnotations(oldAnnotations)

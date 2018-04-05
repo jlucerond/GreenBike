@@ -35,12 +35,15 @@ class BikeStationController: NSObject {
          isDownloadingBikeStationInfo = true
          NetworkController.shared.getBikeInfoFromWeb { (success, arrayOfStations) in
             if !success {
+               print("I am not getting the bike info from the web")
                NotificationCenter.default.post(name: ConstantNotificationNotices.apiNotWorking, object: nil)
                self.isDownloadingBikeStationInfo = false
                
                return
             }
-            self.allBikeStations = arrayOfStations.flatMap{ BikeStation(dictionary: $0) }
+            
+            print("I got bike info from web")
+            self.allBikeStations = arrayOfStations.compactMap{ BikeStation(dictionary: $0) }
             self.isDownloadingBikeStationInfo = false
          }
       }
@@ -69,6 +72,10 @@ extension BikeStationController: CLLocationManagerDelegate {
    }
    
    func locationManager(_ manager: CLLocationManager, didFailWithError error: Error) {
+      
+      if let error = error as NSError? {
+         print("Error getting location. Domain: \(error.domain). Code: \(error.code)")
+      }
       print("location manager did fail")
    }
 }
