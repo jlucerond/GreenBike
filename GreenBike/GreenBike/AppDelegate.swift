@@ -21,8 +21,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
       
       UNUserNotificationCenter.current().delegate = self
       
-
-
+      
+      
       return true
    }
    
@@ -44,6 +44,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
    // MARK: - Error Handling
    /// Show error
    @objc func showSorry() {
+      DispatchQueue.main.async {
          guard UIApplication.shared.applicationState == .active else { return }
          guard let window = self.window else { return }
          
@@ -56,10 +57,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
          if let _ =  tabBarVC.topMostViewController() as? UIAlertController {
             return
          } else {
-            DispatchQueue.main.async {
-               tabBarVC.topMostViewController().present(alert, animated: true, completion: nil)
-            }
+            tabBarVC.topMostViewController().present(alert, animated: true, completion: nil)
          }
+      }
    }
 }
 
@@ -94,7 +94,7 @@ extension AppDelegate: UNUserNotificationCenterDelegate {
       guard let pageType = userInfo[NotificationController.UserInfoDictionary.numberOfBikesKey] as? String else { print("Error grabbing alert info from local notification") ; return }
       
       switch pageType {
-         // show table view controller
+      // show table view controller
       case NotificationController.UserInfoDictionary.numberOfBikesValues.zero:
          if let tabBar = window?.rootViewController as? UITabBarController,
             let tabVC = tabBar.viewControllers,
@@ -102,20 +102,27 @@ extension AppDelegate: UNUserNotificationCenterDelegate {
             tabBar.selectedViewController = tabVC[1]
             return
          }
-         // show alert overlay view controller
+      
+      // show alert overlay view controller
       case NotificationController.UserInfoDictionary.numberOfBikesValues.some:
-         let storyboard = UIStoryboard(name: "Main", bundle: nil)
-         guard let bikeStationOverlayVC = storyboard.instantiateViewController(withIdentifier: "ShowBikeStationInfo") as? BikeStationsNotificationOverlayViewController,
-            let currentVC = window?.rootViewController?.topMostViewController() else  { return }
          
-         let fromBikeStation = userInfo[NotificationController.UserInfoDictionary.fromBikeStationNameKey] as? String
-         let toBikeStation = userInfo[NotificationController.UserInfoDictionary.toBikeStationNameKey] as? String
-         
-         bikeStationOverlayVC.fromBikeStationName = fromBikeStation
-         bikeStationOverlayVC.toBikeStationName = toBikeStation
-
-         bikeStationOverlayVC.modalPresentationStyle = .overFullScreen
-         currentVC.present(bikeStationOverlayVC, animated: false, completion: nil)
+         DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+            let storyboard = UIStoryboard(name: "Main", bundle: nil)
+            
+            guard let bikeStationOverlayVC = storyboard.instantiateViewController(withIdentifier: "ShowBikeStationInfo") as? BikeStationsNotificationOverlayViewController,
+               let currentVC = self.window?.rootViewController?.topMostViewController() else  { return }
+            
+            let fromBikeStation = userInfo[NotificationController.UserInfoDictionary.fromBikeStationNameKey] as? String
+            let toBikeStation = userInfo[NotificationController.UserInfoDictionary.toBikeStationNameKey] as? String
+            
+            bikeStationOverlayVC.fromBikeStationName = fromBikeStation
+            bikeStationOverlayVC.toBikeStationName = toBikeStation
+            
+            bikeStationOverlayVC.modalPresentationStyle = .overCurrentContext
+            currentVC.present(bikeStationOverlayVC, animated: false, completion: nil)
+            return
+            
+         }
          
       default:
          print("Error. Enumeration above should be all inclusive.")
@@ -123,7 +130,7 @@ extension AppDelegate: UNUserNotificationCenterDelegate {
       }
       
    }
-
+   
 }
 
 // MARK: - Helper Methods
@@ -134,14 +141,17 @@ extension UIViewController {
       if self.presentedViewController == nil {
          return self
       }
+      
       if let navigation = self.presentedViewController as? UINavigationController {
          return navigation.visibleViewController!.topMostViewController()
       }
+      
       if let tab = self.presentedViewController as? UITabBarController {
          if let selectedTab = tab.selectedViewController {
-            return selectedTab.topMostViewController()
+            return selectedTab
+         } else {
+            return tab.topMostViewController()
          }
-         return tab.topMostViewController()
       }
       return self.presentedViewController!.topMostViewController()
    }

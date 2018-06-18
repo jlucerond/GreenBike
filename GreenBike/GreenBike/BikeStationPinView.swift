@@ -1,5 +1,5 @@
 //
-//  BikeMapPinView.swift
+//  BikeStationPinView.swift
 //  GreenBike
 //
 //  Created by Joe Lucero on 3/24/18.
@@ -9,28 +9,29 @@
 import UIKit
 import MapKit
 
-class BikeMapPinView: MKAnnotationView {
+class BikeStationPinView: MKAnnotationView {
    
-   override var annotation: MKAnnotation? {
-      didSet {
-         updateView()
-      }
-   }
-   
-   func updateView() {
-      guard let _ = annotation as? BikeStation else { return }
+   static let basicPinViewImage: UIImage = {
+      let oversizedPinImage = UIImage(named: "LocationPin")!
+      let resizedImage = resizePinImage(image: oversizedPinImage, newWidth: 45.0)!.tinted(fillWith: .primaryAppColor)!
       
-      let oversizedPinImage = UIImage(named: "LocationPin")
-      let backgroundImage = resizePinImage(image: oversizedPinImage, newWidth: 45.0)?.tinted(fillWith: .secondaryAppColor)
-      let resizedImage = resizePinImage(image: oversizedPinImage, newWidth: 40.0)
-      let shadedImage = resizedImage?.tinted(fillWith: .primaryAppColor)
-      let imageWithBikeNumber = addTextLabelTo(image: shadedImage)
-      let combinedImages = overlapImages(backgroundImage: backgroundImage, foregroundImage: imageWithBikeNumber)
-      self.image = combinedImages
+      return resizedImage
+   }()
+   
+   private func updateView() {
+      let basicPinOutline = BikeStationPinView.basicPinViewImage.copy() as! UIImage
+      let imageWithBikeNumber = self.addTextLabelTo(image: basicPinOutline)
+      self.image = imageWithBikeNumber
    }
    
    required init(bikeStation: BikeStation, reuseIdentifier: String) {
       super.init(annotation: bikeStation, reuseIdentifier: reuseIdentifier)
+      
+      self.layer.shadowColor = UIColor.secondaryAppColor.cgColor
+      self.layer.shadowRadius = 1
+      self.layer.shadowOffset = CGSize(width: 2, height: -2)
+      self.layer.shadowOpacity = 1
+
       updateView()
    }
    
@@ -39,7 +40,7 @@ class BikeMapPinView: MKAnnotationView {
       fatalError("Should not be able to save annotation views")
    }
    
-   private func resizePinImage(image: UIImage?, newWidth: CGFloat) -> UIImage? {
+   private static func resizePinImage(image: UIImage?, newWidth: CGFloat) -> UIImage? {
       
       guard let image = image else { return nil }
       
@@ -63,21 +64,23 @@ class BikeMapPinView: MKAnnotationView {
       UIGraphicsBeginImageContext(size)
       
       let areaSize = CGRect(x: 0, y: 0, width: size.width, height: size.height)
-      unwrappedImage.draw(in: areaSize, blendMode: CGBlendMode.normal, alpha: 1.0)
+      unwrappedImage.draw(in: areaSize, blendMode: CGBlendMode.overlay, alpha: 1.0)
       
       guard let bikeStation = annotation as? BikeStation else { return nil }
 
       let label = UILabel()
-      label.text = "\(bikeStation.freeBikes)"
+      
+      let numberToShow = BikeStationController.shared.isMapShowingBikeNumbers ? bikeStation.freeBikes : bikeStation.emptySlots
+      label.text = "\(numberToShow)"
       label.font = UIFont(name: "STHeitiSC-Medium", size: 20.0)
       label.textColor = UIColor.secondaryAppColor
       label.sizeToFit()
-      
+
       let xValue = (areaSize.width - label.bounds.width) / 2
       let yValue = (areaSize.height - label.bounds.height) / 3
       let origin = CGPoint(x: xValue, y: yValue)
       let labelSize = CGRect(origin: origin, size: label.frame.size)
-      
+
       label.drawText(in: labelSize)
       
       let newImage: UIImage? = UIGraphicsGetImageFromCurrentImageContext()
@@ -86,28 +89,6 @@ class BikeMapPinView: MKAnnotationView {
       return newImage
    }
 
-   private func overlapImages(backgroundImage: UIImage?, foregroundImage: UIImage?) -> UIImage? {
-      
-      guard let backgroundImage = backgroundImage, let foregroundImage = foregroundImage else { return nil }
-      
-      let size = backgroundImage.size
-      UIGraphicsBeginImageContext(size)
-      
-      let areaSize = CGRect(x: 0, y: 0, width: size.width, height: size.height)
-      backgroundImage.draw(in: areaSize, blendMode: CGBlendMode.normal, alpha: 1.0)
-      
-      let xValue = (areaSize.width - foregroundImage.size.width) / 2
-      let yValue = ((areaSize.height - foregroundImage.size.height) / 2) - 1
-      let origin = CGPoint(x: xValue, y: yValue)
-      let foregroundRect = CGRect(origin: origin, size: foregroundImage.size)
-      
-      foregroundImage.draw(in: foregroundRect)
-      
-      let newImage: UIImage? = UIGraphicsGetImageFromCurrentImageContext()
-      UIGraphicsEndImageContext()
-      
-      return newImage
-   }
 }
 
 extension UIImage {

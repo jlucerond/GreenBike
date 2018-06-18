@@ -11,10 +11,16 @@ import CoreLocation
 
 class BikeStationController: NSObject {
    static let shared = BikeStationController()
-   let locationManager = CLLocationManager()
-   var isDownloadingBikeStationInfo = false
    
-   var allBikeStations: [BikeStation] = [] {
+   var isMapShowingBikeNumbers = true {
+      didSet {
+         NotificationCenter.default.post(name: ConstantNotificationNotices.bikeStationsUpdatedNotification, object: nil)
+      }
+   }
+   let locationManager = CLLocationManager()
+   private var isDownloadingBikeStationInfo = false
+   
+   private(set) var allBikeStations: [BikeStation] = [] {
       didSet {
          NotificationCenter.default.post(name: ConstantNotificationNotices.bikeStationsUpdatedNotification, object: nil)
       }
@@ -31,6 +37,7 @@ class BikeStationController: NSObject {
    /// Will update the user's location and then send a network call out for the status of all bike stations. Once finished, this will either result in call to NotificationCenter of .apiNotWorking or .bikeStationsUpdatedNotification
    func refreshBikeStationsStatuses() {
       locationManager.requestLocation()
+      
       if !isDownloadingBikeStationInfo {
          isDownloadingBikeStationInfo = true
          NetworkController.shared.getBikeInfoFromWeb { (success, arrayOfStations) in
@@ -42,7 +49,6 @@ class BikeStationController: NSObject {
                return
             }
             
-            print("I got bike info from web")
             self.allBikeStations = arrayOfStations.compactMap{ BikeStation(dictionary: $0) }
             self.isDownloadingBikeStationInfo = false
          }

@@ -44,7 +44,7 @@ class AlertDetailTableViewController: UITableViewController {
       if let alert = alert {
          // edit alert
          AlertController.shared.updateAlert(alert: alert,
-                                            newIsOn: alert.isOn,
+                                            newIsOn: true,
                                             newTimeFrom: timePicker.date,
                                             newFromBikeStation: fromBikeStation,
                                             newToBikeStation: toBikeStation,

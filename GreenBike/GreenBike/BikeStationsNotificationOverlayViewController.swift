@@ -10,6 +10,7 @@ import UIKit
 
 class BikeStationsNotificationOverlayViewController: UIViewController {
    
+   @IBOutlet weak var mainView: UIView!
    @IBOutlet weak var bikeWheel: UIImageView!
    @IBOutlet weak var bikeAndNumberView: UIView!
    @IBOutlet weak var stationAndNumberView: UIView!
@@ -29,6 +30,9 @@ class BikeStationsNotificationOverlayViewController: UIViewController {
    
    override func viewWillAppear(_ animated: Bool) {
       super.viewWillAppear(animated)
+      mainView.layer.cornerRadius = 20.0
+      mainView.layer.masksToBounds = true
+      bikeAndStationInfoView.layer.cornerRadius = 20.0
       moveIconsOffScreenAndHide()
    }
 
@@ -94,9 +98,6 @@ class BikeStationsNotificationOverlayViewController: UIViewController {
       }
    }
    
-   deinit {
-      print("the notification overlay has been deinitialized")
-   }
 }
 
 // Animations
@@ -105,20 +106,20 @@ extension BikeStationsNotificationOverlayViewController {
       
       var animationLength = 0.0
 
-      UIView.animate(withDuration: duration, animations: { [weak self] in
-         guard self != nil else { completion(false) ; return }
+      UIView.animate(withDuration: duration, animations: { [unowned self] in
+
          animationLength += duration
-         self?.bikeWheel.transform = CGAffineTransform(rotationAngle: CGFloat(Double.pi * -1))
-         self?.bikeWheel.alpha = 0.0
+         self.bikeWheel.transform = CGAffineTransform(rotationAngle: CGFloat(Double.pi * -1))
+         self.bikeWheel.alpha = 0.0
          
          if animationLength >= 10 {
             print("too long! cancel out of this")
             NotificationCenter.default.post(name: ConstantNotificationNotices.apiNotWorking, object: nil)
             completion(false)
          } else if BikeStationController.shared.allBikeStations.count == 0 {
-            self?.runLoadingAnimation(duration: duration, completion: completion)
+            self.runLoadingAnimation(duration: duration, completion: completion)
          }
-      }) {(success) in
+      }) { (success) in
          completion(success)
       }
    }
