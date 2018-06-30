@@ -75,8 +75,7 @@ class NotificationController {
          let content = UNMutableNotificationContent()
          content.title = "💚🚲"
          content.sound = UNNotificationSound.default()
-         content.userInfo = userInfoDictionary
-         
+         content.userInfo = userInfoDictionary         
          
          if alert.shouldRepeat {
             for day in alert.weeklySchedule.daysThatAlertShouldRepeat {
@@ -116,7 +115,6 @@ class NotificationController {
    func deleteNotifications(for alert: Alert) {
       for suffix in 0...7 {
          notificationCenter.removePendingNotificationRequests(withIdentifiers: ["\(alert.uuid)+\(suffix)"])
-         print("Deleted alert: \(alert.uuid)+\(suffix)")
       }
    }
    

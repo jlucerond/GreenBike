@@ -14,7 +14,7 @@ class MapViewController: UIViewController {
    // IBOutlets
    @IBOutlet weak var mapView: MKMapView!
    @IBOutlet weak var locationFinderButton: UIButton!
-      
+   
    // IBActions
    @IBAction func refreshButtonPushed(_ sender: UIBarButtonItem) {
       BikeStationController.shared.refreshBikeStationsStatuses()
@@ -59,10 +59,15 @@ extension MapViewController {
       
       let slcRegion = MKCoordinateRegionMakeWithDistance(slcCenter, slcLatMeters, slcLongMeters)
       mapView.setRegion(slcRegion, animated: true)
+      
+      if mapView.annotations.count <= 1 {
+         updateAnnotations()
+      }
    }
    
    @objc func updateAnnotations() {
-      DispatchQueue.main.sync {
+      
+      DispatchQueue.main.async {
          let oldAnnotations = self.mapView.annotations
          self.mapView.addAnnotations(BikeStationController.shared.allBikeStations)
          self.mapView.removeAnnotations(oldAnnotations)
@@ -95,16 +100,16 @@ extension MapViewController {
 extension MapViewController: MKMapViewDelegate {
 
    func mapView(_ mapView: MKMapView, viewFor annotation: MKAnnotation) -> MKAnnotationView? {
+      // use the default view for MKUserLocation
       if (annotation is MKUserLocation) {
          return nil
       }
       
+      // for all other annotations, there should be a bike station associated with that view
       guard let bikeStation = annotation as? BikeStation else { return nil }
       
-      let bikeStationPinView = BikeMapPinView(bikeStation: bikeStation, reuseIdentifier: "BikeStationPinIdentifier")
-
+      let bikeStationPinView = BikeStationPinView(bikeStation: bikeStation, reuseIdentifier: "BikeStationPinIdentifer")
       bikeStationPinView.canShowCallout = true
-      bikeStationPinView.updateView()
 
       return bikeStationPinView
    }

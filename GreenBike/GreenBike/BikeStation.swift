@@ -71,6 +71,10 @@ extension BikeStation: MKAnnotation {
    }
    
    var subtitle: String? {
-      return "\(freeBikes) out of \(freeBikes + emptySlots) available"
+      if BikeStationController.shared.isMapShowingBikeNumbers {
+         return "\(freeBikes) of \(freeBikes + emptySlots) 🚲 available"
+      } else {
+         return "\(emptySlots) of \(freeBikes + emptySlots) 📭 available"
+      }
    }
 }

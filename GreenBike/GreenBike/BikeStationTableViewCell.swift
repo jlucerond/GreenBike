@@ -11,6 +11,8 @@ import CoreLocation
 
 class BikeStationTableViewCell: UITableViewCell {
    
+   @IBOutlet weak var bikesRemainingView: UIView!
+   @IBOutlet weak var docksRemainingView: UIView!
    @IBOutlet weak var addressLabel: UILabel!
    @IBOutlet weak var nameLabel: UILabel!
    @IBOutlet weak var numberOfBikesLabel: UILabel!
@@ -33,6 +35,12 @@ class BikeStationTableViewCell: UITableViewCell {
       updateDistanceAndDirectionLabels(stationsLocation: bikeStation.location)
       updateCustomConstraints(bikeStation: bikeStation, animated: animated)
       firstTimeOnScreen = false
+      
+      if bikeStation.emptySlots < bikeStation.freeBikes {
+         bikesRemainingView.superview?.bringSubview(toFront: bikesRemainingView)
+      } else {
+         docksRemainingView.superview?.bringSubview(toFront: docksRemainingView)
+      }
    }
    
 }

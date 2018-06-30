@@ -11,10 +11,16 @@ import CoreLocation
 
 class BikeStationController: NSObject {
    static let shared = BikeStationController()
-   let locationManager = CLLocationManager()
-   var isDownloadingBikeStationInfo = false
    
-   var allBikeStations: [BikeStation] = [] {
+   var isMapShowingBikeNumbers = true {
+      didSet {
+         NotificationCenter.default.post(name: ConstantNotificationNotices.bikeStationsUpdatedNotification, object: nil)
+      }
+   }
+   let locationManager = CLLocationManager()
+   private var isDownloadingBikeStationInfo = false
+   
+   private(set) var allBikeStations: [BikeStation] = [] {
       didSet {
          NotificationCenter.default.post(name: ConstantNotificationNotices.bikeStationsUpdatedNotification, object: nil)
       }
@@ -31,16 +37,19 @@ class BikeStationController: NSObject {
    /// Will update the user's location and then send a network call out for the status of all bike stations. Once finished, this will either result in call to NotificationCenter of .apiNotWorking or .bikeStationsUpdatedNotification
    func refreshBikeStationsStatuses() {
       locationManager.requestLocation()
+      
       if !isDownloadingBikeStationInfo {
          isDownloadingBikeStationInfo = true
          NetworkController.shared.getBikeInfoFromWeb { (success, arrayOfStations) in
             if !success {
+               print("I am not getting the bike info from the web")
                NotificationCenter.default.post(name: ConstantNotificationNotices.apiNotWorking, object: nil)
                self.isDownloadingBikeStationInfo = false
                
                return
             }
-            self.allBikeStations = arrayOfStations.flatMap{ BikeStation(dictionary: $0) }
+            
+            self.allBikeStations = arrayOfStations.compactMap{ BikeStation(dictionary: $0) }
             self.isDownloadingBikeStationInfo = false
          }
       }
@@ -69,6 +78,10 @@ extension BikeStationController: CLLocationManagerDelegate {
    }
    
    func locationManager(_ manager: CLLocationManager, didFailWithError error: Error) {
+      
+      if let error = error as NSError? {
+         print("Error getting location. Domain: \(error.domain). Code: \(error.code)")
+      }
       print("location manager did fail")
    }
 }

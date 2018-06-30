@@ -27,7 +27,6 @@ class SaveController {
       do {
          let data = try encoder.encode(alerts)
          try data.write(to: dataFilePath(), options: .atomic)
-         print("Saved alerts")
       } catch  {
          print("Error: \(error.localizedDescription)")
       }

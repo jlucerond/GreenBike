@@ -21,8 +21,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
       
       UNUserNotificationCenter.current().delegate = self
       
-
-
+      
+      
       return true
    }
    
@@ -55,7 +55,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
          guard let tabBarVC = window.rootViewController else { return }
          
          if let _ =  tabBarVC.topMostViewController() as? UIAlertController {
-            // trying to debug issue with multiple alerts being presented
             return
          } else {
             tabBarVC.topMostViewController().present(alert, animated: true, completion: nil)
@@ -71,7 +70,7 @@ extension AppDelegate: UNUserNotificationCenterDelegate {
    func userNotificationCenter(_ center: UNUserNotificationCenter,
                                willPresent notification: UNNotification,
                                withCompletionHandler completionHandler: @escaping (UNNotificationPresentationOptions) -> Void) {
-      completionHandler([UNNotificationPresentationOptions.alert, UNNotificationPresentationOptions.sound])
+      completionHandler([.alert, .sound]) 
    }
    
    // run when the notification occurs and the app is in the background
@@ -95,7 +94,7 @@ extension AppDelegate: UNUserNotificationCenterDelegate {
       guard let pageType = userInfo[NotificationController.UserInfoDictionary.numberOfBikesKey] as? String else { print("Error grabbing alert info from local notification") ; return }
       
       switch pageType {
-         // show table view controller
+      // show table view controller
       case NotificationController.UserInfoDictionary.numberOfBikesValues.zero:
          if let tabBar = window?.rootViewController as? UITabBarController,
             let tabVC = tabBar.viewControllers,
@@ -103,20 +102,13 @@ extension AppDelegate: UNUserNotificationCenterDelegate {
             tabBar.selectedViewController = tabVC[1]
             return
          }
-         // show alert overlay view controller
+      
+      // show alert overlay view controller
       case NotificationController.UserInfoDictionary.numberOfBikesValues.some:
-         let storyboard = UIStoryboard(name: "Main", bundle: nil)
-         guard let bikeStationOverlayVC = storyboard.instantiateViewController(withIdentifier: "ShowBikeStationInfo") as? BikeStationsNotificationOverlayViewController,
-            let currentVC = window?.rootViewController?.topMostViewController() else  { return }
          
-         let fromBikeStation = userInfo[NotificationController.UserInfoDictionary.fromBikeStationNameKey] as? String
-         let toBikeStation = userInfo[NotificationController.UserInfoDictionary.toBikeStationNameKey] as? String
+//         let delay = BikeStationController.shared.allBikeStations.isEmpty ? 1.5 : 0.5
          
-         bikeStationOverlayVC.fromBikeStationName = fromBikeStation
-         bikeStationOverlayVC.toBikeStationName = toBikeStation
-
-         bikeStationOverlayVC.modalPresentationStyle = .overFullScreen
-         currentVC.present(bikeStationOverlayVC, animated: false, completion: nil)
+         runBikeAnimationWith(userInfoDictionary: userInfo)
          
       default:
          print("Error. Enumeration above should be all inclusive.")
@@ -124,7 +116,36 @@ extension AppDelegate: UNUserNotificationCenterDelegate {
       }
       
    }
-
+   
+   private func areMapsLoaded() -> Bool {
+      return !BikeStationController.shared.allBikeStations.isEmpty
+   }
+   
+   private func runBikeAnimationWith(userInfoDictionary: [AnyHashable : Any]) {
+      if BikeStationController.shared.allBikeStations.isEmpty {
+         // if the bikes haven't loaded yet, try again in half a second
+         DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+            self.runBikeAnimationWith(userInfoDictionary: userInfoDictionary)
+         }
+      } else {
+         DispatchQueue.main.async {
+            let storyboard = UIStoryboard(name: "Main", bundle: nil)
+            
+            guard let bikeStationOverlayVC = storyboard.instantiateViewController(withIdentifier: "ShowBikeStationInfo") as? BikeStationsNotificationOverlayViewController,
+               let currentVC = self.window?.rootViewController?.topMostViewController() else  { return }
+            
+            let fromBikeStation = userInfoDictionary[NotificationController.UserInfoDictionary.fromBikeStationNameKey] as? String
+            let toBikeStation = userInfoDictionary[NotificationController.UserInfoDictionary.toBikeStationNameKey] as? String
+            
+            bikeStationOverlayVC.fromBikeStationName = fromBikeStation
+            bikeStationOverlayVC.toBikeStationName = toBikeStation
+            
+            bikeStationOverlayVC.modalPresentationStyle = .overCurrentContext
+            currentVC.present(bikeStationOverlayVC, animated: false, completion: nil)
+         }
+      }
+   }
+   
 }
 
 // MARK: - Helper Methods
@@ -135,14 +156,17 @@ extension UIViewController {
       if self.presentedViewController == nil {
          return self
       }
+      
       if let navigation = self.presentedViewController as? UINavigationController {
          return navigation.visibleViewController!.topMostViewController()
       }
+      
       if let tab = self.presentedViewController as? UITabBarController {
          if let selectedTab = tab.selectedViewController {
-            return selectedTab.topMostViewController()
+            return selectedTab
+         } else {
+            return tab.topMostViewController()
          }
-         return tab.topMostViewController()
       }
       return self.presentedViewController!.topMostViewController()
    }
