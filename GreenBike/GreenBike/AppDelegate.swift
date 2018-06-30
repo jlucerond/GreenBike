@@ -106,29 +106,44 @@ extension AppDelegate: UNUserNotificationCenterDelegate {
       // show alert overlay view controller
       case NotificationController.UserInfoDictionary.numberOfBikesValues.some:
          
-         DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
-            let storyboard = UIStoryboard(name: "Main", bundle: nil)
-            
-            guard let bikeStationOverlayVC = storyboard.instantiateViewController(withIdentifier: "ShowBikeStationInfo") as? BikeStationsNotificationOverlayViewController,
-               let currentVC = self.window?.rootViewController?.topMostViewController() else  { return }
-            
-            let fromBikeStation = userInfo[NotificationController.UserInfoDictionary.fromBikeStationNameKey] as? String
-            let toBikeStation = userInfo[NotificationController.UserInfoDictionary.toBikeStationNameKey] as? String
-            
-            bikeStationOverlayVC.fromBikeStationName = fromBikeStation
-            bikeStationOverlayVC.toBikeStationName = toBikeStation
-            
-            bikeStationOverlayVC.modalPresentationStyle = .overCurrentContext
-            currentVC.present(bikeStationOverlayVC, animated: false, completion: nil)
-            return
-            
-         }
+//         let delay = BikeStationController.shared.allBikeStations.isEmpty ? 1.5 : 0.5
+         
+         runBikeAnimationWith(userInfoDictionary: userInfo)
          
       default:
          print("Error. Enumeration above should be all inclusive.")
          return
       }
       
+   }
+   
+   private func areMapsLoaded() -> Bool {
+      return !BikeStationController.shared.allBikeStations.isEmpty
+   }
+   
+   private func runBikeAnimationWith(userInfoDictionary: [AnyHashable : Any]) {
+      if BikeStationController.shared.allBikeStations.isEmpty {
+         // if the bikes haven't loaded yet, try again in half a second
+         DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+            self.runBikeAnimationWith(userInfoDictionary: userInfoDictionary)
+         }
+      } else {
+         DispatchQueue.main.async {
+            let storyboard = UIStoryboard(name: "Main", bundle: nil)
+            
+            guard let bikeStationOverlayVC = storyboard.instantiateViewController(withIdentifier: "ShowBikeStationInfo") as? BikeStationsNotificationOverlayViewController,
+               let currentVC = self.window?.rootViewController?.topMostViewController() else  { return }
+            
+            let fromBikeStation = userInfoDictionary[NotificationController.UserInfoDictionary.fromBikeStationNameKey] as? String
+            let toBikeStation = userInfoDictionary[NotificationController.UserInfoDictionary.toBikeStationNameKey] as? String
+            
+            bikeStationOverlayVC.fromBikeStationName = fromBikeStation
+            bikeStationOverlayVC.toBikeStationName = toBikeStation
+            
+            bikeStationOverlayVC.modalPresentationStyle = .overCurrentContext
+            currentVC.present(bikeStationOverlayVC, animated: false, completion: nil)
+         }
+      }
    }
    
 }

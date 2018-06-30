@@ -257,7 +257,9 @@
                                 </tableViewCellContentView>
                                 <connections>
                                     <outlet property="addressLabel" destination="KVT-nb-kr9" id="ti6-cC-1zr"/>
+                                    <outlet property="bikesRemainingView" destination="dRB-tS-dqE" id="tRN-T9-5TE"/>
                                     <outlet property="distanceFromUserLabel" destination="SdE-lZ-OEV" id="zoP-Zc-6nI"/>
+                                    <outlet property="docksRemainingView" destination="nIg-Gn-5nk" id="TKw-Ns-6Mb"/>
                                     <outlet property="nameLabel" destination="dY8-59-XMc" id="PXw-qF-46t"/>
                                     <outlet property="numberOfBikesLabel" destination="1mz-sf-efc" id="fsI-fO-sHN"/>
                                     <outlet property="numberOfDocksLabel" destination="NEd-6R-Xlz" id="0Wc-25-cJP"/>

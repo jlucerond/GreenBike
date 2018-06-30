@@ -40,6 +40,10 @@ class BikeStationsNotificationOverlayViewController: UIViewController {
    override func viewDidAppear(_ animated: Bool) {
       super.viewDidAppear(animated)
       runLoadingAnimation(duration: 3.0) { [weak self] (success) in
+         guard self != nil else {
+            return
+         }
+         
          if success {
             // update bikes
             self?.updateBikeStationInformation()
@@ -57,7 +61,11 @@ class BikeStationsNotificationOverlayViewController: UIViewController {
    }
    
    @IBAction func closeTapped() {
-      dismiss(animated: true, completion: nil)
+      UIView.animate(withDuration: 0.5, animations: {
+         self.view.alpha = 0.0
+      }) { _ in
+         self.dismiss(animated: true, completion: nil)
+      }
    }
    
    func moveIconsOffScreenAndHide() {
@@ -106,18 +114,23 @@ extension BikeStationsNotificationOverlayViewController {
       
       var animationLength = 0.0
 
-      UIView.animate(withDuration: duration, animations: { [unowned self] in
+      UIView.animate(withDuration: duration, animations: { [weak self] in
+         
+         guard self != nil else {
+            completion(false)
+            return
+         }
 
          animationLength += duration
-         self.bikeWheel.transform = CGAffineTransform(rotationAngle: CGFloat(Double.pi * -1))
-         self.bikeWheel.alpha = 0.0
+         self!.bikeWheel.transform = CGAffineTransform(rotationAngle: CGFloat(Double.pi * -1))
+         self!.bikeWheel.alpha = 0.0
          
          if animationLength >= 10 {
             print("too long! cancel out of this")
             NotificationCenter.default.post(name: ConstantNotificationNotices.apiNotWorking, object: nil)
             completion(false)
          } else if BikeStationController.shared.allBikeStations.count == 0 {
-            self.runLoadingAnimation(duration: duration, completion: completion)
+            self!.runLoadingAnimation(duration: duration, completion: completion)
          }
       }) { (success) in
          completion(success)
